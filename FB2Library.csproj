@@ -88,12 +88,6 @@
     <Compile Include="Elements\SectionItem.cs" />
     <Compile Include="Elements\TitleItem.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ISOLanguages\ISOLanguages.csproj">
-      <Project>{58E261A5-B2EA-43F3-820D-902B5C061321}</Project>
-      <Name>ISOLanguages</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
