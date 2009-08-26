@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4DEC5888-E71A-4D00-93B7-7F11C92D0A3F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FB2Library</RootNamespace>
+    <AssemblyName>FB2Library</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Elements\AnnotationItem.cs" />
+    <Compile Include="Elements\AnnotationType.cs" />
+    <Compile Include="Elements\CiteItem.cs" />
+    <Compile Include="Elements\CustomTextFieldType.cs" />
+    <Compile Include="Elements\GenreType.cs" />
+    <Compile Include="Elements\OutPutDocumentType.cs" />
+    <Compile Include="Elements\PartShareInstructionType.cs" />
+    <Compile Include="Elements\SequenceType.cs" />
+    <Compile Include="Elements\ShareInstructionType.cs" />
+    <Compile Include="Elements\SimpleText.cs" />
+    <Compile Include="Elements\StyleElement.cs" />
+    <Compile Include="Elements\TextFieldType.cs" />
+    <Compile Include="HeaderItems\CoverPage.cs" />
+    <Compile Include="Elements\DateItem.cs" />
+    <Compile Include="Elements\ImageItem.cs" />
+    <Compile Include="Elements\Poem\PoemItem.cs" />
+    <Compile Include="Elements\Poem\StanzaItem.cs" />
+    <Compile Include="Elements\Poem\VPoemParagraph.cs" />
+    <Compile Include="Elements\SubTitleItem.cs" />
+    <Compile Include="Elements\Table\BaseCellElement.cs" />
+    <Compile Include="Elements\Table\TableCellItem.cs" />
+    <Compile Include="Elements\Table\TableHeadingItem.cs" />
+    <Compile Include="Elements\Table\TableItem.cs" />
+    <Compile Include="Elements\Table\TableRowItem.cs" />
+    <Compile Include="Elements\TextAuthorItem.cs" />
+    <Compile Include="Elements\AuthorType.cs" />
+    <Compile Include="Elements\BinaryItem.cs" />
+    <Compile Include="Elements\BodyItem.cs" />
+    <Compile Include="Elements\EmptyLineItem.cs" />
+    <Compile Include="Elements\EpigraphItem.cs" />
+    <Compile Include="FB2File.cs" />
+    <Compile Include="Elements\FB2TextItem.cs" />
+    <Compile Include="Elements\InlineImageItem.cs" />
+    <Compile Include="Elements\InternalLinkItem.cs" />
+    <Compile Include="HeaderItems\CustomInfo.cs" />
+    <Compile Include="HeaderItems\ItemDocumentInfo.cs" />
+    <Compile Include="HeaderItems\ItemPublishInfo.cs" />
+    <Compile Include="HeaderItems\ItemTitleInfo.cs" />
+    <Compile Include="Elements\ParagraphItem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Elements\SectionItem.cs" />
+    <Compile Include="Elements\TitleItem.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ISOLanguages\ISOLanguages.csproj">
+      <Project>{58E261A5-B2EA-43F3-820D-902B5C061321}</Project>
+      <Name>ISOLanguages</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
