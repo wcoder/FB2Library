@@ -9,6 +9,7 @@ namespace FB2Library.Elements
     public enum ContentTypeEnum
     {
        ContentTypeJpeg,
+       ContentTypePng,
     }
 
     public class BinaryItem
@@ -45,6 +46,9 @@ namespace FB2Library.Elements
             {
                 case "image/jpeg":
                     ContentType = ContentTypeEnum.ContentTypeJpeg;
+                    break;
+                case "image/png":
+                    ContentType = ContentTypeEnum.ContentTypePng;
                     break;
                 default:
                     throw new Exception("Unknown content type detected");

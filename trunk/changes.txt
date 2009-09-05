@@ -1,0 +1,7 @@
+﻿1.0.1
++ added support to load PNG file from FB2
+
+
+-------------------------------------------------------------------------------------------
++ - Feature added
+* - Bug fixed/Feature changed
