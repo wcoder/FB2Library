@@ -1,4 +1,7 @@
-﻿1.0.1
+﻿1.0.2
+* Fixed bug with not reading epigraph authors
+
+1.0.1
 + added support to load PNG file from FB2
 
 
