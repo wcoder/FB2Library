@@ -12,9 +12,9 @@ namespace FB2Library.Elements
     public class EpigraphItem : IFb2TextItem
     {
         private readonly List<IFb2TextItem> epigraphData = new List<IFb2TextItem>();
-        private readonly List<ParagraphItem> textAuthors = new List<ParagraphItem>();
-        
-        public List<ParagraphItem> TextAuthors { get { return textAuthors; } }
+        private readonly List<SimpleText> textAuthors = new List<SimpleText>();
+
+        public List<SimpleText> TextAuthors { get { return textAuthors; } }
         public List<IFb2TextItem> EpigraphData { get { return epigraphData; } }
         public string ID { get; set; }
 
@@ -89,7 +89,7 @@ namespace FB2Library.Elements
                         }
                         break;
                     case TextAuthorItem.Fb2TextAuthorElementName:
-                        ParagraphItem author = new ParagraphItem();
+                        SimpleText author = new SimpleText();
                         try
                         {
                             author.Load(element);
