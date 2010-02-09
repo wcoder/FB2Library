@@ -198,7 +198,7 @@ namespace FB2Library
                     }
                 }
 
-                IEnumerable<XElement> xInstructions = xTextDescription.Elements("output");
+                IEnumerable<XElement> xInstructions = xTextDescription.Elements(xTextDescription.Name.Namespace +"output");
                 int outputCount = 0;
                 output.Clear();
                 foreach (var xInstruction in xInstructions)

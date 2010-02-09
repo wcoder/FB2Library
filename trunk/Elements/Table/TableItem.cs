@@ -32,7 +32,7 @@ namespace FB2Library.Elements.Table
                 throw new ArgumentException("Element of wrong type passed", "xTable");
             }
 
-            IEnumerable<XElement> xRows = xTable.Elements(TableRowItem.Fb2TableRowElementName);
+            IEnumerable<XElement> xRows = xTable.Elements(xTable.Name.Namespace + TableRowItem.Fb2TableRowElementName);
             foreach (var row in xRows)
             {
                 TableRowItem rowItem = new TableRowItem();
