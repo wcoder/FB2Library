@@ -250,7 +250,7 @@ namespace FB2Library.Elements
             {
                 if (item.GetType() == typeof(ImageItem))
                 {
-                    if (item != image)
+                    if ((sectionImage == null) && (item != image))
                     {
                         Debug.Fail("SectionItem.DetectSectionImage - something wrong, the first image in image list is not first image in content list");
                         return;
