@@ -205,7 +205,7 @@ namespace FB2Library.Elements
                     case EpigraphItem.Fb2EpigraphElementName: // already processed
                         break;
                     default:
-                        Debug.Fail(string.Format("AnnotationItem:Load - invalid element <{0}> encountered in title ."), xElement.Name.LocalName);
+                        Debug.Fail(string.Format("AnnotationItem:Load - invalid element <{0}> encountered in title .", xElement.Name.LocalName));
                         break;
                 }
             }
