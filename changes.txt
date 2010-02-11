@@ -1,4 +1,7 @@
-﻿1.0.3.
+﻿1.0.4
+* Fixed bug when parent text container in case of multiple inclusions was given style "normal" even if it's not
+
+1.0.3.
 * Removed unneeded debug assertion when detecting the section image and section contains more then one image
 * Fixed loading of tables
 
