@@ -9,15 +9,20 @@ using System.Xml.Linq;
 
 namespace FB2Library.Elements
 {
-    public class SimpleText : IFb2TextItem
+    public interface StyleType
+    {
+        
+    }
+
+    public class SimpleText : IFb2TextItem, StyleType
     {
         private TextStyles style = TextStyles.Normal;
-        private readonly List<SimpleText> subtext = new List<SimpleText>();
+        private readonly List<StyleType> subtext = new List<StyleType>();
 
         public string Text { get; set; }
 
 
-        public List<SimpleText> Children { get { return subtext; } }
+        public List<StyleType> Children { get { return subtext; } }
 
         public TextStyles Style
         {
@@ -70,15 +75,45 @@ namespace FB2Library.Elements
                         IEnumerable<XElement> childElements = xTextElement.Elements();
                         foreach (var element in childElements)
                         {
-                            SimpleText text = new SimpleText();
-                            try
+                            IFb2TextItem item;
+                            switch (element.Name.LocalName)
                             {
-                                text.Load(element);
-                                subtext.Add(text);
-                            }
-                            catch (Exception)
-                            {
-                                continue;
+                                case InternalLinkItem.Fb2InternalLinkElementName:
+                                    InternalLinkItem link = new InternalLinkItem();
+                                    try
+                                    {
+                                        link.Load(element);
+                                        subtext.Add(link);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                                case InlineImageItem.Fb2InlineImageElementName:
+                                    InlineImageItem image = new InlineImageItem();
+                                    try
+                                    {
+                                        image.Load(element);
+                                        subtext.Add(image);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        continue;
+                                    }
+                                    break;
+                                default:
+                                    SimpleText text = new SimpleText();
+                                    try
+                                    {
+                                        text.Load(element);
+                                        subtext.Add(text);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        continue;
+                                    }
+                                    break;
                             }
                         }
                     }

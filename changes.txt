@@ -1,4 +1,8 @@
-﻿1.0.4
+﻿1.0.5
+* Made some changes to support inline images and links inside text at any "depth" of inclusion
+* Fixed a small format bug in one of the debug messages
+
+1.0.4
 * Fixed bug when parent text container in case of multiple inclusions was given style "normal" even if it's not
 
 1.0.3.

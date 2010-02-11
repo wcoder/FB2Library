@@ -15,7 +15,7 @@ namespace FB2Library.Elements
 
     public class ParagraphItem : IFb2TextItem
     {
-        private readonly List<IFb2TextItem> paragraphData = new List<IFb2TextItem>();
+        private readonly List<StyleType> paragraphData = new List<StyleType>();
 
         protected virtual string GetElementName()
         {
@@ -39,8 +39,8 @@ namespace FB2Library.Elements
         public string ID { get; set; }
         public string Style { get; set; }
         public string Lang { get; set; }
-        
-        public List<IFb2TextItem> ParagraphData { get { return paragraphData; } }
+
+        public List<StyleType> ParagraphData { get { return paragraphData; } }
 
 
         internal void Load(XElement xParagraph)

@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace FB2Library.Elements
 {
- public class InternalLinkItem : IFb2TextItem
+    public class InternalLinkItem : StyleType
     {
         private readonly XNamespace lNamespace = @"http://www.w3.org/1999/xlink";
         
