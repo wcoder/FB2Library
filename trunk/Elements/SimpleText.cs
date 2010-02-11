@@ -38,10 +38,7 @@ namespace FB2Library.Elements
                 }
                 return builder.ToString();
             }
-            else
-            {
-                return Text;
-            }
+            return Text;
         }
 
 
@@ -69,6 +66,7 @@ namespace FB2Library.Elements
                     if (xTextElement.HasElements)
                     {
                         Text = string.Empty;
+                        style = GetStyle(xTextElement.Name.LocalName);
                         IEnumerable<XElement> childElements = xTextElement.Elements();
                         foreach (var element in childElements)
                         {
@@ -86,35 +84,50 @@ namespace FB2Library.Elements
                     }
                     else
                     {
+                        style = GetStyle(xTextElement.Name.LocalName);
                         switch (xTextElement.Name.LocalName)
                         {
                             case "strong":
-                                style = TextStyles.Strong;
                                 Text = xTextElement.Value;
                                 break;
                             case "emphasis":
-                                style = TextStyles.Emphasis;
                                 Text = xTextElement.Value;
                                 break;
                             case "code":
-                                style = TextStyles.Code;
                                 Text = xTextElement.Value;
                                 break;
                             case "sub":
-                                style = TextStyles.Sub;
                                 Text = xTextElement.Value;
                                 break;
                             case "sup":
-                                style = TextStyles.Sup;
                                 Text = xTextElement.Value;
                                 break;
                             default:
-                                style = TextStyles.Normal;
                                 Text = xTextElement.Value;                                
                                 break;
                         }
                     }
                     break;
+            }
+        }
+
+        private static TextStyles GetStyle(string name)
+        {
+
+            switch (name)
+            {
+                case "strong":
+                    return TextStyles.Strong;
+                case "emphasis":
+                    return TextStyles.Emphasis;
+                case "code":
+                    return TextStyles.Code;
+                case "sub":
+                    return TextStyles.Sub;
+                case "sup":
+                    return TextStyles.Sup;
+                default:
+                    return TextStyles.Normal;
             }
         }
     }
