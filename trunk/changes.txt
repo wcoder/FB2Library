@@ -1,4 +1,7 @@
-﻿1.0.5
+﻿1.0.6
+* Added support for ereading GIF images in FB2, not standard but some use them
+
+1.0.5
 * Made some changes to support inline images and links inside text at any "depth" of inclusion
 * Fixed a small format bug in one of the debug messages
 
