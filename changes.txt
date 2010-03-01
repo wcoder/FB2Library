@@ -1,4 +1,7 @@
-﻿1.0.6
+﻿1.0.7
+* Fixed another problem with reading "deep" inclusion nodes, text related
+
+1.0.6
 * Added support for ereading GIF images in FB2, not standard but some use them
 
 1.0.5

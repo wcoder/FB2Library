@@ -72,48 +72,64 @@ namespace FB2Library.Elements
                     {
                         Text = string.Empty;
                         style = GetStyle(xTextElement.Name.LocalName);
-                        IEnumerable<XElement> childElements = xTextElement.Elements();
-                        foreach (var element in childElements)
+                        IEnumerable<XNode> childElements = xTextElement.Nodes();
+                        foreach (var node in childElements)
                         {
-                            IFb2TextItem item;
-                            switch (element.Name.LocalName)
+                            if (node.NodeType == XmlNodeType.Element)
                             {
-                                case InternalLinkItem.Fb2InternalLinkElementName:
-                                    InternalLinkItem link = new InternalLinkItem();
-                                    try
-                                    {
-                                        link.Load(element);
-                                        subtext.Add(link);
-                                    }
-                                    catch (Exception)
-                                    {
-                                        continue;
-                                    }
-                                    break;
-                                case InlineImageItem.Fb2InlineImageElementName:
-                                    InlineImageItem image = new InlineImageItem();
-                                    try
-                                    {
-                                        image.Load(element);
-                                        subtext.Add(image);
-                                    }
-                                    catch (Exception)
-                                    {
-                                        continue;
-                                    }
-                                    break;
-                                default:
-                                    SimpleText text = new SimpleText();
-                                    try
-                                    {
-                                        text.Load(element);
-                                        subtext.Add(text);
-                                    }
-                                    catch (Exception)
-                                    {
-                                        continue;
-                                    }
-                                    break;
+                                XElement element = (XElement) node;
+                                switch (element.Name.LocalName)
+                                {
+                                    case InternalLinkItem.Fb2InternalLinkElementName:
+                                        InternalLinkItem link = new InternalLinkItem();
+                                        try
+                                        {
+                                            link.Load(element);
+                                            subtext.Add(link);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            continue;
+                                        }
+                                        break;
+                                    case InlineImageItem.Fb2InlineImageElementName:
+                                        InlineImageItem image = new InlineImageItem();
+                                        try
+                                        {
+                                            image.Load(element);
+                                            subtext.Add(image);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            continue;
+                                        }
+                                        break;
+                                    default:
+                                        SimpleText text = new SimpleText();
+                                        try
+                                        {
+                                            text.Load(element);
+                                            subtext.Add(text);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            continue;
+                                        }
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                SimpleText text = new SimpleText();
+                                try
+                                {
+                                    text.Load(node);
+                                    subtext.Add(text);
+                                }
+                                catch (Exception)
+                                {
+                                    continue;
+                                }
                             }
                         }
                     }
