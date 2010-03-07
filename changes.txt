@@ -1,4 +1,7 @@
-﻿1.0.7
+﻿1.0.8
+* added support for image media type "image/jpg" (previously only "image/jpeg" was loaded)
+
+1.0.7
 * Fixed another problem with reading "deep" inclusion nodes, text related
 
 1.0.6

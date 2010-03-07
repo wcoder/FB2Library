@@ -46,6 +46,7 @@ namespace FB2Library.Elements
             switch (xContentType.Value.ToLower())
             {
                 case "image/jpeg":
+                case "image/jpg":
                     ContentType = ContentTypeEnum.ContentTypeJpeg;
                     break;
                 case "image/png":
