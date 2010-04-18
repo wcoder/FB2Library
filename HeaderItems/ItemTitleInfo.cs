@@ -295,6 +295,7 @@ namespace FB2Library.HeaderItems
                 try
                 {
                     sec.Load(xSequence);
+                    sequences.Add(sec);
                 }
                 catch (Exception ex)
                 {
