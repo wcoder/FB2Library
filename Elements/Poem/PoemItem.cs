@@ -120,5 +120,40 @@ namespace FB2Library.Elements.Poem
                 Lang = xLang.Value;
             }
         }
+
+        public XNode ToXML()
+        {
+            XElement xPoem = new XElement(Fb2Const.fb2DefaultNamespace + Fb2PoemElementName);
+            if (!string.IsNullOrEmpty(ID))
+            {
+                xPoem.Add(new XAttribute("id", ID));
+            }
+            if (!string.IsNullOrEmpty(Lang))
+            {
+                xPoem.Add(new XAttribute(XNamespace.Xml + "lang", Lang));
+            }
+            if (Title != null)
+            {
+                xPoem.Add(Title.ToXML());
+            }
+            foreach (EpigraphItem PoemEpigraph in Epigraphs)
+            {
+                xPoem.Add(PoemEpigraph.ToXML());
+            }
+            foreach (IFb2TextItem PoemStanza in content)
+            {
+                xPoem.Add(PoemStanza.ToXML());
+            }
+            foreach (TextAuthorItem TextAuthor in authors)
+            { 
+                xPoem.Add(TextAuthor.ToXML());
+            }
+            if (Date != null)
+            {
+                xPoem.Add(Date.ToXML());
+            }
+
+            return xPoem;
+        }
     }
 }

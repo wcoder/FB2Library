@@ -58,7 +58,7 @@ namespace FB2Library.HeaderItems
         /// </summary>
         public IEnumerable<AuthorType> Translators
         {
-            get { return this.translators;  }
+            get { return this.translators; }
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace FB2Library.HeaderItems
             {
                 foreach (XElement xAuthor in xAuthors )
                 {
-                    AuthorType author = new AuthorType{Namespace = fileNameSpace};
+                    AuthorItem author = new AuthorItem { Namespace = fileNameSpace };
                     try
                     {
                         author.Load(xAuthor);
@@ -272,7 +272,7 @@ namespace FB2Library.HeaderItems
             {
                 foreach ( XElement xTranslator in xTranslators )
                 {
-                    AuthorType translator = new AuthorType(){Namespace = fileNameSpace};
+                    TranslatorItem translator = new TranslatorItem() { Namespace = fileNameSpace };
                     try
                     {
                         translator.Load(xTranslator);
@@ -291,7 +291,7 @@ namespace FB2Library.HeaderItems
             IEnumerable<XElement> xSequences = xTitleInfo.Elements(fileNameSpace + SequenceType.SequenceElementName);
             foreach (var xSequence in xSequences)
             {
-                SequenceType sec = new SequenceType { Namespace = fileNameSpace };
+               SequenceType sec = new SequenceType(){ Namespace = fileNameSpace };
                 try
                 {
                     sec.Load(xSequence);
@@ -303,6 +303,75 @@ namespace FB2Library.HeaderItems
                     continue;
                 }
             }
+        }
+
+        public XElement ToXML(string NameElement)
+        {
+            XElement xTitleInfo = new XElement(Fb2Const.fb2DefaultNamespace + NameElement);
+            foreach (TitleGenreType genre in genres)
+            {
+                try
+                {
+                    xTitleInfo.Add(genre.ToXML());
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail(string.Format("Error converting genre data to XML: {0}", ex.Message));
+                    continue;                    
+                }
+            }
+            foreach (AuthorType author in bookAuthors)
+            {
+                try
+                {
+                    xTitleInfo.Add(author.ToXML());
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail(string.Format("Error converting genre data to XML: {0}", ex.Message));
+                    continue;
+                }
+            }
+
+            if (BookTitle != null)
+            {
+                xTitleInfo.Add(BookTitle.ToXML(BookTitleElementName));
+            }
+
+            if (Annotation != null)
+            {
+                xTitleInfo.Add(Annotation.ToXML());
+            }
+            if (Keywords != null)
+            {
+                xTitleInfo.Add(Keywords.ToXML(KeywordsElementName));
+            }
+            if (BookDate != null)
+            {
+                xTitleInfo.Add(BookDate.ToXML());
+            }
+            if (Cover != null)
+            {
+                xTitleInfo.Add(Cover.ToXML());
+            }
+            if (!string.IsNullOrEmpty(Language))
+            {
+                xTitleInfo.Add(new XElement(Fb2Const.fb2DefaultNamespace + LanguageElementName, Language));
+            }
+            if (!string.IsNullOrEmpty(SrcLanguage))
+            {
+                xTitleInfo.Add(new XElement(Fb2Const.fb2DefaultNamespace + SourceLanguageElementName, SrcLanguage));
+            }
+            foreach (AuthorType translat in translators)
+            {
+                xTitleInfo.Add(translat.ToXML());
+            }
+            foreach (SequenceType sec in sequences)
+            {
+                xTitleInfo.Add(sec.ToXML());
+            }
+
+            return xTitleInfo;
         }
 
     } // class

@@ -110,5 +110,28 @@ namespace FB2Library.Elements
             }
 
         }
+
+        public XElement ToXML()
+        {
+            XElement xSequence = new XElement(Fb2Const.fb2DefaultNamespace + SequenceElementName);
+            if (!string.IsNullOrEmpty(Name))
+            {
+                xSequence.Add(new XAttribute("name", Name));
+            }
+            if (Number != null)
+            { 
+                xSequence.Add(new XAttribute("number",Number));
+            }
+            if (!string.IsNullOrEmpty(Language))
+            {
+                xSequence.Add(new XAttribute(XNamespace.Xml + "lang", Language));
+            }
+            foreach(SequenceType SubSeq in content)
+            {
+                xSequence.Add(SubSeq.ToXML());
+            }
+
+            return xSequence;
+        }
     }
 }

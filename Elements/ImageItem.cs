@@ -64,5 +64,31 @@ namespace FB2Library.Elements
 
         }
 
+        public XNode ToXML()
+        {
+            XElement xImage = new XElement(Fb2Const.fb2DefaultNamespace + Fb2ImageElementName);
+            if (!string.IsNullOrEmpty(ImageType))
+            {
+                xImage.Add(new XAttribute(xLinkNamespace + "type", ImageType));
+            }
+            if (!string.IsNullOrEmpty(HRef))
+            {
+                xImage.Add(new XAttribute(xLinkNamespace + "href", HRef));
+            }
+            if (!string.IsNullOrEmpty(AltText))
+            {
+                xImage.Add(new XAttribute("alt", AltText));
+            }
+            if (!string.IsNullOrEmpty(Title))
+            {
+                xImage.Add(new XAttribute("title", Title));
+            }
+            if (!string.IsNullOrEmpty(ID))
+            {
+                xImage.Add(new XAttribute("id", ID));
+            }
+            return xImage;
+        }
+
     }
 }

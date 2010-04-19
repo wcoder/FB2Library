@@ -23,6 +23,7 @@ namespace FB2Library.Elements
 
         private const string Fb2NameAttributeName = "name";
         private const string Fb2ImageElementName = "image";
+
         
 
         public XNamespace NameSpace { get; set; }
@@ -133,6 +134,37 @@ namespace FB2Library.Elements
             }
 
 
+        }
+
+        public XNode ToXML()
+        {
+            XElement xBody = new XElement(Fb2Const.fb2DefaultNamespace + Fb2BodyItemName);
+            if (!string.IsNullOrEmpty(Name))
+            {
+                xBody.Add(new XAttribute(Fb2NameAttributeName, Name));
+            }
+            if (!string.IsNullOrEmpty(Lang))
+            {
+                xBody.Add(new XAttribute(XNamespace.Xml + "lang", Lang));
+            }
+            if (ImageName != null)
+            {
+                xBody.Add(ImageName.ToXML());
+            }
+            if (Title != null)
+            {
+                xBody.Add(Title.ToXML());
+            }
+            foreach (EpigraphItem EpItem in epigraphs)
+            {
+                xBody.Add(EpItem.ToXML());
+            }
+            foreach (SectionItem SecItem in sections)
+            {
+                xBody.Add(SecItem.ToXML());
+            }
+
+            return xBody;
         }
     }
 }

@@ -93,5 +93,28 @@ namespace FB2Library.Elements.Table
                 Align = xAlign.Value;
             }
         }
+
+        public XElement ToXML()
+        {
+            XElement xRow = new XElement(Fb2Const.fb2DefaultNamespace + Fb2TableRowElementName);
+            if (!string.IsNullOrEmpty(ID))
+            {
+                xRow.Add(new XAttribute("id", ID));
+            }
+            if (!string.IsNullOrEmpty(Style))
+            {
+                xRow.Add(new XAttribute("style", Style));
+            }
+            if (!string.IsNullOrEmpty(Align))
+            {
+                xRow.Add(new XAttribute("align", Align));
+            }
+            foreach (ICellElement CellItem in cells)
+            {
+                xRow.Add(CellItem.ToXML());
+            }
+
+            return xRow;
+        }
     }
 }

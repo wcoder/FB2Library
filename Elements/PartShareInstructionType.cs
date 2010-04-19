@@ -80,5 +80,34 @@ namespace FB2Library.Elements
             }
 
         }
+
+        private string GetXInclude()
+        {
+            switch (Instruction)
+            {
+                case GenerationInstructionEnum.Require:
+                    return "require";
+                case GenerationInstructionEnum.Allow:
+                    return "allow";
+                case GenerationInstructionEnum.Deny:
+                    return "deny";
+                default:
+                    return "";
+                //Debug.Fail(string.Format("Invalid instruction type : {0}", xIncludeAll.Value));
+                //break;
+            }
+        }
+        public XElement ToXML()
+        {
+            XElement xPart = new XElement(Fb2Const.fb2DefaultNamespace + PartElementName);
+            if (!string.IsNullOrEmpty(Type))
+            {
+                xPart.Add(new XAttribute(lNamespace + "type", Type));
+            }
+            xPart.Add(new XAttribute(lNamespace + "href", HRef));
+            xPart.Add(new XAttribute("include", GetXInclude()));
+
+            return xPart;
+        }
     }
 }

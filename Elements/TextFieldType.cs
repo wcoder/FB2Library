@@ -41,11 +41,22 @@ namespace FB2Library.Elements
             }
 
             Language = null;
+            //глянуть 
             XAttribute xLang = xElement.Attribute(XNamespace.Xml + "lang");
             if (xLang != null && string.IsNullOrEmpty(xLang.Value))
             {
                 Language = xLang.Value;
             }
+        }
+
+        public virtual XElement ToXML(string NameElement)
+        {
+            XElement xText = new XElement(Fb2Const.fb2DefaultNamespace + NameElement, Text);
+            if (Language != null)
+            { 
+               xText.Add(new XAttribute(XNamespace.Xml + "lang",Language));
+            }
+            return xText;
         }
     }
 }

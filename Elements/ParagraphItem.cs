@@ -13,6 +13,7 @@ namespace FB2Library.Elements
     //    public TextStylesFlags Style { get; set; }
     //}
 
+
     public class ParagraphItem : IFb2TextItem
     {
         private readonly List<StyleType> paragraphData = new List<StyleType>();
@@ -21,8 +22,9 @@ namespace FB2Library.Elements
         {
             return Fb2ParagraphElementName;
         }
-
+        
         internal const string Fb2ParagraphElementName = "p";
+        
 
         public override string ToString()
         {
@@ -123,7 +125,7 @@ namespace FB2Library.Elements
             XAttribute xStyle = xParagraph.Attribute("style");
             if ((xStyle != null) && (xStyle.Value != null))
             {
-                ID = xStyle.Value;
+                Style = xStyle.Value;
             }
 
             Lang = null;
@@ -154,6 +156,28 @@ namespace FB2Library.Elements
             return true;
         }
 
+        public XNode ToXML()
+        {
+            XElement xParagraph = new XElement(Fb2Const.fb2DefaultNamespace + GetElementName());
+            if (!string.IsNullOrEmpty(ID))
+            {
+                xParagraph.Add(new XAttribute("id", ID));
+            }
+            if (!string.IsNullOrEmpty(Style))
+            {
+                xParagraph.Add(new XAttribute("style", Style));
+            }
+            if (!string.IsNullOrEmpty(Lang))
+            {
+                xParagraph.Add(new XAttribute(XNamespace.Xml + "lang", Lang));
+            }
+
+            foreach (StyleType childElements in paragraphData)
+            {
+                xParagraph.Add(childElements.ToXML());
+            }
+            return xParagraph;
+        }
 
     } //class 
 

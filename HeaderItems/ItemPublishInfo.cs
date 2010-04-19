@@ -172,5 +172,37 @@ namespace FB2Library.HeaderItems
 
         }
 
+        public XElement ToXML()
+        {
+            XElement xPublishInfo = new XElement(Fb2Const.fb2DefaultNamespace + PublishInfoElementName);
+
+            if (BookName != null)
+            {
+                xPublishInfo.Add(BookName.ToXML(BookNameElementName));
+            }
+            if (Publisher != null)
+            {
+                xPublishInfo.Add(Publisher.ToXML(PublisherElementName));
+            }
+            if (City != null)
+            {
+                xPublishInfo.Add(City.ToXML(CityElementName));
+            }
+            if (Year != null)
+            {
+                xPublishInfo.Add(new XElement(Fb2Const.fb2DefaultNamespace + YearElementName, Year.ToString()));
+            }
+            if (ISBN != null)
+            {
+                xPublishInfo.Add(ISBN.ToXML(ISBNElementName));
+            }
+            foreach (SequenceType sec in sequences)
+            {
+                xPublishInfo.Add(sec.ToXML());
+            }
+
+            return xPublishInfo;
+        }
+
     }// class
 }

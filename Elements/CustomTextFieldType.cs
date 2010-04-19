@@ -13,6 +13,7 @@ namespace FB2Library.Elements
         /// </summary>
         public string InfoType { get; set; }
 
+
         public override void Load(XElement xElement)
         {
             base.Load(xElement);
@@ -23,8 +24,13 @@ namespace FB2Library.Elements
             {
                 throw new Exception("info-type attribute required for custom info element");
             }
-
-            InfoType = xInfoType.Value;
+            else
+            {
+                InfoType = xInfoType.Value;
+            }
+            
         }
+
+        
     }
 }

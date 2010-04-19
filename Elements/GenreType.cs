@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace FB2Library.Elements
 {
@@ -42,5 +43,20 @@ namespace FB2Library.Elements
                 }
             }
         }
+        
+        public XElement ToXML()
+        { 
+            if (string.IsNullOrEmpty(Genre))
+            {
+                 throw new ArgumentException("Genre is empty");
+            }
+            XElement xGenre = new XElement(Fb2Const.fb2DefaultNamespace + "genre", Genre);
+            if (match > 0 && match < 100)
+            {
+                xGenre.Add(new XAttribute("match",match.ToString()));
+            }
+            return xGenre;
+        }
+        
     }
 }

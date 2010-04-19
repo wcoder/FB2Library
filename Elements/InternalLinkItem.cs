@@ -64,5 +64,23 @@ namespace FB2Library.Elements
 
         }
 
+        public XNode ToXML()
+        {
+            XElement xLink = new XElement(Fb2Const.fb2DefaultNamespace + Fb2InternalLinkElementName);
+            if (!string.IsNullOrEmpty(Type))
+            { 
+                xLink.Add(new XAttribute("type",Type));
+            }
+            if(!string.IsNullOrEmpty(HRef))
+            {
+                xLink.Add(new XAttribute(lNamespace + "href",HRef));
+            }
+            if (LinkText != null)
+            {
+                xLink.Add(LinkText.ToXML());
+            }
+            return xLink;
+        }
+
     }
 }

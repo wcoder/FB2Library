@@ -26,7 +26,7 @@ namespace FB2Library
         private readonly ItemTitleInfo srcTitleInfo = new ItemTitleInfo();
         private readonly ItemDocumentInfo documentInfo = new ItemDocumentInfo();
         private readonly ItemPublishInfo publishInfo = new ItemPublishInfo();
-        private readonly ItemCustomInfo customInfo = new ItemCustomInfo();
+        private readonly List<ItemCustomInfo> customInfo = new List<ItemCustomInfo>();
         private BodyItem mainBody = null;
         private readonly List<BodyItem> bodiesList = new List<BodyItem>();
         private readonly Dictionary<string, BinaryItem> binaryObjects = new Dictionary<string, BinaryItem>();
@@ -65,7 +65,7 @@ namespace FB2Library
         /// <summary>
         /// Get custom added information (if available)
         /// </summary>
-        public ItemCustomInfo CustomInfo { get { return customInfo; } }
+        public List<ItemCustomInfo> CustomInfo { get { return customInfo; } }
 
         /// <summary>
         /// Get Document PublishInfo structure
@@ -152,7 +152,7 @@ namespace FB2Library
                     {
                         Debug.Fail(string.Format("Error reading source title info : {0}", ex.Message));
                     }
-}
+                }
 
                 // Load document info
                 XElement xDocumentInfo = xTextDescription.Element(fileNameSpace + DocumentInfoElementName);
@@ -187,10 +187,12 @@ namespace FB2Library
                 XElement xCustomInfo = xTextDescription.Element(fileNameSpace+ItemCustomInfo.CustomInfoElementName);
                 if (xCustomInfo != null)
                 {
-                    customInfo.Namespace = fileNameSpace;
+                    ItemCustomInfo CustElement = new ItemCustomInfo();
+                    CustElement.Namespace = fileNameSpace;
                     try
                     {
-                        customInfo.Load(xCustomInfo);
+                        CustElement.Load(xCustomInfo);
+                        customInfo.Add(CustElement);
                     }
                     catch (Exception ex)
                     {
@@ -222,6 +224,38 @@ namespace FB2Library
                     finally
                     {
                         outputCount++;
+                    }
+                }
+
+                foreach (InlineImageItem coverImag in titleInfo.Cover.CoverpageImages)
+                {
+                    string coverref;
+                    if (coverImag.HRef.Substring(0, 1) == "#")
+                    {
+                        coverref = coverImag.HRef.Substring(1);
+                    }
+                    else
+                    {
+                        coverref = coverImag.HRef;
+                    }
+                    IEnumerable<XElement> xBinaryes = fileDocument.Root.Elements(fileNameSpace + Fb2BinaryElementName).Where(cov => cov.Attribute("id").Value == coverref);
+                    foreach (var binarye in xBinaryes)
+                    {
+                        BinaryItem item = new BinaryItem();
+                        try
+                        {
+                            item.Load(binarye);
+                        }
+                        catch (Exception)
+                        {
+
+                            continue;
+                        }
+                        // add just unique IDs to fix some invalid FB2s 
+                        if (!binaryObjects.ContainsKey(item.Id))
+                        {
+                            binaryObjects.Add(item.Id, item);
+                        }
                     }
                 }
             }
@@ -271,5 +305,105 @@ namespace FB2Library
             }
 
         }
+
+        public XDocument ToXML(bool bExportHeaderOnly)
+        {
+            XDocument fileDocument = new XDocument(new XDeclaration("1.0","UTF-8","no"));
+
+            XElement xFictionBook = new XElement(Fb2Const.fb2DefaultNamespace+"FictionBook",
+                        new XAttribute(XNamespace.Xmlns + "l", @"http://www.w3.org/1999/xlink"),
+                        new XAttribute("xmlns", Fb2Const.fb2DefaultNamespace));
+
+            fileDocument.Add(xFictionBook);
+
+            foreach (StyleElement style in styles)
+            {
+                try
+                {
+                    xFictionBook.Add(style.ToXML());
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail(string.Format("Error converting style data to XML: {0}", ex.Message));
+                    continue;
+                }
+            }
+
+            XElement xDescription = new XElement(Fb2Const.fb2DefaultNamespace+ Fb2TextDescriptionElementName);
+            xFictionBook.Add(xDescription);
+
+            try
+            {
+                xDescription.Add(titleInfo.ToXML(TitleInfoElementName));
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(string.Format("Error converting TitleInfo data to XML: {0}", ex.Message));
+            }
+
+            if (srcTitleInfo.BookTitle!=null)
+            {
+                try
+                {
+                    xDescription.Add(srcTitleInfo.ToXML(SrcTitleInfoElementName));
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail(string.Format("Error converting SrcTitleInfo data to XML: {0}", ex.Message));
+                }
+            }
+
+            try
+            {
+                xDescription.Add(documentInfo.ToXML());
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail(string.Format("Error converting DocumentInfo data to XML: {0}", ex.Message));
+            }
+
+            xDescription.Add(publishInfo.ToXML());
+            foreach (ItemCustomInfo Custinfo in customInfo)
+            {
+                xDescription.Add(Custinfo.ToXML());
+            }
+            foreach (ShareInstructionType outp in output)
+            {
+                xDescription.Add(outp.ToXML());
+            }
+
+
+
+            if (!bExportHeaderOnly)
+            {
+                foreach (BodyItem bodyItem in bodiesList)
+                {
+                    xFictionBook.Add(bodyItem.ToXML());
+                }
+                foreach (KeyValuePair<string, BinaryItem> BItem in binaryObjects)
+                {
+                    xFictionBook.Add(BItem.Value.ToXML());
+                }
+            }
+            else
+            {
+                foreach (InlineImageItem coverImag in titleInfo.Cover.CoverpageImages)
+                {
+                    string coverref;
+                    if (coverImag.HRef.Substring(0, 1) == "#")
+                    {
+                        coverref = coverImag.HRef.Substring(1);
+                    }
+                    else
+                    {
+                        coverref = coverImag.HRef;
+                    }
+                    xFictionBook.Add(binaryObjects[coverref].ToXML());
+                }
+            }
+
+            return fileDocument;
+        }
+
     }
 }

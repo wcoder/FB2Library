@@ -66,5 +66,23 @@ namespace FB2Library.Elements
                 Language = xLang.Value;
             }
         }
+
+        public XNode ToXML()
+        {
+            XElement xDate = new XElement(Fb2Const.fb2DefaultNamespace + Fb2DateElementName);
+            if (!string.IsNullOrEmpty(Text))
+            {
+                xDate.Value = Text;
+            }
+            if (!string.IsNullOrEmpty(Language))
+            {
+                xDate.Add(new XAttribute(XNamespace.Xml + "lang", Language));
+            }
+            if (!DateValue.Equals(DateTime.MinValue))
+            {
+                xDate.Add(new XAttribute("value", DateValue.ToShortDateString()));
+            }
+            return xDate;
+        }
     }
 }

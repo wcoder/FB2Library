@@ -14,10 +14,12 @@ namespace FB2Library.Elements
         Code, // <code>
         Sub, // <sub>
         Sup, // <sup>
+        strikethrough, //<strikethrough>
     }
 
 
     public interface  IFb2TextItem
     {
+        XNode ToXML();
     }
 }

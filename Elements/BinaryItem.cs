@@ -73,5 +73,32 @@ namespace FB2Library.Elements
             }
             BinaryData = Convert.FromBase64String(binarye.Value);
         }
+
+        protected string GetXContentType()
+        {
+            switch (ContentType)
+            {
+                case ContentTypeEnum.ContentTypeJpeg:
+                    return "image/jpg";
+                case ContentTypeEnum.ContentTypePng:
+                    return "image/png";
+                case ContentTypeEnum.ContentTypeGif:
+                    return "image/gif";
+                default:
+                    return "";
+
+            }
+        }
+
+        public XElement ToXML()
+        {
+            XElement xBinary = new XElement(Fb2Const.fb2DefaultNamespace + Fb2BinaryItemName);
+            xBinary.Add(new XAttribute(ContentTypeAttributeName,GetXContentType()));
+            xBinary.Add(new XAttribute(IdAttributeName,Id));
+            xBinary.Value=Convert.ToBase64String(BinaryData);
+
+            return xBinary;
+
+        }
     }
 }
