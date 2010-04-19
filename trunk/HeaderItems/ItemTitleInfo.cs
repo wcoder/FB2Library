@@ -291,7 +291,7 @@ namespace FB2Library.HeaderItems
             IEnumerable<XElement> xSequences = xTitleInfo.Elements(fileNameSpace + SequenceType.SequenceElementName);
             foreach (var xSequence in xSequences)
             {
-                SequenceType sec = new SequenceType();
+                SequenceType sec = new SequenceType { Namespace = fileNameSpace };
                 try
                 {
                     sec.Load(xSequence);
