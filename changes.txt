@@ -1,4 +1,7 @@
-﻿1.0.9
+﻿1.0.10
+* Fixed bug with reading sub-sequences from FB2 heder
+
+1.0.9
 * Fixed bug with reading sequences from FB2 heder
 
 1.0.8
