@@ -51,5 +51,19 @@ namespace FB2Library.Elements
             }
             Type = xType.Value;
         }
+
+        public XElement ToXML()
+        {
+            if (Type == null || string.IsNullOrEmpty(Type))
+            {
+                throw new Exception("Type attribute is rewuired by standard");
+            }
+            XElement xstyle = new XElement(Fb2Const.fb2DefaultNamespace + StyleElementName, new XAttribute("type", Type));
+            if (!string.IsNullOrEmpty(Value))
+            {
+                xstyle.Value = Value;
+            }
+            return xstyle;
+        }
     }
 }

@@ -8,7 +8,7 @@ using FB2Library.Elements;
 namespace FB2Library.HeaderItems
 {
 
-    public class AuthorType
+    public class AuthorType 
     {
         public const string AuthorElementName = "author";
         public const string TranslatorElementName = "translator";
@@ -27,6 +27,13 @@ namespace FB2Library.HeaderItems
         private XNamespace fileNameSpace = XNamespace.None;
 
         private TextFieldType uid = new TextFieldType {Text = string.Empty};
+
+        protected string GetElementName()
+        {
+            return ElementName;
+        }
+
+        public string ElementName { get; set; }
 
         /// <summary>
         /// XML namespace used to read the document
@@ -258,5 +265,38 @@ namespace FB2Library.HeaderItems
             return ToString().Equals(obj.ToString());
         }
 
+        public XElement ToXML( )
+        {
+            XElement xPerson = new XElement(Fb2Const.fb2DefaultNamespace + ElementName);
+            if (FirstName != null)
+            {
+               xPerson.Add(FirstName.ToXML(FirstNameElementName));
+            }
+            if (MiddleName != null)
+            {
+                xPerson.Add(MiddleName.ToXML(MiddleNameElementName));
+            }
+            if (LastName != null)
+            {
+                xPerson.Add(LastName.ToXML(LastNameElementName));
+            }
+            if (NickName != null)
+            {
+                xPerson.Add(NickName.ToXML(NickNameElementName));
+            }
+            if (HomePage != null)
+            {
+                xPerson.Add(HomePage.ToXML(HomePageElementName));
+            }
+            if (EMail != null)
+            {
+                xPerson.Add(EMail.ToXML(EMailElementName));
+            }
+            if (UID != null)
+            {
+                xPerson.Add(UID.ToXML(IdElementName));
+            }
+            return xPerson;
+        }
     }//class
 }

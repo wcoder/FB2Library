@@ -282,5 +282,41 @@ namespace FB2Library.Elements
             content.Add(section);
             subSections.Add(section);
         }
+
+        public XNode ToXML()
+        {
+            XElement xSection = new XElement(Fb2Const.fb2DefaultNamespace + Fb2TextSectionElementName);
+            if (!string.IsNullOrEmpty(ID))
+            {
+                xSection.Add(new XAttribute("id", ID));
+            }
+            if (!string.IsNullOrEmpty(Lang))
+            {
+                xSection.Add(new XAttribute(XNamespace.Xml + "lang", Lang));
+            }
+
+            if (Title != null)
+            {
+                xSection.Add(Title.ToXML());
+            }
+            foreach (EpigraphItem EpItem in epigraphs)
+            {
+                xSection.Add(EpItem.ToXML());
+            }
+            if (SectionImage != null)
+            {
+                xSection.Add(SectionImage.ToXML());
+            }
+            if (Annotation != null)
+            {
+                xSection.Add(Annotation.ToXML());
+            }
+            foreach (IFb2TextItem ContItem in content)
+            {
+                xSection.Add(ContItem.ToXML());
+            }
+
+            return xSection;
+        }
     }
 }

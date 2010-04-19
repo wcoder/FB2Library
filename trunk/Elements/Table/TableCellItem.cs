@@ -10,6 +10,11 @@ namespace FB2Library.Elements.Table
     {
         internal const string Fb2TableCellElementName = "td";
 
+        protected override string GetElementName()
+        {
+            return Fb2TableCellElementName;
+        }
+
         internal void Load(XElement xCell)
         {
             if (xCell == null)

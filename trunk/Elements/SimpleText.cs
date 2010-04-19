@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+//Добавить для <style>; 
 
 namespace FB2Library.Elements
 {
     public interface StyleType
     {
-        
+        XNode ToXML();
     }
 
     public class SimpleText : IFb2TextItem, StyleType
@@ -136,27 +137,31 @@ namespace FB2Library.Elements
                     else
                     {
                         style = GetStyle(xTextElement.Name.LocalName);
-                        switch (xTextElement.Name.LocalName)
-                        {
-                            case "strong":
-                                Text = xTextElement.Value;
-                                break;
-                            case "emphasis":
-                                Text = xTextElement.Value;
-                                break;
-                            case "code":
-                                Text = xTextElement.Value;
-                                break;
-                            case "sub":
-                                Text = xTextElement.Value;
-                                break;
-                            case "sup":
-                                Text = xTextElement.Value;
-                                break;
-                            default:
-                                Text = xTextElement.Value;                                
-                                break;
-                        }
+                        Text = xTextElement.Value;
+                        //switch (xTextElement.Name.LocalName)
+                        //{
+                        //    case "strong":
+                        //        Text = xTextElement.Value;
+                        //        break;
+                        //    case "emphasis":
+                        //        Text = xTextElement.Value;
+                        //        break;
+                        //    case "code":
+                        //        Text = xTextElement.Value;
+                        //        break;
+                        //    case "sub":
+                        //        Text = xTextElement.Value;
+                        //        break;
+                        //    case "sup":
+                        //        Text = xTextElement.Value;
+                        //        break;
+                        //    case "strikethrough":
+                        //        Text = xTextElement.Value;
+                        //        break;
+                        //    default:
+                        //        Text = xTextElement.Value;                                
+                        //        break;
+                        //}
                     }
                     break;
             }
@@ -177,9 +182,57 @@ namespace FB2Library.Elements
                     return TextStyles.Sub;
                 case "sup":
                     return TextStyles.Sup;
+                case "strikethrough":
+                    return TextStyles.strikethrough;
                 default:
                     return TextStyles.Normal;
             }
+        }
+
+        private static string GetXStyle(TextStyles style)
+        {
+
+            switch (style)
+            {
+                case TextStyles.Strong:
+                    return "strong";
+                case TextStyles.Emphasis:
+                    return "emphasis";
+                case TextStyles.Code:
+                    return "code";
+                case TextStyles.Sub:
+                    return "sub";
+                case TextStyles.Sup:
+                    return "sup";
+                case TextStyles.strikethrough:
+                    return "strikethrough";
+                default:
+                    return "";
+            }
+        }
+
+        public XNode ToXML()
+        {
+            if (string.IsNullOrEmpty(Text))
+            {
+                XElement xChildElement = new XElement(Fb2Const.fb2DefaultNamespace + GetXStyle(style));
+                foreach (StyleType child in subtext)
+                {
+                    xChildElement.Add(child.ToXML());
+                }
+                return xChildElement;
+            }
+            if (style != TextStyles.Normal)
+            {
+                XElement xStyleText = new XElement(Fb2Const.fb2DefaultNamespace + GetXStyle(style), Text);
+                return xStyleText;
+            }
+            else
+            {
+                XText xText = new XText(Text);
+                return xText;
+            }
+            
         }
     }
 }

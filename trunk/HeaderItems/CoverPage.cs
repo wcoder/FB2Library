@@ -63,6 +63,16 @@ namespace FB2Library.HeaderItems
                 
             }
         }
+        
+        public XElement ToXML()
+        {
+            XElement xCover = new XElement(Fb2Const.fb2DefaultNamespace + Fb2CoverpageImageElementName);
+            foreach (InlineImageItem ImageItem in coverimages)
+            {
+                xCover.Add(ImageItem.ToXML());
+            }
 
+            return xCover;
+        }
     }
 }

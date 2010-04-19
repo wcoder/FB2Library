@@ -84,6 +84,19 @@ namespace FB2Library.Elements
                 LangAttribute = xLang.Value;
             }
         }
+        public XNode ToXML()
+        {
+            XElement xTitle = new XElement(Fb2Const.fb2DefaultNamespace + Fb2TitleElementName);
+            if (!string.IsNullOrEmpty(LangAttribute))
+            {
+                xTitle.Add(new XAttribute(XNamespace.Xml + "lang", LangAttribute));
+            }
 
+            foreach (IFb2TextItem TitleItem in titleData)
+            {
+                xTitle.Add(TitleItem.ToXML());
+            }
+            return xTitle;
+        }
     }
 }

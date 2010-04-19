@@ -97,7 +97,8 @@ namespace FB2Library.Elements
                         }
                         break;
                     case TextAuthorItem.Fb2TextAuthorElementName:
-                        ParagraphItem author = new ParagraphItem();
+                        //ParagraphItem author = new ParagraphItem();
+                        TextAuthorItem author = new TextAuthorItem();
                         try
                         {
                             author.Load(element);
@@ -127,6 +128,30 @@ namespace FB2Library.Elements
                 ID = xID.Value;
             }
             
+        }
+
+        public XNode ToXML()
+        {
+            XElement xCite = new XElement(Fb2Const.fb2DefaultNamespace + Fb2CiteElementName);
+            if (!string.IsNullOrEmpty(ID))
+            {
+                xCite.Add(new XAttribute("id", ID));
+            }
+            if (!string.IsNullOrEmpty(Lang))
+            {
+                xCite.Add(new XAttribute(XNamespace.Xml + "lang", Lang));
+            }
+
+            foreach (IFb2TextItem CiteItem in citeData)
+            {
+                xCite.Add(CiteItem.ToXML());
+            }
+            foreach (ParagraphItem AuthorItem in textAuthors)
+            {
+                xCite.Add(AuthorItem.ToXML());
+            }
+
+            return xCite;
         }
     }
 }

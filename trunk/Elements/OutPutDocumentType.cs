@@ -110,5 +110,40 @@ namespace FB2Library.Elements
             }
 
         }
+        private string GetXCreate()
+        {
+            switch (Create)
+            {
+                case GenerationInstructionEnum.Require:
+                    return "require";
+                case GenerationInstructionEnum.Allow:
+                    return "allow";
+                case GenerationInstructionEnum.Deny:
+                    return "deny";
+                default:
+                    return "";
+                //Debug.Fail(string.Format("Invalid instruction type : {0}", xIncludeAll.Value));
+                //break;
+            }
+        }
+
+        public XElement ToXML()
+        {
+            XElement xOutputDocumentClass = new XElement(Fb2Const.fb2DefaultNamespace + OutputDocumentElementName);
+            xOutputDocumentClass.Add(new XAttribute("name", Name));
+            if (Create != GenerationInstructionEnum.Unknown)
+            {
+                xOutputDocumentClass.Add(new XAttribute("create", GetXCreate()));
+            }
+            if (Price != null)
+            {
+                xOutputDocumentClass.Add(new XAttribute("price", Price.ToString()));
+            }
+            foreach (ShareInstructionType PartElement in parts)
+            {
+                xOutputDocumentClass.Add(PartElement.ToXML());
+            }
+            return xOutputDocumentClass;
+        }
     }
 }

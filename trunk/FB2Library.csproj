@@ -48,6 +48,8 @@
     <Compile Include="Elements\AnnotationItem.cs" />
     <Compile Include="Elements\AnnotationType.cs" />
     <Compile Include="Elements\CiteItem.cs" />
+    <Compile Include="Elements\AuthorItem.cs" />
+    <Compile Include="Elements\FB2Const.cs" />
     <Compile Include="Elements\CustomTextFieldType.cs" />
     <Compile Include="Elements\GenreType.cs" />
     <Compile Include="Elements\OutPutDocumentType.cs" />

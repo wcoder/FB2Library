@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-
+//Добавить для атрибута style и ID засунуть вместо текста SimplText; 
 namespace FB2Library.Elements.Table
 {
     public enum TableAlignmentsEnum
@@ -28,6 +28,7 @@ namespace FB2Library.Elements.Table
         TableVAlignmentsEnum VAlign { get; set; }
         int? ColSpan { get; set; }
         int? RowSpan { get; set; }
+        XElement ToXML();
     }
 
     public class BaseCellElement : ICellElement
@@ -37,8 +38,12 @@ namespace FB2Library.Elements.Table
         private TableAlignmentsEnum align = TableAlignmentsEnum.Left;
         private TableVAlignmentsEnum vAlign = TableVAlignmentsEnum.Top;
 
-
         public string Text{set; get;}
+
+        protected virtual string GetElementName()
+        {
+            return "";
+        }
 
         public TableAlignmentsEnum Align
         {
@@ -102,6 +107,49 @@ namespace FB2Library.Elements.Table
                         break;
                 }
             }
+        }
+
+        protected string GetAlign()
+        {
+            switch (align)
+            {
+                case TableAlignmentsEnum.Right:
+                    return "right";
+                case TableAlignmentsEnum.Center:
+                    return "center";
+                default:
+                    return "left";
+            }
+        }
+
+        protected string GetVAlign()
+        {
+            switch (vAlign)
+            {
+                case TableVAlignmentsEnum.Middle:
+                    return "middle";
+                case TableVAlignmentsEnum.Bottom:
+                    return "bottom";
+                default:
+                    return "top";
+            }
+        }
+
+        public XElement ToXML()
+        {
+            XElement xCell = new XElement(Fb2Const.fb2DefaultNamespace + GetElementName(), Text);
+            xCell.Add(new XAttribute("align", GetAlign()));
+            xCell.Add(new XAttribute("valign", GetVAlign()));
+            if (ColSpan != null)
+            {
+                xCell.Add(new XAttribute("colspan", ColSpan.ToString()));
+            }
+            if (RowSpan != null)
+            {
+                xCell.Add(new XAttribute("rowspan", RowSpan.ToString()));
+            }
+
+            return xCell;
         }
     }
 }

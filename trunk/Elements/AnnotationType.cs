@@ -129,5 +129,19 @@ namespace FB2Library.Elements
             }
         }
 
+        public XNode ToXML()
+        {
+            XElement xAnnotation = new XElement(Fb2Const.fb2DefaultNamespace+ ElementName);
+            if (ID != null)
+            {
+                xAnnotation.Add(new XAttribute("id",ID));
+            }
+            foreach (IFb2TextItem Item in content)
+            {
+                xAnnotation.Add(Item.ToXML());
+            }
+
+            return xAnnotation;
+        }
     }
 }

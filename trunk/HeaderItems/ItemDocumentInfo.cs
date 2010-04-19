@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using FB2Library.Elements;
+using System.Globalization;
+
 
 namespace FB2Library.HeaderItems
 {
@@ -130,7 +132,7 @@ namespace FB2Library.HeaderItems
             {
                 foreach ( XElement xAuthor in xAuthors)
                 {
-                    AuthorType author = new AuthorType{ Namespace = fileNameSpace };
+                    AuthorItem author = new AuthorItem{ Namespace = fileNameSpace };
                     try
                     {
                         author.Load(xAuthor);
@@ -223,7 +225,9 @@ namespace FB2Library.HeaderItems
                 string version = xVersion.Value;
                 try
                 {
-                    DocumentVersion = float.Parse(version);
+                    CultureInfo Cult = new CultureInfo("", false);
+
+                    DocumentVersion = float.Parse(version, Cult.NumberFormat);
                 }
                 catch(FormatException ex)
                 {
@@ -254,7 +258,7 @@ namespace FB2Library.HeaderItems
             {
                 foreach (XElement xPublisher in xPublishers )
                 {
-                    AuthorType publisher = new AuthorType{ Namespace = fileNameSpace};
+                    PublisherItem publisher = new PublisherItem { Namespace = fileNameSpace };
                     try
                     {
                         publisher.Load(xPublisher);
@@ -269,6 +273,49 @@ namespace FB2Library.HeaderItems
             }
         }
 
+        public XElement ToXML()
+        {
+            XElement xDocumentInfo = new XElement(Fb2Const.fb2DefaultNamespace + "document-info");
+            foreach(AuthorType Author in documentAuthors)
+            {
+                xDocumentInfo.Add(Author.ToXML());
+            }
+            if(ProgramUsed2Create!=null)
+            {
+                xDocumentInfo.Add(ProgramUsed2Create.ToXML(ProgramUsedElementName));
+            }
+            if(DocumentDate!=null)
+            {
+                xDocumentInfo.Add(DocumentDate.ToXML());
+            }
+            foreach(string SrcUrl in sourceURLs)
+            {
+                xDocumentInfo.Add(new XElement(Fb2Const.fb2DefaultNamespace + SourceURLElementName, SrcUrl));
+            }
+            if(SourceOCR!=null)
+            {
+                xDocumentInfo.Add(SourceOCR.ToXML(SourceOCRElementName));
+            }
+            if(!string.IsNullOrEmpty(ID))
+            {
+                xDocumentInfo.Add(new XElement(Fb2Const.fb2DefaultNamespace + IdElementName, ID));
+            }
+            if(DocumentVersion!=null)
+            {
+                CultureInfo Cult = new CultureInfo("", false);
+                xDocumentInfo.Add(new XElement(Fb2Const.fb2DefaultNamespace + VersionElementName,string.Format(Cult.NumberFormat,"{0:F}",DocumentVersion)));
+            }
+            if(History!=null)
+            {
+                xDocumentInfo.Add(History.ToXML());
+            }
+            foreach(AuthorType Publish in documentPublishers)
+            {
+                xDocumentInfo.Add(Publish.ToXML());
+            }
 
+            return xDocumentInfo;
+        
+        }
     } //class 
 }

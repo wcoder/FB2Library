@@ -10,6 +10,11 @@ namespace FB2Library.Elements.Table
     {
         internal const string Fb2TableHeadingElementName = "th";
 
+        protected override string GetElementName()
+        {
+            return Fb2TableHeadingElementName;
+        }
+
         internal void Load(XElement xHeadingCell)
         {
             if (xHeadingCell == null)
@@ -53,6 +58,8 @@ namespace FB2Library.Elements.Table
             }
 
         }
+
+
 
     }
 }

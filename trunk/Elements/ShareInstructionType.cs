@@ -11,6 +11,7 @@ namespace FB2Library.Elements
     public interface IShareInstructionElement
     {
         void Load(XElement xElement);
+        XElement ToXML();
     }
 
 
@@ -34,7 +35,7 @@ namespace FB2Library.Elements
             Paid,
         }
 
-
+        
         private List<IShareInstructionElement> content = new List<IShareInstructionElement>();
 
         /// <summary>
@@ -187,6 +188,60 @@ namespace FB2Library.Elements
             {
                 Currency = xCurrency.Value;
             }
+        }
+
+        private string GetXSharedMode()
+        {
+            switch (SharedMode)
+            {
+                case ShareModeEnum.Free:
+                    return "free";
+                case ShareModeEnum.Paid:
+                    return "paid";
+                default:
+                    return "";
+                //    Debug.Fail(string.Format("Invalid shared mode type : {0}", xSharedMode.Value));
+                //    break;
+            }
+        }
+
+        private string GetXIncludeAll()
+        {
+            switch (Instruction)
+            {
+                case GenerationInstructionEnum.Require:
+                    return "require";
+                case GenerationInstructionEnum.Allow:
+                    return "allow";
+                case GenerationInstructionEnum.Deny:
+                    return "deny";
+                default:
+                    return "";
+                    //Debug.Fail(string.Format("Invalid instruction type : {0}", xIncludeAll.Value));
+                    //break;
+            }
+        }
+        public XElement ToXML()
+        {
+            XElement xShareInstruction = new XElement(Fb2Const.fb2DefaultNamespace + ShareInstructionElementName);
+            
+            xShareInstruction.Add(new XAttribute("mode", GetXSharedMode()));
+            xShareInstruction.Add(new XAttribute("include-all", GetXIncludeAll()));
+            if (Price != null)
+            {
+                xShareInstruction.Add(new XAttribute("price", Price.ToString()));
+            }
+            if (Currency != null)
+            {
+                xShareInstruction.Add(new XAttribute("currency", Currency));
+            }
+            foreach (IShareInstructionElement ShareElement in content)
+            {
+                xShareInstruction.Add(ShareElement.ToXML());
+            }
+
+
+            return xShareInstruction;
         }
     }
 }

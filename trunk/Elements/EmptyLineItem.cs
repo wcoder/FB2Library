@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace FB2Library.Elements
 {
@@ -12,6 +14,10 @@ namespace FB2Library.Elements
         public override string ToString()
         {
             return "\n";
+        }
+        public XNode ToXML()
+        {
+            return new XElement(Fb2Const.fb2DefaultNamespace + Fb2EmptyLineElementName);
         }
 
     }

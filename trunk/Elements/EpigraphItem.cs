@@ -12,9 +12,9 @@ namespace FB2Library.Elements
     public class EpigraphItem : IFb2TextItem
     {
         private readonly List<IFb2TextItem> epigraphData = new List<IFb2TextItem>();
-        private readonly List<SimpleText> textAuthors = new List<SimpleText>();
+        private readonly List<IFb2TextItem> textAuthors = new List<IFb2TextItem>();
 
-        public List<SimpleText> TextAuthors { get { return textAuthors; } }
+        public List<IFb2TextItem> TextAuthors { get { return textAuthors; } }
         public List<IFb2TextItem> EpigraphData { get { return epigraphData; } }
         public string ID { get; set; }
 
@@ -89,7 +89,8 @@ namespace FB2Library.Elements
                         }
                         break;
                     case TextAuthorItem.Fb2TextAuthorElementName:
-                        SimpleText author = new SimpleText();
+                        TextAuthorItem author = new TextAuthorItem();
+                        //SimpleText author = new SimpleText();
                         try
                         {
                             author.Load(element);
@@ -113,7 +114,25 @@ namespace FB2Library.Elements
             }
         }
 
+        public XNode ToXML()
+        {
+            XElement xEpigraph = new XElement(Fb2Const.fb2DefaultNamespace + Fb2EpigraphElementName);
+            if (!string.IsNullOrEmpty(ID))
+            {
+                xEpigraph.Add(new XAttribute("id", ID));
+            }
 
+            foreach (IFb2TextItem EpigrafItem in epigraphData)
+            {
+                xEpigraph.Add(EpigrafItem.ToXML());
+            }
+            foreach (IFb2TextItem EpigrafAuthor in textAuthors)
+            {
+                xEpigraph.Add(EpigrafAuthor.ToXML());
+            }
 
+            return xEpigraph;
+        
+        }
     }
 }

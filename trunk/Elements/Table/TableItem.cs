@@ -64,5 +64,23 @@ namespace FB2Library.Elements.Table
             
 
         }
+
+        public XNode ToXML()
+        {
+            XElement xTable = new XElement(Fb2Const.fb2DefaultNamespace + Fb2TableElementName);
+            if (!string.IsNullOrEmpty(ID))
+            {
+                xTable.Add(new XAttribute("id", ID));
+            }
+            if (!string.IsNullOrEmpty(Style))
+            {
+                xTable.Add(new XAttribute("style", Style));
+            }
+            foreach (TableRowItem RowItem in rows)
+            {
+                xTable.Add(RowItem.ToXML());
+            }
+            return xTable;
+        }
     }
 }

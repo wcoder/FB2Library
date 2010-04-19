@@ -31,5 +31,13 @@ namespace FB2Library.HeaderItems
             }
             base.Load(xElement);
         }
+
+        public XElement ToXML()
+        {
+            XElement xCustomInfo = new XElement(Fb2Const.fb2DefaultNamespace + CustomInfoElementName);
+            xCustomInfo.Add(new XAttribute("info-type",InfoType));
+            xCustomInfo.Value = Text;
+            return xCustomInfo;
+        }
     }
 }

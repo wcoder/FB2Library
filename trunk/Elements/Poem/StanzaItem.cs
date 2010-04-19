@@ -30,6 +30,7 @@ namespace FB2Library.Elements.Poem
                 throw new ArgumentException("Element of wrong type passed", "xStanza");
             }
 
+            Title = null;
             XElement xTitle = xStanza.Element(xStanza.Name.Namespace + TitleItem.Fb2TitleElementName);
             if (xTitle != null)
             {
@@ -80,6 +81,29 @@ namespace FB2Library.Elements.Poem
                 Lang = xLang.Value;
             }
 
+        }
+
+        public XNode ToXML()
+        {
+            XElement xStanza = new XElement(Fb2Const.fb2DefaultNamespace + Fb2StanzaElementName);
+            if (!string.IsNullOrEmpty(Lang))
+            {
+                xStanza.Add(new XAttribute(XNamespace.Xml + "lang", Lang));
+            }
+            if (Title != null)
+            {
+                xStanza.Add(Title.ToXML());
+            }
+            if (SubTitle != null)
+            {
+                xStanza.Add(SubTitle.ToXML());
+            }
+            foreach (VPoemParagraph PoemLine in lines)
+            {
+                xStanza.Add(PoemLine.ToXML());
+            }
+            return xStanza;
+        
         }
     }
 }
