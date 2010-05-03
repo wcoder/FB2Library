@@ -227,34 +227,40 @@ namespace FB2Library
                     }
                 }
 
-                foreach (InlineImageItem coverImag in titleInfo.Cover.CoverpageImages)
+                if (titleInfo.Cover != null)
                 {
-                    string coverref;
-                    if (coverImag.HRef.Substring(0, 1) == "#")
-                    {
-                        coverref = coverImag.HRef.Substring(1);
-                    }
-                    else
-                    {
-                        coverref = coverImag.HRef;
-                    }
-                    IEnumerable<XElement> xBinaryes = fileDocument.Root.Elements(fileNameSpace + Fb2BinaryElementName).Where(cov => cov.Attribute("id").Value == coverref);
-                    foreach (var binarye in xBinaryes)
-                    {
-                        BinaryItem item = new BinaryItem();
-                        try
-                        {
-                            item.Load(binarye);
-                        }
-                        catch (Exception)
-                        {
 
-                            continue;
-                        }
-                        // add just unique IDs to fix some invalid FB2s 
-                        if (!binaryObjects.ContainsKey(item.Id))
+                    foreach (InlineImageItem coverImag in titleInfo.Cover.CoverpageImages)
+                    {
+                        string coverref;
+                        if (coverImag.HRef.Substring(0, 1) == "#")
                         {
-                            binaryObjects.Add(item.Id, item);
+                            coverref = coverImag.HRef.Substring(1);
+                        }
+                        else
+                        {
+                            coverref = coverImag.HRef;
+                        }
+                        IEnumerable<XElement> xBinaryes =
+                            fileDocument.Root.Elements(fileNameSpace + Fb2BinaryElementName).Where(
+                                cov => ((cov.Attribute("id") != null) && (cov.Attribute("id").Value == coverref)) );
+                        foreach (var binarye in xBinaryes)
+                        {
+                            BinaryItem item = new BinaryItem();
+                            try
+                            {
+                                item.Load(binarye);
+                            }
+                            catch (Exception)
+                            {
+
+                                continue;
+                            }
+                            // add just unique IDs to fix some invalid FB2s 
+                            if (!binaryObjects.ContainsKey(item.Id))
+                            {
+                                binaryObjects.Add(item.Id, item);
+                            }
                         }
                     }
                 }
