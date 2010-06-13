@@ -109,9 +109,9 @@ namespace FB2Library.Elements.Table
             {
                 xRow.Add(new XAttribute("align", Align));
             }
-            foreach (ICellElement CellItem in cells)
+            foreach (ICellElement cellItem in cells)
             {
-                xRow.Add(CellItem.ToXML());
+                xRow.Add(((ParagraphItem)cellItem).ToXML());
             }
 
             return xRow;

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+
 //Добавить для атрибута style и ID засунуть вместо текста SimplText; 
 namespace FB2Library.Elements.Table
 {
@@ -23,22 +24,18 @@ namespace FB2Library.Elements.Table
 
     public interface ICellElement
     {
-        string Text { set; get; }
         TableAlignmentsEnum Align { get; set; }
         TableVAlignmentsEnum VAlign { get; set; }
         int? ColSpan { get; set; }
         int? RowSpan { get; set; }
-        XElement ToXML();
     }
 
-    public class BaseCellElement : ICellElement
+    public class BaseCellElement : ParagraphItem, ICellElement
     {
         #region ICellElement Members
 
         private TableAlignmentsEnum align = TableAlignmentsEnum.Left;
         private TableVAlignmentsEnum vAlign = TableVAlignmentsEnum.Top;
-
-        public string Text{set; get;}
 
         protected virtual string GetElementName()
         {
@@ -137,7 +134,8 @@ namespace FB2Library.Elements.Table
 
         public XElement ToXML()
         {
-            XElement xCell = new XElement(Fb2Const.fb2DefaultNamespace + GetElementName(), Text);
+            //XElement xCell = new XElement(Fb2Const.fb2DefaultNamespace + GetElementName());
+            XElement xCell = (XElement)base.ToXML();
             xCell.Add(new XAttribute("align", GetAlign()));
             xCell.Add(new XAttribute("valign", GetVAlign()));
             if (ColSpan != null)
@@ -151,5 +149,6 @@ namespace FB2Library.Elements.Table
 
             return xCell;
         }
+
     }
 }

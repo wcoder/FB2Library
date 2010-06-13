@@ -44,20 +44,8 @@ namespace FB2Library.Elements
 
         public List<StyleType> ParagraphData { get { return paragraphData; } }
 
-
-        internal void Load(XElement xParagraph)
+        protected void LoadData(XElement xParagraph)
         {
-            paragraphData.Clear();
-            if (xParagraph == null)
-            {
-                throw new ArgumentNullException("xParagraph");
-            }
-
-            if (xParagraph.Name.LocalName != GetElementName())
-            {
-                throw new ArgumentException("Element of wrong type passed", "xParagraph");
-            }
-
             if (xParagraph.HasElements)
             {
                 IEnumerable<XNode> childElements = xParagraph.Nodes();
@@ -134,7 +122,22 @@ namespace FB2Library.Elements
             {
                 Lang = xLang.Value;
             }
+            
+        }
 
+        internal virtual void Load(XElement xParagraph)
+        {
+            paragraphData.Clear();
+            if (xParagraph == null)
+            {
+                throw new ArgumentNullException("xParagraph");
+            }
+
+            if (xParagraph.Name.LocalName != GetElementName())
+            {
+                throw new ArgumentException("Element of wrong type passed", "xParagraph");
+            }
+            LoadData(xParagraph);
 
         } // Load
 
