@@ -15,7 +15,9 @@ namespace FB2Library.Elements.Table
             return Fb2TableCellElementName;
         }
 
-        internal void Load(XElement xCell)
+        internal new string Fb2ParagraphElementName = Fb2TableCellElementName;
+
+        internal new void Load(XElement xCell)
         {
             if (xCell == null)
             {
@@ -27,11 +29,8 @@ namespace FB2Library.Elements.Table
                 throw new ArgumentException("Element of wrong type passed", "xCell");
             }
 
-            if (xCell.Value != null)
-            {
-                Text = xCell.Value;
-            }
-
+            LoadData(xCell);
+            
             LoadAlign(xCell);
             LoadVAlign(xCell);
 

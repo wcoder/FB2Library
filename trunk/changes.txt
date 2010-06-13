@@ -1,4 +1,10 @@
-﻿1.0.11
+﻿1.0.13
++ Changing loading of tables to support table cells containing elements others than simple text
+
+1.0.12
+* Fixed recently intorduced bug sloading files without images
+
+1.0.11
 + added support export to FB2
 + AuthorItem.cs добавлены дочерние класс для обозначения авторов,переводчиков,правообладателей
 + AuthorType.cs добавлена процедура GetElementName() Возвращает "author","translator" или "publisher" для выгрузки в FB2
