@@ -254,7 +254,7 @@ namespace FB2Library.HeaderItems
             }
             else
             {
-                Debug.Fail("Language not specified in title section");                
+                Debug.Write("Language not specified in title section");                
             }
 
             // Load source language
