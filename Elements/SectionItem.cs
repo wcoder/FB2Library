@@ -258,6 +258,16 @@ namespace FB2Library.Elements
                     }
                     continue; // skip to next item in list
                 }
+                if (item.GetType() == typeof(TitleItem))
+                {
+                    // title according to schema can come before image
+                    continue;
+                }
+                if (item.GetType() == typeof(EpigraphItem))
+                {
+                    // epigraph according to schema can come before image
+                    continue;
+                }
                 // according to schema images goes first 
                 // wrong type means we passed possible section image location
                 return;
