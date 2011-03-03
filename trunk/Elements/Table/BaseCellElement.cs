@@ -37,7 +37,7 @@ namespace FB2Library.Elements.Table
         private TableAlignmentsEnum align = TableAlignmentsEnum.Left;
         private TableVAlignmentsEnum vAlign = TableVAlignmentsEnum.Top;
 
-        protected virtual string GetElementName()
+        protected override string GetElementName()
         {
             return "";
         }
@@ -132,7 +132,7 @@ namespace FB2Library.Elements.Table
             }
         }
 
-        public XElement ToXML()
+        public new XNode ToXML()
         {
             //XElement xCell = new XElement(Fb2Const.fb2DefaultNamespace + GetElementName());
             XElement xCell = (XElement)base.ToXML();

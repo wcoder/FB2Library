@@ -23,7 +23,8 @@ namespace FB2Library.Elements
         // "pointers" to all section's images
         private readonly List<ImageItem> images = new List<ImageItem>();
 
-        private ImageItem sectionImage = null;
+        // section images for the section
+        private readonly List<ImageItem> sectionImages = new List<ImageItem>();
         
 
 
@@ -35,7 +36,7 @@ namespace FB2Library.Elements
 
         public List<IFb2TextItem> Content { get { return content; } }
 
-        public ImageItem SectionImage { get { return sectionImage; } }
+        public List<ImageItem> SectionImages { get { return sectionImages; } }
 
         public AnnotationItem Annotation { get; set; }
 
@@ -230,7 +231,7 @@ namespace FB2Library.Elements
             content.Clear();
             subSections.Clear();
             images.Clear();
-            sectionImage = null;
+            sectionImages.Clear();
             epigraphs.Clear();
             ID = null;
             Annotation = null;
@@ -248,30 +249,16 @@ namespace FB2Library.Elements
         {
             foreach (var item in content)
             {
-                if (item.GetType() == typeof(ImageItem))
+                if (item.GetType() == typeof(ImageItem)) // if we have an image
                 {
-                    if ((sectionImage == null) && (item != image))
+                    if (item == image) // if the item we currently lookin at is our image, means it at start and it's a section image
                     {
-                        Debug.Fail("SectionItem.DetectSectionImage - something wrong, the first image in image list is not first image in content list");
-                        return;
+                        sectionImages.Add(image); // add it to list of section images
+                        return;                       
                     }
-                    sectionImage = image;
-                    return;
+                    continue; // skip to next item in list
                 }
-                if (item.GetType() == typeof(TitleItem))
-                {
-                    // title allowed
-                    // but shouldn't be here
-                    Debug.Fail("SectionItem.DetectSectionImage - something wrong, the title should be separate from content list");
-                    continue;
-                }
-                if (item.GetType() == typeof(EpigraphItem))
-                {
-                    // epigraphs allowed
-                    // but shouldn't be here
-                    Debug.Fail("SectionItem.DetectSectionImage - something wrong, the epigraphs should be separate from content list");
-                    continue;
-                }
+                // according to schema images goes first 
                 // wrong type means we passed possible section image location
                 return;
             }
@@ -303,9 +290,13 @@ namespace FB2Library.Elements
             {
                 xSection.Add(EpItem.ToXML());
             }
-            if (SectionImage != null)
+            if (SectionImages.Count != 0)
             {
-                xSection.Add(SectionImage.ToXML());
+                //xSection.Add(SectionImages.ToXML());
+                foreach (var image in SectionImages)
+                {
+                    xSection.Add(image.ToXML());
+                }
             }
             if (Annotation != null)
             {
