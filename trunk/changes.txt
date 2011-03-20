@@ -1,4 +1,7 @@
-﻿1.0.14
+﻿1.0.15
+* Compiled with Visual Studio 2010 , solution updated accordingly 
+
+1.0.14
 + Breaking change: Changed code to support more than one section image (as according to schema)
 * Fixed several bad overrides warnings
 * Fixed the bug where images after section image were replacing section image
