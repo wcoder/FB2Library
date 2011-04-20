@@ -1,4 +1,8 @@
-﻿1.0.15
+﻿1.0.16
++ Added some additional code handling for badly formated FB2 files
+* Changed the way unknown section element blocks are handled , they now converted to simple text instead of dropping them totaly
+
+1.0.15
 * Compiled with Visual Studio 2010 , solution updated accordingly 
 
 1.0.14

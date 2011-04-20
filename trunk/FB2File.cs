@@ -232,6 +232,10 @@ namespace FB2Library
 
                     foreach (InlineImageItem coverImag in titleInfo.Cover.CoverpageImages)
                     {
+                        if (string.IsNullOrEmpty(coverImag.HRef))
+                        {
+                            continue;
+                        }
                         string coverref;
                         if (coverImag.HRef.Substring(0, 1) == "#")
                         {
@@ -395,6 +399,10 @@ namespace FB2Library
             {
                 foreach (InlineImageItem coverImag in titleInfo.Cover.CoverpageImages)
                 {
+                    if (string.IsNullOrEmpty(coverImag.HRef))
+                    {
+                        continue;
+                    }
                     string coverref;
                     if (coverImag.HRef.Substring(0, 1) == "#")
                     {

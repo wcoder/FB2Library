@@ -45,6 +45,14 @@ namespace FB2Library.Elements
             {
                 ImageType = xType.Value;
             }
+            else  // to fix badly formated FB2s
+            {
+                xType = xImage.Attribute("type"); 
+                if ((xType != null) && (xType.Value != null))
+                {
+                    ImageType = xType.Value;
+                }
+            }
 
 
             XAttribute xHRef = xImage.Attribute(xLinkNamespace + "href");
@@ -52,11 +60,27 @@ namespace FB2Library.Elements
             {
                 HRef = xHRef.Value;
             }
+            else // to fix badly formated FB2s
+            {
+                xHRef = xImage.Attribute(xLinkNamespace + "href");
+                if ((xHRef != null) && (xHRef.Value != null))
+                {
+                    HRef = xHRef.Value;
+                }
+            }
 
-            XAttribute xAlt = xImage.Attribute("alt");
+            XAttribute xAlt = xImage.Attribute(xLinkNamespace + "alt");
             if ((xAlt != null) &&(xAlt.Value != null))
             {
                 AltText = xAlt.Value;
+            }
+            else // to fix badly formated FB2s
+            {
+                xAlt = xImage.Attribute(xLinkNamespace + "alt");
+                if ((xAlt != null) && (xAlt.Value != null))
+                {
+                    AltText = xAlt.Value;
+                }
             }
         }
 
