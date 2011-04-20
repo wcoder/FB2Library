@@ -206,6 +206,20 @@ namespace FB2Library.Elements
                     case EpigraphItem.Fb2EpigraphElementName: // already processed
                         break;
                     default:
+                        if (!string.IsNullOrEmpty(xElement.Value))
+                        {
+                            ParagraphItem tempParagraph = new ParagraphItem();
+                            try
+                            {
+                                SimpleText text = new SimpleText {Text = xElement.Value};
+                                tempParagraph.ParagraphData.Add(text);
+                                content.Add(tempParagraph);
+                            }
+                            catch (Exception)
+                            {
+
+                            }                           
+                        }
                         Debug.Fail(string.Format("AnnotationItem:Load - invalid element <{0}> encountered in title .", xElement.Name.LocalName));
                         break;
                 }
