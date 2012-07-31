@@ -1,4 +1,7 @@
-﻿1.0.17
+﻿1.0.18
+* Switched to .Net 4.0
+
+1.0.17
 + Added ability to read some badly formated FB2 files (xmlns="")
 
 1.0.16
