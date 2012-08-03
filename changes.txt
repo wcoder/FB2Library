@@ -1,4 +1,7 @@
-﻿1.0.18
+﻿1.0.19
+* Changed to .Net 4.0 Client profile to reduce requirments
+
+1.0.18
 * Switched to .Net 4.0
 
 1.0.17
