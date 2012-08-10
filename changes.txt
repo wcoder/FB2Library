@@ -1,4 +1,8 @@
-﻿1.0.19
+﻿1.0.20
++ Added detection of the image type in case media tag in FB2 is wrong
++ Added license file
+
+1.0.19
 * Changed to .Net 4.0 Client profile to reduce requirments
 
 1.0.18
