@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -56,7 +59,7 @@ namespace FB2Library.Elements
                     ContentType = ContentTypeEnum.ContentTypeGif;
                     break;
                 default:
-                    throw new Exception("Unknown content type detected");
+                    throw new Exception("Unknown image content type passed");
 
             }
 
@@ -72,6 +75,41 @@ namespace FB2Library.Elements
                 BinaryData= null;
             }
             BinaryData = Convert.FromBase64String(binarye.Value);
+            ContentTypeEnum content = ContentType;
+            DetectContentType(ref content, BinaryData);
+            ContentType = content;
+        }
+
+        private void DetectContentType(ref ContentTypeEnum contentType, byte[] BinaryData)
+        {
+            try
+            {
+
+                using (MemoryStream imgStream = new MemoryStream(BinaryData))
+                {
+                    using (Bitmap bitmap = new Bitmap(imgStream))
+                    {
+                        if (bitmap.RawFormat.Equals(ImageFormat.Jpeg))
+                        {
+                            contentType = ContentTypeEnum.ContentTypeJpeg;
+                        }
+                        else if (bitmap.RawFormat.Equals(ImageFormat.Png))
+                        {
+                            contentType = ContentTypeEnum.ContentTypePng;
+                        }
+                        else if (bitmap.RawFormat.Equals(ImageFormat.Gif))
+                        {
+                            contentType = ContentTypeEnum.ContentTypeGif;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(string.Format("Error during image type detection: {0}",ex.Message));
+            }
+
         }
 
         protected string GetXContentType()
