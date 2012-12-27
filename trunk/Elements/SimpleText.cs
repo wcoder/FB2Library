@@ -183,7 +183,7 @@ namespace FB2Library.Elements
                 case "sup":
                     return TextStyles.Sup;
                 case "strikethrough":
-                    return TextStyles.strikethrough;
+                    return TextStyles.Strikethrough;
                 default:
                     return TextStyles.Normal;
             }
@@ -204,7 +204,7 @@ namespace FB2Library.Elements
                     return "sub";
                 case TextStyles.Sup:
                     return "sup";
-                case TextStyles.strikethrough:
+                case TextStyles.Strikethrough:
                     return "strikethrough";
                 default:
                     return "";

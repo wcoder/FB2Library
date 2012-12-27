@@ -14,7 +14,7 @@ namespace FB2Library.Elements
         Code, // <code>
         Sub, // <sub>
         Sup, // <sup>
-        strikethrough, //<strikethrough>
+        Strikethrough, //<strikethrough>
     }
 
 
