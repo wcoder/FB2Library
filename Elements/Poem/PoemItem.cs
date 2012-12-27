@@ -38,72 +38,82 @@ namespace FB2Library.Elements.Poem
             }
 
             Title = null;
-            XElement xTitle = xPoem.Element(xPoem.Name.Namespace + TitleItem.Fb2TitleElementName);
-            if ((xTitle != null) && (xTitle.Value != null))
-            {
-                Title = new TitleItem();
-                Title.Load(xTitle);
-            }
-
+            Date = null;
             epigraphs.Clear();
-            IEnumerable<XElement> xEpigraphs = xPoem.Elements(xPoem.Name.Namespace + EpigraphItem.Fb2EpigraphElementName);
-            foreach (var epigraph in xEpigraphs)
-            {
-                EpigraphItem epigraphItem = new EpigraphItem();
-                try
-                {
-                    epigraphItem.Load(epigraph);
-                    epigraphs.Add(epigraphItem);
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-
             content.Clear();
-            IEnumerable<XElement> xElements = xPoem.Elements(xPoem.Name.Namespace + StanzaItem.Fb2StanzaElementName);
+            authors.Clear();
+
+            IEnumerable<XElement> xElements = xPoem.Elements();
             foreach (var xElement in xElements)
             {
-                StanzaItem stanza = new StanzaItem();
-                try
+                if (xElement.Name == (XName)(xPoem.Name.Namespace + StanzaItem.Fb2StanzaElementName))
                 {
-                    stanza.Load(xElement);
-                    content.Add(stanza);
+                    StanzaItem stanza = new StanzaItem();
+                    try
+                    {
+                        stanza.Load(xElement);
+                        content.Add(stanza);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
                 }
-                catch (Exception)
+                else if (xElement.Name == (XName)(xPoem.Name.Namespace + SubTitleItem.Fb2SubtitleElementName))
                 {
-                    continue;
+                    SubTitleItem subtitle = new SubTitleItem();
+                    try
+                    {
+                        subtitle.Load(xElement);
+                        content.Add(subtitle);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
                 }
-            }
-
-            authors.Clear();
-            IEnumerable<XElement> xAuthors = xPoem.Elements(xPoem.Name.Namespace + TextAuthorItem.Fb2TextAuthorElementName);
-            foreach (var xAuthor in xAuthors)
-            {
-                TextAuthorItem author = new TextAuthorItem();
-                try
+                else if (xElement.Name == (XName)(xPoem.Name.Namespace + TitleItem.Fb2TitleElementName) && Title == null) // only one title
                 {
-                    author.Load(xAuthor);
-                    authors.Add(author);
+                        Title = new TitleItem();
+                        Title.Load(xElement);
                 }
-                catch (Exception)
+                else if (xElement.Name == (XName)(xPoem.Name.Namespace + EpigraphItem.Fb2EpigraphElementName))
                 {
-                    continue;
+                    EpigraphItem epigraphItem = new EpigraphItem();
+                    try
+                    {
+                        epigraphItem.Load(xElement);
+                        epigraphs.Add(epigraphItem);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
                 }
-            }
-
-            Date = null;
-            XElement xDate = xPoem.Element(xPoem.Name.Namespace + DateItem.Fb2DateElementName);
-            if (xDate != null)
-            {
-                Date = new DateItem();
-                try
+                else if (xElement.Name == (XName)(xPoem.Name.Namespace + TextAuthorItem.Fb2TextAuthorElementName))
                 {
-                    Date.Load(xDate);
+                    TextAuthorItem author = new TextAuthorItem();
+                    try
+                    {
+                        author.Load(xElement);
+                        authors.Add(author);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
                 }
-                catch (Exception)
+                else if (xElement.Name == (XName)(xPoem.Name.Namespace + DateItem.Fb2DateElementName) && Date == null) // only one date
                 {
+                    Date = new DateItem();
+                    try
+                    {
+                        Date.Load(xElement);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
                 }
             }
 
