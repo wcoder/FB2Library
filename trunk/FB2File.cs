@@ -87,8 +87,8 @@ namespace FB2Library
         /// Loads the file as data from XML data
         /// </summary>
         /// <param name="fileDocument">XML document containing the file</param>
-        /// <param name="bLoadHeaderOnly">if true loads only header information</param>
-        public void Load(XDocument fileDocument,bool bLoadHeaderOnly)
+        /// <param name="loadHeaderOnly">if true loads only header information</param>
+        public void Load(XDocument fileDocument,bool loadHeaderOnly)
         {
             if (fileDocument == null)
             {
@@ -125,14 +125,14 @@ namespace FB2Library
                 }
             }
 
-            LoadDescriptionSection(fileDocument,fileNameSpace);
+            LoadDescriptionSection(fileDocument, fileNameSpace);
 
-            if (!bLoadHeaderOnly)
+            if (!loadHeaderOnly)
             {
                 XNamespace namespaceUsed = fileNameSpace;
                 // Load body elements (first is main text)
                 IEnumerable<XElement> xBodys = fileDocument.Root.Elements(fileNameSpace + Fb2TextBodyElementName);
-                // try to read some badly formated FB2 files
+                // try to read some badly formatted FB2 files
                 if (xBodys.Count() == 0)
                 {
                     namespaceUsed = "";
@@ -185,7 +185,7 @@ namespace FB2Library
 
         }
 
-        private void LoadDescriptionSection(XDocument fileDocument, XNamespace xNamespace)
+        private void LoadDescriptionSection(XDocument fileDocument, XNamespace xNamespace, bool loadBinaryItems = true)
         {
             if (fileDocument == null)
             {
@@ -309,7 +309,7 @@ namespace FB2Library
                     }
                 }
 
-                if (titleInfo.Cover != null)
+                if (loadBinaryItems && titleInfo.Cover != null)
                 {
 
                     foreach (InlineImageItem coverImag in titleInfo.Cover.CoverpageImages)
