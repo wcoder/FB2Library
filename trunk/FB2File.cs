@@ -107,7 +107,7 @@ namespace FB2Library
             styles.Clear();
             IEnumerable<XElement> xStyles = fileDocument.Elements(fileNameSpace + StyleElement.StyleElementName);
             // attempt to load some bad FB2 with wrong namespace
-            if (xStyles.Count() == 0)
+            if (!xStyles.Any())
             {
                 xStyles = fileDocument.Elements(StyleElement.StyleElementName);
             }
