@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using FB2Library.Elements;
 
@@ -17,7 +14,7 @@ namespace FB2Library.HeaderItems
     /// <summary>
     /// Book (as a book opposite a document) description
     /// </summary>
-    public class ItemTitleInfo
+    public class ItemTitleInfo : ItemInfoBase
     {
         private const string GenreElementName = "genre";
         private const string BookTitleElementName = "book-title";
@@ -27,38 +24,22 @@ namespace FB2Library.HeaderItems
         private const string LanguageElementName = "lang";
         private const string SourceLanguageElementName = "src-lang";
 
-        private List<TitleGenreType> genres = new List<TitleGenreType>();
+        private readonly List<TitleGenreType> _genres = new List<TitleGenreType>();
 
-        private List<AuthorType> translators = new List<AuthorType>();
+        private readonly List<AuthorType> _translators = new List<AuthorType>();
 
-        private List<AuthorType> bookAuthors = new List<AuthorType>();
-
-        private List<SequenceType> sequences = new List<SequenceType>();
-
-        private XNamespace fileNameSpace = XNamespace.None;
+        private readonly List<AuthorType> _bookAuthors = new List<AuthorType>();
 
 
 
-        /// <summary>
-        /// Get list of sequences
-        /// </summary>
-        public List<SequenceType> Sequences { get { return sequences; } }
 
-        /// <summary>
-        /// XML namespace used to read the document
-        /// </summary>
-        public XNamespace Namespace
-        {
-            set { fileNameSpace = value; }
-            get { return fileNameSpace; }
-        }
 
         /// <summary>
         /// Translators if this is a translation
         /// </summary>
         public IEnumerable<AuthorType> Translators
         {
-            get { return this.translators; }
+            get { return _translators; }
         }
 
         /// <summary>
@@ -76,7 +57,7 @@ namespace FB2Library.HeaderItems
         /// </summary>
         public IEnumerable<TitleGenreType> Genres
         {
-            get { return genres; }
+            get { return _genres; }
         }
 
 
@@ -85,13 +66,9 @@ namespace FB2Library.HeaderItems
         /// </summary>
         public IEnumerable<AuthorType> BookAuthors
         {
-            get { return bookAuthors; }
+            get { return _bookAuthors; }
         }
 
-        /// <summary>
-        /// Book Title
-        /// </summary>
-        public TextFieldType BookTitle { set; get; }
 
         /// <summary>
         /// Book's annotation
@@ -118,55 +95,48 @@ namespace FB2Library.HeaderItems
             }
 
             // Load genres
-            genres.Clear();
-            IEnumerable<XElement> xGenres = xTitleInfo.Elements(fileNameSpace + GenreElementName);
-            if ( xGenres != null )
+            _genres.Clear();
+            IEnumerable<XElement> xGenres = xTitleInfo.Elements(FileNameSpace + GenreElementName);
+            foreach ( XElement xGenre in xGenres )
             {
-                foreach ( XElement xGenre in xGenres )
+                if ( (xGenre != null) )
                 {
-                    if ( (xGenre != null) && (xGenre.Value != null) )
+                    var genre = new TitleGenreType {Genre = xGenre.Value};
+                    XAttribute xMatch = xGenre.Attribute("match");
+                    if (xMatch != null && !string.IsNullOrEmpty(xMatch.Value))
                     {
-                        TitleGenreType genre = new TitleGenreType();
-                        genre.Genre = xGenre.Value;
-                        XAttribute xMatch = xGenre.Attribute("match");
-                        if (xMatch != null && !string.IsNullOrEmpty(xMatch.Value))
+                        int percentage;
+                        if (int.TryParse(xMatch.Value,out percentage))
                         {
-                            int percentage;
-                            if (int.TryParse(xMatch.Value,out percentage))
-                            {
-                                genre.Match = percentage;
-                            }
+                            genre.Match = percentage;
                         }
-                        genres.Add(genre);
                     }
+                    _genres.Add(genre);
                 }
             }
 
             // Load authors
-            bookAuthors.Clear();
-            IEnumerable<XElement> xAuthors = xTitleInfo.Elements(fileNameSpace + AuthorType.AuthorElementName);
-            if ( xAuthors != null )
+            _bookAuthors.Clear();
+            IEnumerable<XElement> xAuthors = xTitleInfo.Elements(FileNameSpace + AuthorType.AuthorElementName);
+            foreach (XElement xAuthor in xAuthors )
             {
-                foreach (XElement xAuthor in xAuthors )
+                var author = new AuthorItem { Namespace = FileNameSpace };
+                try
                 {
-                    AuthorItem author = new AuthorItem { Namespace = fileNameSpace };
-                    try
-                    {
-                        author.Load(xAuthor);
-                        bookAuthors.Add(author);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Fail(string.Format("Error reading author: {0}",ex.Message));
-                        continue;
-                    }
+                    author.Load(xAuthor);
+                    _bookAuthors.Add(author);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail(string.Format("Error reading author: {0}",ex.Message));
+                    continue;
                 }
             }
-            
+
 
             // Load Title
             BookTitle = null;
-            XElement xBookTitle = xTitleInfo.Element(fileNameSpace + BookTitleElementName);
+            XElement xBookTitle = xTitleInfo.Element(FileNameSpace + BookTitleElementName);
             if (xBookTitle != null) 
             {
                 BookTitle = new TextFieldType();
@@ -182,7 +152,7 @@ namespace FB2Library.HeaderItems
 
             // Load Annotation
             Annotation = null;
-            XElement xAnnotation = xTitleInfo.Element(fileNameSpace + AnnotationElementName);
+            XElement xAnnotation = xTitleInfo.Element(FileNameSpace + AnnotationElementName);
             if (xAnnotation != null) 
             {
                 Annotation = new AnnotationItem();
@@ -199,7 +169,7 @@ namespace FB2Library.HeaderItems
 
             // Load keywords
             Keywords = null;
-            XElement xKeywords = xTitleInfo.Element(fileNameSpace + KeywordsElementName);
+            XElement xKeywords = xTitleInfo.Element(FileNameSpace + KeywordsElementName);
             if (xKeywords != null) 
             {
                 Keywords    =   new TextFieldType();
@@ -215,7 +185,7 @@ namespace FB2Library.HeaderItems
 
             // Load Book date
             BookDate = null;
-            XElement xBookDate = xTitleInfo.Element(fileNameSpace + DateItem.Fb2DateElementName);
+            XElement xBookDate = xTitleInfo.Element(FileNameSpace + DateItem.Fb2DateElementName);
             if (xBookDate != null) 
             {
                 BookDate = new DateItem();
@@ -231,10 +201,10 @@ namespace FB2Library.HeaderItems
 
             Cover = null;
             // we should load coverpage images here but no use for them as for now
-            XElement xCoverPage = xTitleInfo.Element(fileNameSpace + CoverPageElementName);
+            XElement xCoverPage = xTitleInfo.Element(FileNameSpace + CoverPageElementName);
             if ( xCoverPage != null)
             {
-                Cover = new CoverPage{Namespace = fileNameSpace};
+                Cover = new CoverPage{Namespace = FileNameSpace};
                 try
                 {
                     Cover.Load(xCoverPage);
@@ -247,8 +217,8 @@ namespace FB2Library.HeaderItems
 
             // Load Language
             Language = null;
-            XElement xLanguage = xTitleInfo.Element(fileNameSpace + LanguageElementName);
-            if ( (xLanguage != null) && ( xLanguage.Value != null ))
+            XElement xLanguage = xTitleInfo.Element(FileNameSpace + LanguageElementName);
+            if ( (xLanguage != null))
             {
                 Language = xLanguage.Value;
             }
@@ -259,43 +229,40 @@ namespace FB2Library.HeaderItems
 
             // Load source language
             SrcLanguage = null;
-            XElement xSrcLanguage = xTitleInfo.Element(fileNameSpace + SourceLanguageElementName);
-            if ( (xSrcLanguage != null) && (xSrcLanguage.Value != null) )
+            XElement xSrcLanguage = xTitleInfo.Element(FileNameSpace + SourceLanguageElementName);
+            if ( (xSrcLanguage != null) )
             {
                 SrcLanguage = xSrcLanguage.Value;
             }
 
             // Load translators 
-            translators.Clear();
-            IEnumerable<XElement> xTranslators = xTitleInfo.Elements(fileNameSpace + AuthorType.TranslatorElementName);
-            if ( xTranslators != null )
+            _translators.Clear();
+            IEnumerable<XElement> xTranslators = xTitleInfo.Elements(FileNameSpace + AuthorType.TranslatorElementName);
+            foreach ( XElement xTranslator in xTranslators )
             {
-                foreach ( XElement xTranslator in xTranslators )
+                var translator = new TranslatorItem { Namespace = FileNameSpace };
+                try
                 {
-                    TranslatorItem translator = new TranslatorItem() { Namespace = fileNameSpace };
-                    try
-                    {
-                        translator.Load(xTranslator);
-                        translators.Add(translator);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Fail(string.Format("Error reading translator: {0}", ex.Message));
-                        continue;
-                    }
+                    translator.Load(xTranslator);
+                    _translators.Add(translator);
+                }
+                catch (Exception ex)
+                {
+                    Debug.Fail(string.Format("Error reading translator: {0}", ex.Message));
+                    continue;
                 }
             }
 
             // Load sequences
-            sequences.Clear();
-            IEnumerable<XElement> xSequences = xTitleInfo.Elements(fileNameSpace + SequenceType.SequenceElementName);
+            ItemSequences.Clear();
+            IEnumerable<XElement> xSequences = xTitleInfo.Elements(FileNameSpace + SequenceType.SequenceElementName);
             foreach (var xSequence in xSequences)
             {
-               SequenceType sec = new SequenceType(){ Namespace = fileNameSpace };
+               var sec = new SequenceType{ Namespace = FileNameSpace };
                 try
                 {
                     sec.Load(xSequence);
-                    sequences.Add(sec);
+                    ItemSequences.Add(sec);
                 }
                 catch (Exception ex)
                 {
@@ -305,10 +272,10 @@ namespace FB2Library.HeaderItems
             }
         }
 
-        public XElement ToXML(string NameElement)
+        public XElement ToXML(string nameElement)
         {
-            XElement xTitleInfo = new XElement(Fb2Const.fb2DefaultNamespace + NameElement);
-            foreach (TitleGenreType genre in genres)
+            var xTitleInfo = new XElement(Fb2Const.fb2DefaultNamespace + nameElement);
+            foreach (TitleGenreType genre in _genres)
             {
                 try
                 {
@@ -320,7 +287,7 @@ namespace FB2Library.HeaderItems
                     continue;                    
                 }
             }
-            foreach (AuthorType author in bookAuthors)
+            foreach (AuthorType author in _bookAuthors)
             {
                 try
                 {
@@ -362,11 +329,11 @@ namespace FB2Library.HeaderItems
             {
                 xTitleInfo.Add(new XElement(Fb2Const.fb2DefaultNamespace + SourceLanguageElementName, SrcLanguage));
             }
-            foreach (AuthorType translat in translators)
+            foreach (AuthorType translat in _translators)
             {
                 xTitleInfo.Add(translat.ToXML());
             }
-            foreach (SequenceType sec in sequences)
+            foreach (SequenceType sec in ItemSequences)
             {
                 xTitleInfo.Add(sec.ToXML());
             }

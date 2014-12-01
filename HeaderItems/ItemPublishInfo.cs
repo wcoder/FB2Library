@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using FB2Library.Elements;
-
-// TODO: sequence not loaded 
 
 namespace FB2Library.HeaderItems
 {
     /// <summary>
     /// Information about some paper/outher published document, that was used as a source of this xml document
     /// </summary>
-    public class ItemPublishInfo
+    public class ItemPublishInfo : ItemInfoBase
     {
         private const string BookNameElementName = "book-name";
         private const string PublisherElementName = "publisher";
@@ -22,25 +18,6 @@ namespace FB2Library.HeaderItems
         private const string ISBNElementName = "isbn";
 
         public const string PublishInfoElementName = "publish-info";
-
-
-        private XNamespace fileNameSpace = XNamespace.None;
-
-        private List<SequenceType> sequences = new List<SequenceType>();
-
-        /// <summary>
-        /// Get list of sequences
-        /// </summary>
-        public List<SequenceType> Sequences { get { return sequences; } }
-
-        /// <summary>
-        /// XML namespace used to read the document
-        /// </summary>
-        public XNamespace Namespace
-        {
-            set { fileNameSpace = value; }
-            get { return fileNameSpace; }
-        }
 
 
         /// <summary>
@@ -63,11 +40,6 @@ namespace FB2Library.HeaderItems
         /// </summary>
         public TextFieldType Publisher { get; set; }
 
-        /// <summary>
-        /// Original (paper) book name
-        /// </summary>
-        public TextFieldType BookName { get; set; }
-
 
         internal void Load(XElement xPublishInfo)
         {
@@ -77,14 +49,14 @@ namespace FB2Library.HeaderItems
             }
 
             // Load book name
-            BookName = null;
-            XElement xBookName = xPublishInfo.Element(fileNameSpace + BookNameElementName);
+            BookTitle = null;
+            XElement xBookName = xPublishInfo.Element(FileNameSpace + BookNameElementName);
             if ( xBookName != null)  
             {
-                BookName = new TextFieldType();
+                BookTitle = new TextFieldType();
                 try
                 {
-                    BookName.Load(xBookName);
+                    BookTitle.Load(xBookName);
                 }
                 catch (Exception ex)
                 {
@@ -94,7 +66,7 @@ namespace FB2Library.HeaderItems
 
             // Load publisher
             Publisher = null;
-            XElement xPublisher = xPublishInfo.Element(fileNameSpace + PublisherElementName);
+            XElement xPublisher = xPublishInfo.Element(FileNameSpace + PublisherElementName);
             if (xPublisher != null)
             {
                 Publisher = new TextFieldType();
@@ -110,7 +82,7 @@ namespace FB2Library.HeaderItems
 
             // Load city 
             City = null;
-            XElement xCity = xPublishInfo.Element(fileNameSpace + CityElementName);
+            XElement xCity = xPublishInfo.Element(FileNameSpace + CityElementName);
             if (xCity != null)
             {
                 City = new TextFieldType();
@@ -126,8 +98,8 @@ namespace FB2Library.HeaderItems
 
             // Load year 
             Year = null;
-            XElement xYear = xPublishInfo.Element(fileNameSpace + YearElementName);
-            if ( (xYear != null) && (xYear.Value != null))
+            XElement xYear = xPublishInfo.Element(FileNameSpace + YearElementName);
+            if ( (xYear != null))
             {
                 int year;
                 if ( int.TryParse( xYear.Value,out year) )
@@ -139,7 +111,7 @@ namespace FB2Library.HeaderItems
 
             // Load ISBN
             ISBN = null;
-            XElement xISBN = xPublishInfo.Element(fileNameSpace + ISBNElementName);
+            XElement xISBN = xPublishInfo.Element(FileNameSpace + ISBNElementName);
             if (xISBN != null) 
             {
                 ISBN = new TextFieldType();
@@ -154,11 +126,11 @@ namespace FB2Library.HeaderItems
             }
 
             // Load sequence here
-            sequences.Clear();
-            IEnumerable<XElement> xSequences = xPublishInfo.Elements(fileNameSpace + SequenceType.SequenceElementName);
+            ItemSequences.Clear();
+            IEnumerable<XElement> xSequences = xPublishInfo.Elements(FileNameSpace + SequenceType.SequenceElementName);
             foreach (var xSequence in xSequences)
             {
-                SequenceType sec = new SequenceType();
+                var sec = new SequenceType();
                 try
                 {
                     sec.Load(xSequence);
@@ -174,11 +146,11 @@ namespace FB2Library.HeaderItems
 
         public XElement ToXML()
         {
-            XElement xPublishInfo = new XElement(Fb2Const.fb2DefaultNamespace + PublishInfoElementName);
+            var xPublishInfo = new XElement(Fb2Const.fb2DefaultNamespace + PublishInfoElementName);
 
-            if (BookName != null)
+            if (BookTitle != null)
             {
-                xPublishInfo.Add(BookName.ToXML(BookNameElementName));
+                xPublishInfo.Add(BookTitle.ToXML(BookNameElementName));
             }
             if (Publisher != null)
             {
@@ -196,7 +168,7 @@ namespace FB2Library.HeaderItems
             {
                 xPublishInfo.Add(ISBN.ToXML(ISBNElementName));
             }
-            foreach (SequenceType sec in sequences)
+            foreach (SequenceType sec in ItemSequences)
             {
                 xPublishInfo.Add(sec.ToXML());
             }
