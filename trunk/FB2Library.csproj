@@ -149,6 +149,7 @@
     <Compile Include="Elements\InternalLinkItem.cs" />
     <Compile Include="HeaderItems\CustomInfo.cs" />
     <Compile Include="HeaderItems\ItemDocumentInfo.cs" />
+    <Compile Include="HeaderItems\ItemInfoBase.cs" />
     <Compile Include="HeaderItems\ItemPublishInfo.cs" />
     <Compile Include="HeaderItems\ItemTitleInfo.cs" />
     <Compile Include="Elements\ParagraphItem.cs" />
