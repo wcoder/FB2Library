@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using FB2Library.Elements.Poem;
 using FB2Library.Elements.Table;
@@ -14,37 +11,37 @@ namespace FB2Library.Elements
     {
         internal const string Fb2TextSectionElementName = "section";
 
-        private readonly List<IFb2TextItem> content = new List<IFb2TextItem>();
-        private readonly List<EpigraphItem> epigraphs = new List<EpigraphItem>();
+        private readonly List<IFb2TextItem> _content = new List<IFb2TextItem>();
+        private readonly List<EpigraphItem> _epigraphs = new List<EpigraphItem>();
 
         // "pointers" top all section's subsections
-        private readonly List<SectionItem> subSections = new List<SectionItem>();
+        private readonly List<SectionItem> _subSections = new List<SectionItem>();
 
         // "pointers" to all section's images
-        private readonly List<ImageItem> images = new List<ImageItem>();
+        private readonly List<ImageItem> _images = new List<ImageItem>();
 
         // section images for the section
-        private readonly List<ImageItem> sectionImages = new List<ImageItem>();
+        private readonly List<ImageItem> _sectionImages = new List<ImageItem>();
         
 
 
 
 
-        public List<EpigraphItem> Epigraphs { get { return epigraphs; } }
+        public List<EpigraphItem> Epigraphs { get { return _epigraphs; } }
 
         public TitleItem Title { get; set; }
 
-        public List<IFb2TextItem> Content { get { return content; } }
+        public List<IFb2TextItem> Content { get { return _content; } }
 
-        public List<ImageItem> SectionImages { get { return sectionImages; } }
+        public List<ImageItem> SectionImages { get { return _sectionImages; } }
 
         public AnnotationItem Annotation { get; set; }
 
         public string ID { get; set; }
 
-        public List<SectionItem> SubSections { get { return subSections; } }
+        public List<SectionItem> SubSections { get { return _subSections; } }
 
-        public List<ImageItem> Images { get { return images; } }
+        public List<ImageItem> Images { get { return _images; } }
 
         public string Lang { get; set;}
 
@@ -84,7 +81,7 @@ namespace FB2Library.Elements
                 try
                 {
                     epigraph.Load(xEpigraph);
-                    epigraphs.Add(epigraph);
+                    _epigraphs.Add(epigraph);
                 }
                 catch (Exception ex)
                 {
@@ -116,7 +113,7 @@ namespace FB2Library.Elements
                         try
                         {
                             paragraph.Load(xElement);
-                            content.Add(paragraph);
+                            _content.Add(paragraph);
                         }
                         catch (Exception ex)
                         {
@@ -128,7 +125,7 @@ namespace FB2Library.Elements
                         try
                         {
                             poem.Load(xElement);
-                            content.Add(poem);
+                            _content.Add(poem);
                         }
                         catch (Exception ex)
                         {
@@ -152,7 +149,7 @@ namespace FB2Library.Elements
                         try
                         {
                             subtitle.Load(xElement);
-                            content.Add(subtitle);
+                            _content.Add(subtitle);
                         }
                         catch (Exception ex)
                         {
@@ -164,7 +161,7 @@ namespace FB2Library.Elements
                         try
                         {
                             cite.Load(xElement);
-                            content.Add(cite);
+                            _content.Add(cite);
                         }
                         catch (Exception ex)
                         {
@@ -173,14 +170,14 @@ namespace FB2Library.Elements
                         break;
                     case EmptyLineItem.Fb2EmptyLineElementName:
                         EmptyLineItem eline = new EmptyLineItem();
-                        content.Add(eline);
+                        _content.Add(eline);
                         break;
                     case TableItem.Fb2TableElementName:
                         TableItem table = new TableItem();
                         try
                         {
                             table.Load(xElement);
-                            content.Add(table);
+                            _content.Add(table);
                         }
                         catch (Exception ex)
                         {
@@ -213,28 +210,28 @@ namespace FB2Library.Elements
                             {
                                 SimpleText text = new SimpleText {Text = xElement.Value};
                                 tempParagraph.ParagraphData.Add(text);
-                                content.Add(tempParagraph);
+                                _content.Add(tempParagraph);
                             }
-                            catch (Exception)
+                            catch
                             {
-
-                            }                           
+                                // ignored
+                            }
                         }
-                        Debug.Fail(string.Format("AnnotationItem:Load - invalid element <{0}> encountered in title .", xElement.Name.LocalName));
+                        Debug.Print("AnnotationItem:Load - invalid element <{0}> encountered in title .", xElement.Name.LocalName);
                         break;
                 }
             }
 
             ID = null;
             XAttribute xID = xSection.Attribute("id");
-            if ((xID != null) && (xID.Value != null))
+            if ((xID != null))
             {
                 ID = xID.Value;
             }
 
             Lang = null;
             XAttribute xLang = xSection.Attribute(XNamespace.Xml + "lang");
-            if ((xLang != null)&&(xLang.Value != null))
+            if ((xLang != null))
             {
                 Lang = xLang.Value;
             }
@@ -242,11 +239,11 @@ namespace FB2Library.Elements
 
         private void ClearAll()
         {
-            content.Clear();
-            subSections.Clear();
-            images.Clear();
-            sectionImages.Clear();
-            epigraphs.Clear();
+            _content.Clear();
+            _subSections.Clear();
+            _images.Clear();
+            _sectionImages.Clear();
+            _epigraphs.Clear();
             ID = null;
             Annotation = null;
             Title = null;
@@ -254,20 +251,20 @@ namespace FB2Library.Elements
 
         private void AddImage(ImageItem image)
         {
-            content.Add(image);
-            images.Add(image);
+            _content.Add(image);
+            _images.Add(image);
             DetectSectionImage(image);
         }
 
         private void DetectSectionImage(ImageItem image)
         {
-            foreach (var item in content)
+            foreach (var item in _content)
             {
                 if (item.GetType() == typeof(ImageItem)) // if we have an image
                 {
                     if (item == image) // if the item we currently lookin at is our image, means it at start and it's a section image
                     {
-                        sectionImages.Add(image); // add it to list of section images
+                        _sectionImages.Add(image); // add it to list of section images
                         return;                       
                     }
                     continue; // skip to next item in list
@@ -290,8 +287,8 @@ namespace FB2Library.Elements
 
         private void AddSection(SectionItem section)
         {
-            content.Add(section);
-            subSections.Add(section);
+            _content.Add(section);
+            _subSections.Add(section);
         }
 
         public XNode ToXML()
@@ -310,9 +307,9 @@ namespace FB2Library.Elements
             {
                 xSection.Add(Title.ToXML());
             }
-            foreach (EpigraphItem EpItem in epigraphs)
+            foreach (EpigraphItem epItem in _epigraphs)
             {
-                xSection.Add(EpItem.ToXML());
+                xSection.Add(epItem.ToXML());
             }
             if (SectionImages.Count != 0)
             {
@@ -326,9 +323,9 @@ namespace FB2Library.Elements
             {
                 xSection.Add(Annotation.ToXML());
             }
-            foreach (IFb2TextItem ContItem in content)
+            foreach (IFb2TextItem contItem in _content)
             {
-                xSection.Add(ContItem.ToXML());
+                xSection.Add(contItem.ToXML());
             }
 
             return xSection;
