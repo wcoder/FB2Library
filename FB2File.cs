@@ -103,7 +103,7 @@ namespace FB2Library
 
 
             _styles.Clear();
-            IEnumerable<XElement> xStyles = fileDocument.Elements(_fileNameSpace + StyleElement.StyleElementName);
+            IEnumerable<XElement> xStyles = fileDocument.Elements(_fileNameSpace + StyleElement.StyleElementName).ToArray();
             // attempt to load some bad FB2 with wrong namespace
             if (!xStyles.Any())
             {
@@ -117,9 +117,9 @@ namespace FB2Library
                     element.Load(style);
                     _styles.Add(element);
                 }
-                catch (Exception)
+                catch
                 {
-                    continue;
+                    // ignored
                 }
             }
 
@@ -129,25 +129,28 @@ namespace FB2Library
             {
                 XNamespace namespaceUsed = _fileNameSpace;
                 // Load body elements (first is main text)
-                IEnumerable<XElement> xBodys = fileDocument.Root.Elements(_fileNameSpace + Fb2TextBodyElementName);
-                // try to read some badly formatted FB2 files
-                if (!xBodys.Any())
+                if (fileDocument.Root != null)
                 {
-                    namespaceUsed = "";
-                    xBodys = fileDocument.Root.Elements(namespaceUsed + Fb2TextBodyElementName);
-                }
-                foreach (var body in xBodys)
-                {
-                    var bodyItem = new BodyItem() { NameSpace = namespaceUsed };
-                    try
+                    IEnumerable<XElement> xBodys = fileDocument.Root.Elements(_fileNameSpace + Fb2TextBodyElementName).ToArray();
+                    // try to read some badly formatted FB2 files
+                    if (!xBodys.Any())
                     {
-                        bodyItem.Load(body);
+                        namespaceUsed = "";
+                        xBodys = fileDocument.Root.Elements(namespaceUsed + Fb2TextBodyElementName);
                     }
-                    catch (Exception)
+                    foreach (var body in xBodys)
                     {
-                        continue;
+                        var bodyItem = new BodyItem() { NameSpace = namespaceUsed };
+                        try
+                        {
+                            bodyItem.Load(body);
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+                        _bodiesList.Add(bodyItem);
                     }
-                    _bodiesList.Add(bodyItem);
                 }
                 if (_bodiesList.Count > 0)
                 {
@@ -156,27 +159,29 @@ namespace FB2Library
 
 
                 // Load binaries sections (currently images only)
-                IEnumerable<XElement> xBinaryes = fileDocument.Root.Elements(namespaceUsed + Fb2BinaryElementName);
-                if (!xBinaryes.Any())
+                if (fileDocument.Root != null)
                 {
-                    xBinaryes = fileDocument.Root.Elements(Fb2BinaryElementName);
-                }
-                foreach (var binarye in xBinaryes)
-                {
-                    var item = new BinaryItem();
-                    try
+                    IEnumerable<XElement> xBinaryes = fileDocument.Root.Elements(namespaceUsed + Fb2BinaryElementName).ToArray();
+                    if (!xBinaryes.Any())
                     {
-                        item.Load(binarye);
+                        xBinaryes = fileDocument.Root.Elements(Fb2BinaryElementName);
                     }
-                    catch (Exception)
+                    foreach (var binarye in xBinaryes)
                     {
-                        
-                        continue;
-                    }
-                    // add just unique IDs to fix some invalid FB2s 
-                    if (!_binaryObjects.ContainsKey(item.Id))
-                    {
-                        _binaryObjects.Add(item.Id, item);                        
+                        var item = new BinaryItem();
+                        try
+                        {
+                            item.Load(binarye);
+                        }
+                        catch
+                        {                       
+                            continue;
+                        }
+                        // add just unique IDs to fix some invalid FB2s 
+                        if (!_binaryObjects.ContainsKey(item.Id))
+                        {
+                            _binaryObjects.Add(item.Id, item);                        
+                        }
                     }
                 }
             }
@@ -214,7 +219,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(string.Format("Error reading title info : {0}", ex.Message));
+                        Debug.Print("Error reading title info : {0}", ex.Message);
                     }
 
                 }
@@ -230,7 +235,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(string.Format("Error reading source title info : {0}", ex.Message));
+                        Debug.Print("Error reading source title info : {0}", ex.Message);
                     }
                 }
 
@@ -245,7 +250,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(string.Format("Error reading document info : {0}", ex.Message));
+                        Debug.Print("Error reading document info : {0}", ex.Message);
                     }
                 }
 
@@ -260,7 +265,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(string.Format("Error reading publishing info : {0}", ex.Message));
+                        Debug.Print("Error reading publishing info : {0}", ex.Message);
                     }
                 }
 
@@ -275,7 +280,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(string.Format("Error reading custom info : {0}", ex.Message));
+                        Debug.Print("Error reading custom info : {0}", ex.Message);
                     }
                 }
 
@@ -297,8 +302,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(string.Format("Error reading output instructions : {0}", ex.Message));
-                        continue;
+                        Debug.Print("Error reading output instructions : {0}", ex);
                     }
                     finally
                     {
@@ -360,8 +364,7 @@ namespace FB2Library
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Error converting style data to XML: {0}", ex.Message));
-                    continue;
+                    Debug.Print("Error converting style data to XML: {0}", ex);
                 }
             }
 
@@ -374,7 +377,7 @@ namespace FB2Library
             }
             catch (Exception ex)
             {
-                Debug.Fail(string.Format("Error converting TitleInfo data to XML: {0}", ex.Message));
+                Debug.Print("Error converting TitleInfo data to XML: {0}", ex.Message);
             }
 
             if (_srcTitleInfo.BookTitle!=null)
@@ -385,7 +388,7 @@ namespace FB2Library
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Error converting SrcTitleInfo data to XML: {0}", ex.Message));
+                    Debug.Print("Error converting SrcTitleInfo data to XML: {0}", ex.Message);
                 }
             }
 
@@ -395,7 +398,7 @@ namespace FB2Library
             }
             catch (Exception ex)
             {
-                Debug.Fail(string.Format("Error converting DocumentInfo data to XML: {0}", ex.Message));
+                Debug.Print("Error converting DocumentInfo data to XML: {0}", ex.Message);
             }
 
             xDescription.Add(_publishInfo.ToXML());

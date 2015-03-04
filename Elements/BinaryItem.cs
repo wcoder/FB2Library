@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
@@ -87,13 +84,13 @@ namespace FB2Library.Elements
             ContentType = content;
         }
 
-        private void DetectContentType(out ContentTypeEnum contentType, byte[] BinaryData)
+        private void DetectContentType(out ContentTypeEnum contentType, byte[] binaryData)
         {
             contentType = ContentTypeEnum.ContentTypeUnknown;
             try
             {
 
-                using (MemoryStream imgStream = new MemoryStream(BinaryData))
+                using (MemoryStream imgStream = new MemoryStream(binaryData))
                 {
                     using (Bitmap bitmap = new Bitmap(imgStream))
                     {
@@ -115,7 +112,7 @@ namespace FB2Library.Elements
             catch (Exception ex)
             {
 
-                throw new Exception(string.Format("Error during image type detection: {0}",ex.Message));
+                throw new Exception(string.Format("Error during image type detection: {0}",ex),ex);
             }
 
         }
