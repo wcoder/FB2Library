@@ -69,7 +69,7 @@ namespace FB2Library.Elements
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Failed to load section title : {0}.", ex.Message));
+                    Debug.WriteLine(string.Format("Failed to load section title : {0}.", ex.Message));
                 }
             }
             
@@ -85,7 +85,7 @@ namespace FB2Library.Elements
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Failed to load section epigraph : {0}.", ex.Message));
+                    Debug.WriteLine(string.Format("Failed to load section epigraph : {0}.", ex.Message));
                 }
             }
 
@@ -99,7 +99,7 @@ namespace FB2Library.Elements
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Failed to load section annotation : {0}.", ex.Message));
+                    Debug.WriteLine(string.Format("Failed to load section annotation : {0}.", ex.Message));
                 }
             }
 
@@ -117,7 +117,7 @@ namespace FB2Library.Elements
                         }
                         catch (Exception ex)
                         {
-                            Debug.Fail(string.Format("Failed to load section paragraph : {0}.", ex.Message));
+                            Debug.WriteLine(string.Format("Failed to load section paragraph : {0}.", ex.Message));
                         }
                         break;
                     case PoemItem.Fb2PoemElementName:
@@ -129,7 +129,7 @@ namespace FB2Library.Elements
                         }
                         catch (Exception ex)
                         {
-                            Debug.Fail(string.Format("Failed to load section poem : {0}.", ex.Message));
+                            Debug.WriteLine(string.Format("Failed to load section poem : {0}.", ex.Message));
                         }
                         break;
                     case ImageItem.Fb2ImageElementName:
@@ -141,7 +141,7 @@ namespace FB2Library.Elements
                         }
                         catch (Exception ex)
                         {
-                            Debug.Fail(string.Format("Failed to load section image : {0}.", ex.Message));
+                            Debug.WriteLine(string.Format("Failed to load section image : {0}.", ex.Message));
                         }
                         break;
                     case SubTitleItem.Fb2SubtitleElementName:
@@ -153,7 +153,7 @@ namespace FB2Library.Elements
                         }
                         catch (Exception ex)
                         {
-                            Debug.Fail(string.Format("Failed to load section subtitle : {0}.", ex.Message));
+                            Debug.WriteLine(string.Format("Failed to load section subtitle : {0}.", ex.Message));
                         }
                         break;
                     case CiteItem.Fb2CiteElementName:
@@ -165,7 +165,7 @@ namespace FB2Library.Elements
                         }
                         catch (Exception ex)
                         {
-                            Debug.Fail(string.Format("Failed to load section citation : {0}.", ex.Message));
+                            Debug.WriteLine(string.Format("Failed to load section citation : {0}.", ex.Message));
                         }
                         break;
                     case EmptyLineItem.Fb2EmptyLineElementName:
@@ -181,7 +181,7 @@ namespace FB2Library.Elements
                         }
                         catch (Exception ex)
                         {
-                            Debug.Fail(string.Format("Failed to load section emptly line : {0}.", ex.Message));
+                            Debug.WriteLine(string.Format("Failed to load section emptly line : {0}.", ex.Message));
                         }
                         break;
                     case Fb2TextSectionElementName: // internal <section> read recurive
@@ -193,7 +193,7 @@ namespace FB2Library.Elements
                         }
                         catch (Exception ex)
                         {
-                            Debug.Fail(string.Format("Failed to load sub-section : {0}.", ex.Message));
+                            Debug.WriteLine(string.Format("Failed to load sub-section : {0}.", ex.Message));
                         }
                         break;
                     case AnnotationItem.Fb2AnnotationItemName: // already processed

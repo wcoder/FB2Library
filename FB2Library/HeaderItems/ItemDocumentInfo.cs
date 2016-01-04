@@ -138,7 +138,7 @@ namespace FB2Library.HeaderItems
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(string.Format("Error reading document authors : {0}",ex.Message));
+                        Debug.WriteLine(string.Format("Error reading document authors : {0}",ex.Message));
                         continue;
                     }
                 }
@@ -156,7 +156,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Error reading program used to create : {0}", ex.Message));
+                    Debug.WriteLine(string.Format("Error reading program used to create : {0}", ex.Message));
                 }
             }
 
@@ -172,7 +172,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Error reading document date : {0}", ex.Message));
+                    Debug.WriteLine(string.Format("Error reading document date : {0}", ex.Message));
                 }
             }
 
@@ -203,7 +203,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Error reading source OCR : {0}", ex.Message));
+                    Debug.WriteLine(string.Format("Error reading source OCR : {0}", ex.Message));
                 }
             }
 
@@ -229,7 +229,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch(FormatException ex)
                 {
-                    Debug.Fail(string.Format("Error reading document version : {0}", ex.Message));
+                    Debug.WriteLine(string.Format("Error reading document version : {0}", ex.Message));
                 }
             }
 
@@ -245,7 +245,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.Fail(string.Format("Error reading document history : {0}", ex.Message));
+                    Debug.WriteLine(string.Format("Error reading document history : {0}", ex.Message));
                 }
             }
 
@@ -264,7 +264,7 @@ namespace FB2Library.HeaderItems
                     }
                     catch (Exception ex)
                     {
-                        Debug.Fail(string.Format("Error reading document publishers : {0}", ex.Message));
+                        Debug.WriteLine(string.Format("Error reading document publishers : {0}", ex.Message));
                         continue;
                     }
                 }
