@@ -80,7 +80,7 @@ namespace FB2Library.Elements
             }
             if (!DateValue.Equals(DateTime.MinValue))
             {
-                xDate.Add(new XAttribute("value", DateValue.ToShortDateString()));
+                xDate.Add(new XAttribute("value", DateValue.ToString("d")));
             }
             return xDate;
         }

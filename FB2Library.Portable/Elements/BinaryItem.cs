@@ -1,9 +1,7 @@
-﻿using System;
+﻿using FB2Library.Portable;
+using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Xml.Linq;
-using Windows.Graphics.Imaging;
 
 namespace FB2Library.Elements
 {
@@ -74,70 +72,49 @@ namespace FB2Library.Elements
             }
             BinaryData = Convert.FromBase64String(binarye.Value);
             ContentTypeEnum content;
-			// try to detect type , this will detect for unknown and fix for wrongly set
-			DetectContentType(BinaryData).ContinueWith(t => {
-
-				// if we were not able to detect type and type was not set
-				if (t.Result == ContentTypeEnum.ContentTypeUnknown && ContentType == ContentTypeEnum.ContentTypeUnknown)
-				{
-					// then we throw exception
-					throw new Exception("Unknown image content type passed");
-				}
-				ContentType = t.Result;
-
-			});
+            // try to detect type , this will detect for unknown and fix for wrongly set
+            DetectContentType(out content, BinaryData);
+            // if we were not able to detect type and type was not set
+            if (content == ContentTypeEnum.ContentTypeUnknown && ContentType == ContentTypeEnum.ContentTypeUnknown)
+            {
+                // then we throw exception
+                throw new Exception("Unknown image content type passed");
+            }
+            ContentType = content;
         }
-
-        private async Task<ContentTypeEnum> DetectContentType(byte[] binaryData)
+		
+        private void DetectContentType(out ContentTypeEnum contentType, byte[] binaryData)
         {
-            var contentType = ContentTypeEnum.ContentTypeUnknown;
+            contentType = ContentTypeEnum.ContentTypeUnknown;
             try
             {
-				using (MemoryStream imgStream = new MemoryStream(binaryData))
+                using (MemoryStream imgStream = new MemoryStream(binaryData))
                 {
-					var image = await BitmapDecoder.CreateAsync(imgStream.AsRandomAccessStream());
+					contentType = CrossDrawing.Current.GetImageType(imgStream);
 
-					var ct = image.DecoderInformation.MimeTypes.First();
-
-					switch (ct)
-					{
-						case "image/jpg":
-							contentType = ContentTypeEnum.ContentTypeJpeg;
-							break;
-						case "image/png":
-							contentType = ContentTypeEnum.ContentTypePng;
-							break;
-						case "image/gif":
-							contentType = ContentTypeEnum.ContentTypeGif;
-							break;
-						default:
-							contentType = ContentTypeEnum.ContentTypeUnknown;
-							break;
-					}
-
-					//using (Bitmap bitmap = new Bitmap(imgStream))
-					//               {
-					//                   if (bitmap.RawFormat.Equals(ImageFormat.Jpeg))
-					//                   {
-					//                       contentType = ContentTypeEnum.ContentTypeJpeg;
-					//                   }
-					//                   else if (bitmap.RawFormat.Equals(ImageFormat.Png))
-					//                   {
-					//                       contentType = ContentTypeEnum.ContentTypePng;
-					//                   }
-					//                   else if (bitmap.RawFormat.Equals(ImageFormat.Gif))
-					//                   {
-					//                       contentType = ContentTypeEnum.ContentTypeGif;
-					//                   }
-					//               }
-				}
+                    //using (Bitmap bitmap = new Bitmap(imgStream))
+                    //{
+                    //    if (bitmap.RawFormat.Equals(ImageFormat.Jpeg))
+                    //    {
+                    //        contentType = ContentTypeEnum.ContentTypeJpeg;
+                    //    }
+                    //    else if (bitmap.RawFormat.Equals(ImageFormat.Png))
+                    //    {
+                    //        contentType = ContentTypeEnum.ContentTypePng;
+                    //    }
+                    //    else if (bitmap.RawFormat.Equals(ImageFormat.Gif))
+                    //    {
+                    //        contentType = ContentTypeEnum.ContentTypeGif;
+                    //    }
+                    //}
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(string.Format("Error during image type detection: {0}",ex),ex);
             }
-			return contentType;
-		}
+
+        }
 
         protected string GetXContentType()
         {

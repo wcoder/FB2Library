@@ -219,7 +219,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Print("Error reading title info : {0}", ex.Message);
+                        Debug.WriteLine("Error reading title info : {0}", ex.Message);
                     }
 
                 }
@@ -235,7 +235,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Print("Error reading source title info : {0}", ex.Message);
+                        Debug.WriteLine("Error reading source title info : {0}", ex.Message);
                     }
                 }
 
@@ -250,7 +250,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Print("Error reading document info : {0}", ex.Message);
+                        Debug.WriteLine("Error reading document info : {0}", ex.Message);
                     }
                 }
 
@@ -265,7 +265,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Print("Error reading publishing info : {0}", ex.Message);
+                        Debug.WriteLine("Error reading publishing info : {0}", ex.Message);
                     }
                 }
 
@@ -280,7 +280,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Print("Error reading custom info : {0}", ex.Message);
+                        Debug.WriteLine("Error reading custom info : {0}", ex.Message);
                     }
                 }
 
@@ -302,7 +302,7 @@ namespace FB2Library
                     }
                     catch (Exception ex)
                     {
-                        Debug.Print("Error reading output instructions : {0}", ex);
+                        Debug.WriteLine("Error reading output instructions : {0}", ex);
                     }
                     finally
                     {
@@ -364,7 +364,7 @@ namespace FB2Library
                 }
                 catch (Exception ex)
                 {
-                    Debug.Print("Error converting style data to XML: {0}", ex);
+                    Debug.WriteLine("Error converting style data to XML: {0}", ex);
                 }
             }
 
@@ -377,7 +377,7 @@ namespace FB2Library
             }
             catch (Exception ex)
             {
-                Debug.Print("Error converting TitleInfo data to XML: {0}", ex.Message);
+                Debug.WriteLine("Error converting TitleInfo data to XML: {0}", ex.Message);
             }
 
             if (_srcTitleInfo.BookTitle!=null)
@@ -388,7 +388,7 @@ namespace FB2Library
                 }
                 catch (Exception ex)
                 {
-                    Debug.Print("Error converting SrcTitleInfo data to XML: {0}", ex.Message);
+                    Debug.WriteLine("Error converting SrcTitleInfo data to XML: {0}", ex.Message);
                 }
             }
 
@@ -398,7 +398,7 @@ namespace FB2Library
             }
             catch (Exception ex)
             {
-                Debug.Print("Error converting DocumentInfo data to XML: {0}", ex.Message);
+                Debug.WriteLine("Error converting DocumentInfo data to XML: {0}", ex.Message);
             }
 
             xDescription.Add(_publishInfo.ToXML());

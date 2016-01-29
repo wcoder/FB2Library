@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using FB2Library.Elements;
 using FB2Library.HeaderItems;
 
-namespace FB2Library
+namespace FB2Library.Portable
 {
     public class FB2File
     {

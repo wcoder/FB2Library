@@ -35,56 +35,20 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\FB2Library.Portable\FB2Library.Portable.csproj">
+      <Project>{e7386310-7853-4bda-ba9c-b3ac465c49d9}</Project>
+      <Name>FB2Library.Portable</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <TargetPlatform Include="Windows, Version=8.1" />
     <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Elements\AnnotationItem.cs" />
-    <Compile Include="Elements\AnnotationType.cs" />
-    <Compile Include="Elements\AuthorItem.cs" />
-    <Compile Include="Elements\AuthorType.cs" />
-    <Compile Include="Elements\BinaryItem.cs" />
-    <Compile Include="Elements\BodyItem.cs" />
-    <Compile Include="Elements\CiteItem.cs" />
-    <Compile Include="Elements\CustomTextFieldType.cs" />
-    <Compile Include="Elements\DateItem.cs" />
-    <Compile Include="Elements\EmptyLineItem.cs" />
-    <Compile Include="Elements\EpigraphItem.cs" />
-    <Compile Include="Elements\FB2Const.cs" />
-    <Compile Include="Elements\FB2TextItem.cs" />
-    <Compile Include="Elements\GenreType.cs" />
-    <Compile Include="Elements\ImageItem.cs" />
-    <Compile Include="Elements\InlineImageItem.cs" />
-    <Compile Include="Elements\InternalLinkItem.cs" />
-    <Compile Include="Elements\OutPutDocumentType.cs" />
-    <Compile Include="Elements\ParagraphItem.cs" />
-    <Compile Include="Elements\PartShareInstructionType.cs" />
-    <Compile Include="Elements\Poem\PoemItem.cs" />
-    <Compile Include="Elements\Poem\StanzaItem.cs" />
-    <Compile Include="Elements\Poem\VPoemParagraph.cs" />
-    <Compile Include="Elements\SectionItem.cs" />
-    <Compile Include="Elements\SequenceType.cs" />
-    <Compile Include="Elements\ShareInstructionType.cs" />
-    <Compile Include="Elements\SimpleText.cs" />
-    <Compile Include="Elements\StyleElement.cs" />
-    <Compile Include="Elements\SubTitleItem.cs" />
-    <Compile Include="Elements\Table\BaseCellElement.cs" />
-    <Compile Include="Elements\Table\TableCellItem.cs" />
-    <Compile Include="Elements\Table\TableHeadingItem.cs" />
-    <Compile Include="Elements\Table\TableItem.cs" />
-    <Compile Include="Elements\Table\TableRowItem.cs" />
-    <Compile Include="Elements\TextAuthorItem.cs" />
-    <Compile Include="Elements\TextFieldType.cs" />
-    <Compile Include="Elements\TitleItem.cs" />
-    <Compile Include="FB2File.cs" />
-    <Compile Include="HeaderItems\CoverPage.cs" />
-    <Compile Include="HeaderItems\CustomInfo.cs" />
-    <Compile Include="HeaderItems\ItemDocumentInfo.cs" />
-    <Compile Include="HeaderItems\ItemInfoBase.cs" />
-    <Compile Include="HeaderItems\ItemPublishInfo.cs" />
-    <Compile Include="HeaderItems\ItemTitleInfo.cs" />
+    <Compile Include="..\FB2Library.Portable\CrossDrawing.cs">
+		<Link>CrossDrawing.cs</Link>
+	</Compile>
+    <Compile Include="DrawingImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

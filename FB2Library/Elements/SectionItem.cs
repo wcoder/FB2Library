@@ -217,7 +217,7 @@ namespace FB2Library.Elements
                                 // ignored
                             }
                         }
-                        Debug.Print("AnnotationItem:Load - invalid element <{0}> encountered in title .", xElement.Name.LocalName);
+                        Debug.WriteLine("AnnotationItem:Load - invalid element <{0}> encountered in title .", xElement.Name.LocalName);
                         break;
                 }
             }
