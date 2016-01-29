@@ -7,10 +7,12 @@ This project provides .Net library to help developers load .FB2 (Fiction Book: h
 ## Supported
 - [x] UWP
 - [x] Universal Windows/WP 8.1
-- [ ] Portable Library
+- [x] Xamarin.iOS
+- [x] Xamarin.Android
 
 ## Authors
 * [lordkiron](https://code.google.com/u/103776563234380142031/) - developed original library
+* [Yauheni Pakala](https://github.com/wcoder) - porting to PCL
 
 ---
 Microsoft Public License
