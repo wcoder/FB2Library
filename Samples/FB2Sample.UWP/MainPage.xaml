@@ -10,7 +10,8 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 		<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 			<Button Content="Choose fb2 file..." Click="Choose_Click"/>
-			
+			<Button Content="Close file" Click="Close_Click" />
+
 			<TextBlock x:Name="textBlock" />
 
 			<TextBlock x:Name="bookInfo" TextWrapping="Wrap" Height="200" Width="200"/>

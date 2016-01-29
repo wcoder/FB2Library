@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -50,33 +48,20 @@ namespace FB2Sample.UWP
 		{
 			using (var s = await file.OpenStreamForReadAsync())
 			{
-				ReadFB2FileStream(s);
+				try
+				{
+					using (var reader = new FB2Reader())
+					{
+						_file = reader.Load(s);
+					}
+				}
+				catch (Exception ex)
+				{
+					bookInfo.Text = string.Format("Error loading file : {0}", ex.Message);
+				}
 			}
 
 			PrepareFile();
-		}
-
-		private void ReadFB2FileStream(Stream s)
-		{
-			XmlReaderSettings settings = new XmlReaderSettings
-			{
-				DtdProcessing = DtdProcessing.Ignore
-			};
-			XDocument fb2Document = null;
-			using (XmlReader reader = XmlReader.Create(s, settings))
-			{
-				fb2Document = XDocument.Load(reader, LoadOptions.PreserveWhitespace);
-			}
-			
-			try
-			{
-				if (_file != null) _file = new FB2File();
-				_file.Load(fb2Document, false);
-			}
-			catch (Exception ex)
-			{
-				bookInfo.Text = string.Format("Error loading file : {0}", ex.Message);
-			}
 		}
 
 		private void PrepareFile()
@@ -85,6 +70,13 @@ namespace FB2Sample.UWP
 			{
 				bookInfo.Text = $"Title: {_file.MainBody.Title.TitleData[0]} {_file.MainBody.Title.TitleData[1]}";
 			}
+		}
+
+		private void Close_Click(object sender, RoutedEventArgs e)
+		{
+			bookInfo.Text = string.Empty;
+			_file = null;
+			textBlock.Text = "Closed";
 		}
 	}
 }
