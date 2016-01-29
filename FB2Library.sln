@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Library.UWindows", "FB2Library.UWindows\FB2Library.UWindows.csproj", "{7733DC17-7724-4292-99EF-A46EC308DC3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Library.UWP", "FB2Library.UWP\FB2Library.UWP.csproj", "{7733DC17-7724-4292-99EF-A46EC308DC3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Library.Win81", "FB2Library.Win81\FB2Library.Win81.csproj", "{128B059E-E5EF-4A73-9954-F5A219831158}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Library.Portable", "FB2Library.Portable\FB2Library.Portable.csproj", "{E7386310-7853-4BDA-BA9C-B3AC465C49D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{695283B8-10CF-4FAC-AE25-20A5AB4D90C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Sample.UWP", "Samples\FB2Sample.UWP\FB2Sample.UWP.csproj", "{4A6A3054-2DA2-49E5-9556-C7F529414FB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,8 +73,33 @@ Global
 		{E7386310-7853-4BDA-BA9C-B3AC465C49D9}.Release|x64.Build.0 = Release|Any CPU
 		{E7386310-7853-4BDA-BA9C-B3AC465C49D9}.Release|x86.ActiveCfg = Release|Any CPU
 		{E7386310-7853-4BDA-BA9C-B3AC465C49D9}.Release|x86.Build.0 = Release|Any CPU
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|Any CPU.Build.0 = Debug|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|Any CPU.Deploy.0 = Debug|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|ARM.Build.0 = Debug|ARM
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|ARM.Deploy.0 = Debug|ARM
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|x64.ActiveCfg = Debug|x64
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|x64.Build.0 = Debug|x64
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|x64.Deploy.0 = Debug|x64
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|x86.ActiveCfg = Debug|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|x86.Build.0 = Debug|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Debug|x86.Deploy.0 = Debug|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|Any CPU.ActiveCfg = Release|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|ARM.ActiveCfg = Release|ARM
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|ARM.Build.0 = Release|ARM
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|ARM.Deploy.0 = Release|ARM
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|x64.ActiveCfg = Release|x64
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|x64.Build.0 = Release|x64
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|x64.Deploy.0 = Release|x64
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|x86.ActiveCfg = Release|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|x86.Build.0 = Release|x86
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4A6A3054-2DA2-49E5-9556-C7F529414FB9} = {695283B8-10CF-4FAC-AE25-20A5AB4D90C6}
 	EndGlobalSection
 EndGlobal
