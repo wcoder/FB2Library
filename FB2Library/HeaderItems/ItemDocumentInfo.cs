@@ -223,7 +223,7 @@ namespace FB2Library.HeaderItems
                 string version = xVersion.Value;
                 try
                 {
-                    var cult = new CultureInfo("", false);
+                    var cult = new CultureInfo("");
 
                     DocumentVersion = float.Parse(version, cult.NumberFormat);
                 }
@@ -300,7 +300,7 @@ namespace FB2Library.HeaderItems
             }
             if(DocumentVersion!=null)
             {
-                var cult = new CultureInfo("", false);
+                var cult = new CultureInfo("");
                 xDocumentInfo.Add(new XElement(Fb2Const.fb2DefaultNamespace + VersionElementName,string.Format(cult.NumberFormat,"{0:F}",DocumentVersion)));
             }
             if(History!=null)

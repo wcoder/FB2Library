@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
@@ -72,50 +69,48 @@ namespace FB2Library.Elements
                 BinaryData= null;
             }
             BinaryData = Convert.FromBase64String(binarye.Value);
-            ContentTypeEnum content;
+            //ContentTypeEnum content;
             // try to detect type , this will detect for unknown and fix for wrongly set
-            DetectContentType(out content, BinaryData);
+            //DetectContentType(out content, BinaryData);
             // if we were not able to detect type and type was not set
-            if (content == ContentTypeEnum.ContentTypeUnknown && ContentType == ContentTypeEnum.ContentTypeUnknown)
-            {
-                // then we throw exception
-                throw new Exception("Unknown image content type passed");
-            }
-            ContentType = content;
+            //if (content == ContentTypeEnum.ContentTypeUnknown && ContentType == ContentTypeEnum.ContentTypeUnknown)
+            //{
+            //    // then we throw exception
+            //    throw new Exception("Unknown image content type passed");
+            //}
+            ContentType = ContentTypeEnum.ContentTypeUnknown; // TODO
         }
+		
+    //    private void DetectContentType(out ContentTypeEnum contentType, byte[] binaryData)
+    //    {
+    //        contentType = ContentTypeEnum.ContentTypeUnknown;
+    //        try
+    //        {
+    //            using (MemoryStream imgStream = new MemoryStream(binaryData))
+    //            {
+				//	using (Bitmap bitmap = new Bitmap(imgStream))
+				//	{
+				//		if (bitmap.RawFormat.Equals(ImageFormat.Jpeg))
+				//		{
+				//			contentType = ContentTypeEnum.ContentTypeJpeg;
+				//		}
+				//		else if (bitmap.RawFormat.Equals(ImageFormat.Png))
+				//		{
+				//			contentType = ContentTypeEnum.ContentTypePng;
+				//		}
+				//		else if (bitmap.RawFormat.Equals(ImageFormat.Gif))
+				//		{
+				//			contentType = ContentTypeEnum.ContentTypeGif;
+				//		}
+				//	}
+				//}
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            throw new Exception(string.Format("Error during image type detection: {0}",ex),ex);
+    //        }
 
-        private void DetectContentType(out ContentTypeEnum contentType, byte[] binaryData)
-        {
-            contentType = ContentTypeEnum.ContentTypeUnknown;
-            try
-            {
-
-                using (MemoryStream imgStream = new MemoryStream(binaryData))
-                {
-                    using (Bitmap bitmap = new Bitmap(imgStream))
-                    {
-                        if (bitmap.RawFormat.Equals(ImageFormat.Jpeg))
-                        {
-                            contentType = ContentTypeEnum.ContentTypeJpeg;
-                        }
-                        else if (bitmap.RawFormat.Equals(ImageFormat.Png))
-                        {
-                            contentType = ContentTypeEnum.ContentTypePng;
-                        }
-                        else if (bitmap.RawFormat.Equals(ImageFormat.Gif))
-                        {
-                            contentType = ContentTypeEnum.ContentTypeGif;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(string.Format("Error during image type detection: {0}",ex),ex);
-            }
-
-        }
+    //    }
 
         protected string GetXContentType()
         {

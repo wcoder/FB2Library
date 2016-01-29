@@ -127,13 +127,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\FB2Library.Portable\FB2Library.Portable.csproj">
-      <Project>{e7386310-7853-4bda-ba9c-b3ac465c49d9}</Project>
-      <Name>FB2Library.Portable</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\FB2Library.UWP\FB2Library.UWP.csproj">
-      <Project>{7733dc17-7724-4292-99ef-a46ec308dc3b}</Project>
-      <Name>FB2Library.UWP</Name>
+    <ProjectReference Include="..\..\FB2Library\FB2Library.csproj">
+      <Project>{718ce136-bcdc-4bf8-9863-adc7633eb2ca}</Project>
+      <Name>FB2Library</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

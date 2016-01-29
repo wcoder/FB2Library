@@ -1,14 +1,13 @@
-﻿using FB2Library.Portable;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Windows.Storage.Pickers;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Storage;
+using FB2Library;
 
 namespace FB2Sample.UWP
 {
