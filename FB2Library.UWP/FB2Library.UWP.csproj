@@ -7,8 +7,8 @@
     <ProjectGuid>{7733DC17-7724-4292-99EF-A46EC308DC3B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FB2Library.UWindows</RootNamespace>
-    <AssemblyName>FB2Library.UWindows</AssemblyName>
+    <RootNamespace>FB2Library.UWP</RootNamespace>
+    <AssemblyName>FB2Library.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
