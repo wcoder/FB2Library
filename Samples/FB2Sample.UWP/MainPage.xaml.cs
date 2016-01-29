@@ -52,7 +52,7 @@ namespace FB2Sample.UWP
 				{
 					using (var reader = new FB2Reader())
 					{
-						_file = reader.Load(s);
+						_file = await reader.LoadAsync(s);
 					}
 				}
 				catch (Exception ex)
