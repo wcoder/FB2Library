@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -24,15 +25,18 @@ namespace FB2Library
 			}
 		}
 
-		public FB2File Load(Stream stream, LoadOptions options = LoadOptions.PreserveWhitespace)
+		public Task<FB2File> LoadAsync(Stream stream, LoadOptions options = LoadOptions.PreserveWhitespace)
 		{
-			var file = new FB2File();
-			using (var reader = XmlReader.Create(stream, _settings))
+			return Task.Factory.StartNew(() =>
 			{
-				var fb2Document = XDocument.Load(reader, options);
-				file.Load(fb2Document, false);
-			}
-			return file;
+				var file = new FB2File();
+				using (var reader = XmlReader.Create(stream, _settings))
+				{
+					var fb2Document = XDocument.Load(reader, options);
+					file.Load(fb2Document, false);
+				}
+				return file;
+			});
 		}
 
 		public void Dispose()
