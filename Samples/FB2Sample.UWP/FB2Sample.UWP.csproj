@@ -98,6 +98,10 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\BookHeader.cs" />
+    <Compile Include="Models\BookImage.cs" />
+    <Compile Include="Models\BookLine.cs" />
+    <Compile Include="Models\BookTextLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
