@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using FB2Library;
 using System.Net.Http;
+using FB2Library.Reader;
 
 namespace FB2Sample.XF
 {
