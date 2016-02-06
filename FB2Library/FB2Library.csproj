@@ -72,7 +72,6 @@
     <Compile Include="Elements\TextFieldType.cs" />
     <Compile Include="Elements\TitleItem.cs" />
     <Compile Include="FB2File.cs" />
-    <Compile Include="FB2Reader.cs" />
     <Compile Include="HeaderItems\CoverPage.cs" />
     <Compile Include="HeaderItems\CustomInfo.cs" />
     <Compile Include="HeaderItems\ItemDocumentInfo.cs" />
