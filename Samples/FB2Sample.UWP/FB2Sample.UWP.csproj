@@ -98,10 +98,6 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\BookHeader.cs" />
-    <Compile Include="Models\BookImage.cs" />
-    <Compile Include="Models\BookLine.cs" />
-    <Compile Include="Models\BookTextLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +127,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FB2Library.Reader\FB2Library.Reader.csproj">
+      <Project>{185940bd-6cc8-4e7b-8658-76b538c875fc}</Project>
+      <Name>FB2Library.Reader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\FB2Library\FB2Library.csproj">
       <Project>{718ce136-bcdc-4bf8-9863-adc7633eb2ca}</Project>
       <Name>FB2Library</Name>

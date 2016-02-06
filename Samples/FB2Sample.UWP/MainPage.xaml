@@ -14,12 +14,15 @@
 		</Grid.ColumnDefinitions>
 
 		<ScrollViewer Grid.Column="0">
-			<StackPanel x:Name="BookContent" />
+			<StackPanel x:Name="bookContent" />
 		</ScrollViewer>
 		
 		<StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+			
 			<Button Content="Choose fb2 file..." Click="Choose_Click"/>
 			<Button Content="Close file" Click="Close_Click" />
+
+			<ProgressRing x:Name="loading" Width="100" Height="100" IsActive="True" Visibility="Collapsed" />
 
 			<TextBlock x:Name="textBlock" />
 
