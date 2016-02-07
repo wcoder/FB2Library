@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("FB2Library.Reader")]
-[assembly: AssemblyCopyright("Copyright © 2016 Yaheni Pakala")]
+[assembly: AssemblyCopyright("Copyright © 2016 Yauheni Pakala")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
