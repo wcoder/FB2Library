@@ -93,7 +93,7 @@ namespace FB2Library.Reader
 				}
 				else
 				{
-					_lines.Add(new TextLine { Text = textItem.ToString() });
+					AddTextLine(textItem.ToString());
 				}
 			}
 		}
@@ -131,9 +131,11 @@ namespace FB2Library.Reader
 			}
 
 			if (textItem is ParagraphItem
-				|| textItem is EmptyLineItem)
+				|| textItem is EmptyLineItem
+				|| textItem is TitleItem
+				|| textItem is SimpleText)
 			{
-				_lines.Add(new TextLine { Text = textItem.ToString() });
+				AddTextLine(textItem.ToString());
 				return;
 			}
 
@@ -150,6 +152,19 @@ namespace FB2Library.Reader
 				return;
 			}
 
+			if (textItem is DateItem)
+			{
+				AddTextLine(((DateItem)textItem).DateValue.ToString());
+				return;
+			}
+
+			if (textItem is EpigraphItem)
+			{
+				var item = (EpigraphItem) textItem;
+				PrepareTextItems(item.EpigraphData);
+				return;
+			}
+
 			throw new Exception(textItem.GetType().ToString());
 		}
 
@@ -162,6 +177,11 @@ namespace FB2Library.Reader
 					_lines.Add(new HeaderLine { Text = title.ToString() });
 				}
 			}
+		}
+
+		protected virtual void AddTextLine(string text)
+		{
+			_lines.Add(new TextLine { Text = text });
 		}
 	}
 }
