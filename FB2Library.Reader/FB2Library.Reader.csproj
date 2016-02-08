@@ -42,10 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FB2Reader.cs" />
-    <Compile Include="LineTypes\BookHeader.cs" />
-    <Compile Include="LineTypes\BookImage.cs" />
-    <Compile Include="LineTypes\IBaseLine.cs" />
-    <Compile Include="LineTypes\BookTextLine.cs" />
+    <Compile Include="Lines\HeaderLine.cs" />
+    <Compile Include="Lines\ImageLine.cs" />
+    <Compile Include="Interfaces\ILine.cs" />
+    <Compile Include="Lines\TextLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

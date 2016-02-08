@@ -8,15 +8,16 @@ using Windows.UI.Xaml.Controls;
 using Windows.Storage;
 using FB2Library;
 using FB2Library.Reader;
-using FB2Library.Reader.LineTypes;
 using Windows.UI.Text;
+using FB2Library.Reader.Interfaces;
+using FB2Library.Reader.Lines;
 
 namespace FB2Sample.UWP
 {
 	public sealed partial class MainPage : Page
 	{
 		private FB2File _file;
-		private IEnumerable<IBaseLine> _lines;
+		private IEnumerable<ILine> _lines;
 
 		public MainPage()
 		{
@@ -61,7 +62,7 @@ namespace FB2Sample.UWP
 					_file = await reader.LoadAsync(s);
 					_lines = await reader.ReadAsync(_file);
 
-					//DisplayLines();
+					DisplayLines();
 				}
 				catch (Exception ex)
 				{
@@ -81,21 +82,21 @@ namespace FB2Sample.UWP
 		{
 			foreach (var line in _lines)
 			{
-				if (line is BookHeader)
+				if (line is HeaderLine)
 				{
 					bookContent.Children.Add(new TextBlock
 					{
 						FontWeight = new FontWeight { Weight = 700 },
-						Text = ((BookHeader)line).Text
+						Text = ((HeaderLine)line).Text
 					});
 				}
-				else if (line is BookTextLine)
+				else if (line is TextLine)
 				{
-					bookContent.Children.Add(new TextBlock { Text = ((BookTextLine)line).Text });
+					bookContent.Children.Add(new TextBlock { Text = ((TextLine)line).Text });
 				}
-				else if (line is BookImage)
+				else if (line is ImageLine)
 				{
-					var image = ((BookImage)line);
+					var image = ((ImageLine)line);
 					bookContent.Children.Add(new Image { Width = 100, Height = 100 });
 				}
 			}

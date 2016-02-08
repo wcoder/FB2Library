@@ -6,14 +6,15 @@ using System.Xml;
 using System.Xml.Linq;
 using FB2Library.Elements;
 using FB2Library.Elements.Poem;
-using FB2Library.Reader.LineTypes;
+using FB2Library.Reader.Interfaces;
+using FB2Library.Reader.Lines;
 
 namespace FB2Library.Reader
 {
 	public class FB2Reader : IDisposable
 	{
 		private XmlReaderSettings _settings;
-		private IList<IBaseLine> _lines;
+		private IList<ILine> _lines;
 		private FB2File _file;
 
 		public FB2Reader(XmlReaderSettings settings = null)
@@ -30,7 +31,7 @@ namespace FB2Library.Reader
 				_settings = settings;
 			}
 
-			_lines = new List<IBaseLine>();
+			_lines = new List<ILine>();
 		}
 
 		public void Dispose()
@@ -54,7 +55,7 @@ namespace FB2Library.Reader
 			});
 		}
 
-		public virtual async Task<IEnumerable<IBaseLine>> ReadAsync(FB2File file)
+		public virtual async Task<IEnumerable<ILine>> ReadAsync(FB2File file)
 		{
 			return await Task.Factory.StartNew(() =>
 			{
@@ -92,7 +93,7 @@ namespace FB2Library.Reader
 				}
 				else
 				{
-					_lines.Add(new BookTextLine { Text = textItem.ToString() });
+					_lines.Add(new TextLine { Text = textItem.ToString() });
 				}
 			}
 		}
@@ -132,7 +133,7 @@ namespace FB2Library.Reader
 			if (textItem is ParagraphItem
 				|| textItem is EmptyLineItem)
 			{
-				_lines.Add(new BookTextLine { Text = textItem.ToString() });
+				_lines.Add(new TextLine { Text = textItem.ToString() });
 				return;
 			}
 
@@ -144,7 +145,7 @@ namespace FB2Library.Reader
 				if (_file.Images.ContainsKey(key))
 				{
 					var data = _file.Images[key].BinaryData;
-					_lines.Add(new BookImage { Data = data });
+					_lines.Add(new ImageLine { Data = data });
 				}
 				return;
 			}
@@ -158,7 +159,7 @@ namespace FB2Library.Reader
 			{
 				foreach (var title in titleItem.TitleData)
 				{
-					_lines.Add(new BookHeader { Text = title.ToString() });
+					_lines.Add(new HeaderLine { Text = title.ToString() });
 				}
 			}
 		}
