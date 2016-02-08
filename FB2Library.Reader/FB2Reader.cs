@@ -13,7 +13,7 @@ namespace FB2Library.Reader
 	public class FB2Reader : IDisposable
 	{
 		private XmlReaderSettings _settings;
-		private List<IBaseLine> _lines;
+		private IList<IBaseLine> _lines;
 		private FB2File _file;
 
 		public FB2Reader(XmlReaderSettings settings = null)
@@ -33,6 +33,13 @@ namespace FB2Library.Reader
 			_lines = new List<IBaseLine>();
 		}
 
+		public void Dispose()
+		{
+			_settings = null;
+			_lines.Clear();
+			_file = null;
+		}
+
 		public Task<FB2File> LoadAsync(Stream stream, LoadOptions options = LoadOptions.PreserveWhitespace)
 		{
 			return Task.Factory.StartNew(() =>
@@ -47,19 +54,7 @@ namespace FB2Library.Reader
 			});
 		}
 
-		public void Dispose()
-		{
-			_settings = null;
-			_lines.Clear();
-		}
-
-
-
-
-
-
-
-		public async Task<IEnumerable<IBaseLine>> ReadAsync(FB2File file)
+		public virtual async Task<IEnumerable<IBaseLine>> ReadAsync(FB2File file)
 		{
 			return await Task.Factory.StartNew(() =>
 			{
@@ -67,21 +62,14 @@ namespace FB2Library.Reader
 
 				if (_file.MainBody != null)
 				{
-					try
-					{
-						PrepareBodies();
-					}
-					catch (Exception e)
-					{
-						throw;
-					}
+					PrepareBodies();
 				}
 
 				return _lines;
 			});
 		}
 
-		private void PrepareBodies()
+		protected virtual void PrepareBodies()
 		{
 			foreach (var bodyItem in _file.Bodies)
 			{
@@ -94,7 +82,7 @@ namespace FB2Library.Reader
 			}
 		}
 
-		private void PrepareTextItems(IEnumerable<IFb2TextItem> textItems)
+		protected virtual void PrepareTextItems(IEnumerable<IFb2TextItem> textItems)
 		{
 			foreach (var textItem in textItems)
 			{
@@ -109,7 +97,7 @@ namespace FB2Library.Reader
 			}
 		}
 
-		private void PrepareTextItem(IFb2TextItem textItem)
+		protected virtual void PrepareTextItem(IFb2TextItem textItem)
 		{
 			if (textItem is CiteItem)
 			{
@@ -164,11 +152,7 @@ namespace FB2Library.Reader
 			throw new Exception(textItem.GetType().ToString());
 		}
 
-
-
-
-
-		private void AddTitle(TitleItem titleItem)
+		protected virtual void AddTitle(TitleItem titleItem)
 		{
 			if (titleItem != null)
 			{
