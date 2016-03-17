@@ -55,6 +55,17 @@ namespace FB2Library.Reader
 			});
 		}
 
+		public Task<FB2File> LoadAsync(string xml)
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				var file = new FB2File();
+				var fb2Document = XDocument.Parse(xml);
+				file.Load(fb2Document, false);
+				return file;
+			});
+		}
+
 		public virtual async Task<IEnumerable<ILine>> ReadAsync(FB2File file)
 		{
 			return await Task.Factory.StartNew(() =>

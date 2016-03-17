@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Text;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -24,6 +25,8 @@ namespace FB2Sample.UWP
 			InitializeComponent();
 
 			_file = new FB2File();
+
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 		}
 
 		private async void Choose_Click(object sender, RoutedEventArgs e)
@@ -59,7 +62,8 @@ namespace FB2Sample.UWP
 				var reader = new FB2Reader();
 				try
 				{
-					_file = await reader.LoadAsync(s);
+					var xml = await GetStringFromStreamAsync(s);
+					_file = await reader.LoadAsync(xml);
 					_lines = await reader.ReadAsync(_file);
 
 					DisplayLines();
@@ -74,9 +78,35 @@ namespace FB2Sample.UWP
 					reader.Dispose();
 				}
 			}
-
-			
 		}
+
+		private async Task<string> GetStringFromStreamAsync(Stream stream)
+		{
+			// get first line
+			var firstLineBuffer = new byte[60];
+			stream.Read(firstLineBuffer, 0, firstLineBuffer.Length);
+			stream.Position = 0;
+			var firstLine = Encoding.UTF8.GetString(firstLineBuffer);
+
+			// create reader
+			StreamReader streamReader;
+			if (firstLine.Contains("windows-1251"))
+			{
+				streamReader = new StreamReader(stream, Encoding.GetEncoding(1251));
+			}
+			else
+			{
+				streamReader = new StreamReader(stream, true);
+			}
+
+			var xml = await streamReader.ReadToEndAsync();
+
+			streamReader.Dispose();
+
+			return xml;
+		}
+
+
 
 		private void DisplayLines()
 		{
@@ -101,6 +131,9 @@ namespace FB2Sample.UWP
 				}
 			}
 		}
+
+	
+
 
 		private void Close_Click(object sender, RoutedEventArgs e)
 		{
