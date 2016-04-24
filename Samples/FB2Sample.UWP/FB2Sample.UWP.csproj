@@ -11,7 +11,7 @@
     <AssemblyName>FB2Sample.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
@@ -127,11 +127,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\FB2Library.Reader\FB2Library.Reader.csproj">
+    <ProjectReference Include="..\..\src\FB2Library.Reader\FB2Library.Reader.csproj">
       <Project>{185940bd-6cc8-4e7b-8658-76b538c875fc}</Project>
       <Name>FB2Library.Reader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\FB2Library\FB2Library.csproj">
+    <ProjectReference Include="..\..\src\FB2Library\FB2Library.csproj">
       <Project>{718ce136-bcdc-4bf8-9863-adc7633eb2ca}</Project>
       <Name>FB2Library</Name>
     </ProjectReference>
