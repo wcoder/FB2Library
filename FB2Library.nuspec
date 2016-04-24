@@ -3,12 +3,12 @@
   <metadata minClientVersion="2.8.1">
     <id>FB2Library</id>
     <version>1.1.0</version>
-    <title>FB2Library - .NET library for read .FB2 ebook files</title>
+    <title>Cross-Platform .NET library for read .FB2 ebook files</title>
     <authors>lordkiron, Yauheni Pakala</authors>
     <owners>Yauheni Pakala</owners>
     <licenseUrl>https://github.com/wcoder/FB2Library/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/wcoder/FB2Library</projectUrl>
-    <iconUrl>http://icons.iconarchive.com/icons/icons8/ios7/72/Files-Fb-2-icon.png</iconUrl>
+    <iconUrl>https://dl.dropboxusercontent.com/u/30506652/nuget/FB2Library.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
      This project provides .Net library to help developers load .FB2 ebook files. This ebook files format is widely acceptable in Russia. If you doing some converter, reader or editor for ebooks and you using one of the .Net languages - this project for you.
@@ -21,8 +21,6 @@
     </dependencies>
   </metadata>
   <files>
-
-    <file src="readme.txt" target="readme.txt" />
 
     <!--Core-->
     <file src="src\FB2Library\bin\Release\FB2Library.dll" target="lib\portable-net45+wp80+wp81+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+Xamarin.Mac20+UAP10\FB2Library.dll" />
