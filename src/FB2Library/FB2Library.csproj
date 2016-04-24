@@ -32,6 +32,7 @@
     <DefineConstants>TRACE;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\FB2Library.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Elements\AnnotationItem.cs" />
