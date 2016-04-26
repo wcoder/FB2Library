@@ -127,10 +127,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FB2Library.Reader\FB2Library.Reader.csproj">
-      <Project>{185940bd-6cc8-4e7b-8658-76b538c875fc}</Project>
-      <Name>FB2Library.Reader</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\FB2Library\FB2Library.csproj">
       <Project>{718ce136-bcdc-4bf8-9863-adc7633eb2ca}</Project>
       <Name>FB2Library</Name>

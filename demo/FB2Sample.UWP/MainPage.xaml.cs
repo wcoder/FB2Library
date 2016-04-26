@@ -2,23 +2,22 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Storage;
 using FB2Library;
-using FB2Library.Reader;
 using Windows.UI.Text;
-using FB2Library.Reader.Interfaces;
-using FB2Library.Reader.Lines;
 
 namespace FB2Sample.UWP
 {
 	public sealed partial class MainPage : Page
 	{
 		private FB2File _file;
-		private IEnumerable<ILine> _lines;
 
 		public MainPage()
 		{
@@ -59,14 +58,12 @@ namespace FB2Sample.UWP
 
 			using (var s = await file.OpenStreamForReadAsync())
 			{
-				var reader = new FB2Reader();
 				try
 				{
 					var xml = await GetStringFromStreamAsync(s);
-					_file = await reader.LoadAsync(xml);
-					_lines = await reader.ReadAsync(_file);
+					_file = await new FB2Reader().ReadAsync(xml);
 
-					DisplayLines();
+					//DisplayLines();
 				}
 				catch (Exception ex)
 				{
@@ -75,10 +72,30 @@ namespace FB2Sample.UWP
 				finally
 				{
 					loading.Visibility = Visibility.Collapsed;
-					reader.Dispose();
 				}
 			}
 		}
+
+		private async Task ReadFB2FileStreamAsync(Stream stream)
+		{
+			// setup
+			var readerSettings = new XmlReaderSettings
+			{
+				DtdProcessing = DtdProcessing.Ignore
+			};
+			var loadSettings = new XmlLoadSettings(readerSettings);
+
+			try
+			{
+				// reading
+				FB2File file = await new FB2Reader().ReadAsync(stream, loadSettings);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(string.Format("Error loading file : {0}", ex.Message));
+			}
+		}
+
 
 		private async Task<string> GetStringFromStreamAsync(Stream stream)
 		{
@@ -108,29 +125,29 @@ namespace FB2Sample.UWP
 
 
 
-		private void DisplayLines()
-		{
-			foreach (var line in _lines)
-			{
-				if (line is HeaderLine)
-				{
-					bookContent.Children.Add(new TextBlock
-					{
-						FontWeight = new FontWeight { Weight = 700 },
-						Text = ((HeaderLine)line).Text
-					});
-				}
-				else if (line is TextLine)
-				{
-					bookContent.Children.Add(new TextBlock { Text = ((TextLine)line).Text });
-				}
-				else if (line is ImageLine)
-				{
-					var image = ((ImageLine)line);
-					bookContent.Children.Add(new Image { Width = 100, Height = 100 });
-				}
-			}
-		}
+		//private void DisplayLines()
+		//{
+		//	foreach (var line in _lines)
+		//	{
+		//		if (line is HeaderLine)
+		//		{
+		//			bookContent.Children.Add(new TextBlock
+		//			{
+		//				FontWeight = new FontWeight { Weight = 700 },
+		//				Text = ((HeaderLine)line).Text
+		//			});
+		//		}
+		//		else if (line is TextLine)
+		//		{
+		//			bookContent.Children.Add(new TextBlock { Text = ((TextLine)line).Text });
+		//		}
+		//		else if (line is ImageLine)
+		//		{
+		//			var image = ((ImageLine)line);
+		//			bookContent.Children.Add(new Image { Width = 100, Height = 100 });
+		//		}
+		//	}
+		//}
 
 	
 
@@ -140,7 +157,7 @@ namespace FB2Sample.UWP
 			bookInfo.Text = string.Empty;
 			textBlock.Text = "Closed";
 			_file = null;
-			_lines = null;
+			//_lines = null;
 			bookContent.Children.Clear();
 		}
 	}
