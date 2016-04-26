@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="2.8.1">
     <id>FB2Library</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>Cross-Platform .NET library for read .FB2 ebook files</title>
     <authors>lordkiron, Yauheni Pakala</authors>
     <owners>Yauheni Pakala</owners>
@@ -14,6 +14,8 @@
      This project provides .Net library to help developers load .FB2 ebook files. This ebook files format is widely acceptable in Russia. If you doing some converter, reader or editor for ebooks and you using one of the .Net languages - this project for you.
     </description>
     <releaseNotes>
+v.1.2 - Added class-reader.
+v.1.1 - Ported to PCL.
     </releaseNotes>
     <summary>This project provides .Net library to help developers load .FB2 ebook files.</summary>
     <tags>xamarin, pcl, xam.pcl, fb2, windows phone, winphone, wp8, winrt, uwp, android, xamarin.forms, ios</tags>
