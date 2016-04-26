@@ -10,6 +10,7 @@ This project provides .Net library to help developers load .FB2 (Fiction Book: h
 
 ## Usage
 * [Gettings started](https://github.com/wcoder/FB2Library/wiki/Usage)
+* [How to make book for reading](https://github.com/wcoder/FB2Library/wiki/How-to-make-book)
 
 ## Supported
 - [x] UWP
