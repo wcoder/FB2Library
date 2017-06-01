@@ -19,8 +19,8 @@ namespace FB2Library
 		/// <returns></returns>
 		public Task<FB2File> ReadAsync(Stream stream, XmlLoadSettings settings)
 		{
-            if (settings == null)
-                throw new ArgumentNullException(nameof(settings));
+			if (settings == null)
+				throw new ArgumentNullException(nameof(settings));
 
             return Task.Factory.StartNew(() =>
 			{
