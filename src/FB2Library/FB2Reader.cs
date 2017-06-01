@@ -22,7 +22,7 @@ namespace FB2Library
 			if (settings == null)
 				throw new ArgumentNullException(nameof(settings));
 
-            return Task.Factory.StartNew(() =>
+			return Task.Factory.StartNew(() =>
 			{
 				var file = new FB2File();
 				using (var reader = XmlReader.Create(stream, settings.ReaderSettings))
