@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -18,6 +19,9 @@ namespace FB2Library
 		/// <returns></returns>
 		public Task<FB2File> ReadAsync(Stream stream, XmlLoadSettings settings)
 		{
+			if (settings == null)
+				throw new ArgumentNullException(nameof(settings));
+
 			return Task.Factory.StartNew(() =>
 			{
 				var file = new FB2File();
