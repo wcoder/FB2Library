@@ -1,4 +1,4 @@
-# FB2Library [![NuGet](https://img.shields.io/nuget/v/FB2Library.svg?label=NuGet)](https://www.nuget.org/packages/FB2Library/)
+# FB2Library [![NuGet Badge](https://buildstats.info/nuget/FB2Library)](https://www.nuget.org/packages/FB2Library/)
 
 This project provides .Net library to help developers load .FB2 (Fiction Book: http://en.wikipedia.org/wiki/FictionBook ) ebook files. This ebook files format is widely acceptable in Russia. If you doing some converter, reader or editor for ebooks and you using one of the .Net languages - this project for you.
 
@@ -7,6 +7,10 @@ This project provides .Net library to help developers load .FB2 (Fiction Book: h
 ## Installation
 * Available on NuGet: https://www.nuget.org/packages/FB2Library 
 * Install into your PCL project or Client projects.
+
+```
+Install-Package FB2Library
+```
 
 ## Usage
 * [Gettings started](https://github.com/wcoder/FB2Library/wiki/Usage)
