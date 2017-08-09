@@ -7,14 +7,14 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="33eecefb-a10d-45cc-8168-726bfbe25545"
+    Name="3b0e90e9-9a3b-4a57-93d9-58e543bd5412"
     Publisher="CN=yauhe"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="33eecefb-a10d-45cc-8168-726bfbe25545" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="3b0e90e9-9a3b-4a57-93d9-58e543bd5412" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>FB2Sample.UWP</DisplayName>
+    <DisplayName>FB2Library.Sample.UWP</DisplayName>
     <PublisherDisplayName>yauhe</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="FB2Sample.UWP.App">
+      EntryPoint="FB2Library.Sample.UWP.App">
       <uap:VisualElements
-        DisplayName="FB2Sample.UWP"
+        DisplayName="FB2Library.Sample.UWP"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="FB2Sample.UWP"
+        Description="FB2Library.Sample.UWP"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

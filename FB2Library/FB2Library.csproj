@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <Version>1.3</Version>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Authors>lordkiron, Yauheni Pakala</Authors>
+    <PackageLicenseUrl>https://github.com/wcoder/FB2Library/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/wcoder/FB2Library</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/wcoder/FB2Library/master/nuget/icon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/wcoder/FB2Library</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>netstandard, pcl, fb2, ebook, windows, uwp, android, ios, linux, macos, xamarin, xamarin.forms</PackageTags>
+    <PackageReleaseNotes>v.1.3 - Ported to .Net Standard Library
+v.1.2.1 - Merge pull request from g0rdan/master https://github.com/wcoder/FB2Library/pull/3
+v.1.2 - Added class-reader.
+v.1.1 - Ported to PCL.</PackageReleaseNotes>
+    <Description>Cross-Platform .NET library for read .FB2 ebook files This ebook files format is widely acceptable in Russia. If you doing some converter, reader or editor for ebooks and you using one of the .Net languages - this project for you.</Description>
+    <Product></Product>
+    <PackageTitle>Cross-Platform .NET library for read .FB2 ebook files</PackageTitle>
+    <Company />
+    <Copyright>Copyright (c) 2009-2015 lordkiron / 2016 Yauheni Pakala</Copyright>
+    <AssemblyVersion>1.2.1.0</AssemblyVersion>
+    <FileVersion>1.2.1.0</FileVersion>
+  </PropertyGroup>
+</Project>
