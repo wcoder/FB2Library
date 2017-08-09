@@ -18,7 +18,7 @@ Install-Package FB2Library
 
 ## Platform Support
 
-Everything that supports [.Net standard library 1.0](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.0.md):
+Everything that supports [.NET Standard 1.0](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.0.md):
 * .NET Core 1.0
 * .NET Framework 4.5
 * Mono
