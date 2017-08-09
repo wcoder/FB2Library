@@ -16,11 +16,18 @@ Install-Package FB2Library
 * [Gettings started](https://github.com/wcoder/FB2Library/wiki/Usage)
 * [How to make book for reading](https://github.com/wcoder/FB2Library/wiki/How-to-make-book)
 
-## Supported
-- [x] UWP
-- [x] Universal Windows/WP 8.1
-- [x] Xamarin.iOS
-- [x] Xamarin.Android
+## Platform Support
+
+Everything that supports [.Net standard library 1.0](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.0.md):
+* .NET Core 1.0
+* .NET Framework 4.5
+* Mono
+* Xamarin.iOS
+* Xamarin.Android
+* Universal Windows Platform 10
+* Windows 8.0
+* Windows Phone 8.1
+* Windows Phone Silverlight 8.0
 
 ## Authors
 * [lordkiron](https://code.google.com/u/103776563234380142031/) - developed original library
