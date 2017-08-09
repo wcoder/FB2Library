@@ -1,20 +1,21 @@
 ﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.Storage;
-using FB2Library;
-using Windows.UI.Text;
 
-namespace FB2Sample.UWP
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+
+namespace FB2Library.Sample.UWP
 {
+	/// <summary>
+	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// </summary>
 	public sealed partial class MainPage : Page
 	{
 		private FB2File _file;
@@ -123,42 +124,13 @@ namespace FB2Sample.UWP
 			return xml;
 		}
 
-
-
-		//private void DisplayLines()
-		//{
-		//	foreach (var line in _lines)
-		//	{
-		//		if (line is HeaderLine)
-		//		{
-		//			bookContent.Children.Add(new TextBlock
-		//			{
-		//				FontWeight = new FontWeight { Weight = 700 },
-		//				Text = ((HeaderLine)line).Text
-		//			});
-		//		}
-		//		else if (line is TextLine)
-		//		{
-		//			bookContent.Children.Add(new TextBlock { Text = ((TextLine)line).Text });
-		//		}
-		//		else if (line is ImageLine)
-		//		{
-		//			var image = ((ImageLine)line);
-		//			bookContent.Children.Add(new Image { Width = 100, Height = 100 });
-		//		}
-		//	}
-		//}
-
-	
-
-
 		private void Close_Click(object sender, RoutedEventArgs e)
 		{
 			bookInfo.Text = string.Empty;
 			textBlock.Text = "Closed";
 			_file = null;
-			//_lines = null;
-			bookContent.Children.Clear();
+
+			GC.Collect();
 		}
 	}
 }

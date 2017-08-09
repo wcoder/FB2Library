@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="FB2Sample.UWP.App"
+    x:Class="FB2Library.Sample.UWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:FB2Sample.UWP"
+    xmlns:local="using:FB2Library.Sample.UWP"
     RequestedTheme="Light">
 
 </Application>
