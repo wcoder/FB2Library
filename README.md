@@ -11,6 +11,11 @@ This project provides .Net library to help developers load .FB2 (Fiction Book: h
 ```
 Install-Package FB2Library
 ```
+or
+```
+dotnet add package FB2Library
+```
+
 
 ## Usage
 * [Gettings started](https://github.com/wcoder/FB2Library/wiki/Usage)
