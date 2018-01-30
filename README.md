@@ -35,8 +35,8 @@ Everything that supports [.NET Standard 1.0](https://github.com/dotnet/standard/
 * Windows Phone Silverlight 8.0
 
 ## Authors
-* [lordkiron](https://code.google.com/u/103776563234380142031/) - developed original library
-* [Yauheni Pakala](https://github.com/wcoder) - porting to PCL
+* [lordkiron](https://github.com/lordkiron) - developed original library
+* [Yauheni Pakala](https://github.com/wcoder) - porting to PCL/NetStandard
 
 ---
 Microsoft Public License
