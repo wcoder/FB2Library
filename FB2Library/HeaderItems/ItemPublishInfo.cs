@@ -130,10 +130,11 @@ namespace FB2Library.HeaderItems
             IEnumerable<XElement> xSequences = xPublishInfo.Elements(FileNameSpace + SequenceType.SequenceElementName);
             foreach (var xSequence in xSequences)
             {
-                var sec = new SequenceType();
                 try
                 {
+                    var sec = new SequenceType();
                     sec.Load(xSequence);
+                    ItemSequences.Add(sec);
                 }
                 catch (Exception ex)
                 {
