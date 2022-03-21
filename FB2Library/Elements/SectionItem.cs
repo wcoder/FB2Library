@@ -311,14 +311,6 @@ namespace FB2Library.Elements
             {
                 xSection.Add(epItem.ToXML());
             }
-            if (SectionImages.Count != 0)
-            {
-                //xSection.Add(SectionImages.ToXML());
-                foreach (var image in SectionImages)
-                {
-                    xSection.Add(image.ToXML());
-                }
-            }
             if (Annotation != null)
             {
                 xSection.Add(Annotation.ToXML());
