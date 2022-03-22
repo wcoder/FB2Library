@@ -16,28 +16,28 @@ namespace FB2Library.Elements
         private const string ContentTypeAttributeName = "content-type";
         private const string IdAttributeName = "id";
 
-        public ContentTypeEnum ContentType{get;set;}
-        public Byte[] BinaryData { get; set; }
-        public string Id { get; set; }
-
-
-
         internal const string Fb2BinaryItemName = "binary";
+
+        public static Func<byte[], ContentTypeEnum> DetectContentType { get; set; }
+
+        public ContentTypeEnum ContentType { get; set; }
+        public byte[] BinaryData { get; set; }
+        public string Id { get; set; }
 
         internal void Load(XElement binarye)
         {
             if (binarye == null)
             {
-                throw new ArgumentNullException("binarye");
+                throw new ArgumentNullException(nameof(binarye));
             }
 
             if (binarye.Name.LocalName != Fb2BinaryItemName)
             {
-                throw new ArgumentException("Element of wrong type passed", "binarye");
+                throw new ArgumentException("Element of wrong type passed", nameof(binarye));
             }
 
             XAttribute xContentType = binarye.Attribute(ContentTypeAttributeName);
-            if ((xContentType == null) || (xContentType.Value == null))
+            if (xContentType?.Value == null)
             {
                 throw new NullReferenceException("content type not defined/present");
             }
@@ -58,59 +58,35 @@ namespace FB2Library.Elements
             }
 
             XAttribute idAttribute = binarye.Attribute(IdAttributeName);
-            if ((idAttribute == null) || (idAttribute.Value == null))
-            {
-                throw new NullReferenceException("ID not defined/present");
-            }
-            Id = idAttribute.Value;
+            
+            Id = idAttribute?.Value ?? throw new NullReferenceException("ID not defined/present");
 
             if (BinaryData != null)
             {
-                BinaryData= null;
+                BinaryData = null;
             }
             BinaryData = Convert.FromBase64String(binarye.Value);
-            //ContentTypeEnum content;
-            // try to detect type , this will detect for unknown and fix for wrongly set
-            //DetectContentType(out content, BinaryData);
-            // if we were not able to detect type and type was not set
-            //if (content == ContentTypeEnum.ContentTypeUnknown && ContentType == ContentTypeEnum.ContentTypeUnknown)
-            //{
-            //    // then we throw exception
-            //    throw new Exception("Unknown image content type passed");
-            //}
-            ContentType = ContentTypeEnum.ContentTypeUnknown; // TODO
-        }
-		
-    //    private void DetectContentType(out ContentTypeEnum contentType, byte[] binaryData)
-    //    {
-    //        contentType = ContentTypeEnum.ContentTypeUnknown;
-    //        try
-    //        {
-    //            using (MemoryStream imgStream = new MemoryStream(binaryData))
-    //            {
-				//	using (Bitmap bitmap = new Bitmap(imgStream))
-				//	{
-				//		if (bitmap.RawFormat.Equals(ImageFormat.Jpeg))
-				//		{
-				//			contentType = ContentTypeEnum.ContentTypeJpeg;
-				//		}
-				//		else if (bitmap.RawFormat.Equals(ImageFormat.Png))
-				//		{
-				//			contentType = ContentTypeEnum.ContentTypePng;
-				//		}
-				//		else if (bitmap.RawFormat.Equals(ImageFormat.Gif))
-				//		{
-				//			contentType = ContentTypeEnum.ContentTypeGif;
-				//		}
-				//	}
-				//}
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            throw new Exception(string.Format("Error during image type detection: {0}",ex),ex);
-    //        }
 
-    //    }
+            // try to detect type, this will detect for unknown and fix for wrongly set
+            if (DetectContentType == null)
+            {
+                ContentType = ContentTypeEnum.ContentTypeUnknown;
+            }
+            else
+            {
+                var contentType = DetectContentType(BinaryData);
+
+                // if we were not able to detect type and type was not set
+                if (contentType == ContentTypeEnum.ContentTypeUnknown
+                    && ContentType == ContentTypeEnum.ContentTypeUnknown)
+                {
+                    // then we throw exception
+                    throw new Exception("Unknown image content type passed");
+                }
+
+                ContentType = contentType;
+            }
+        }
 
         protected string GetXContentType()
         {
@@ -122,9 +98,9 @@ namespace FB2Library.Elements
                     return "image/png";
                 case ContentTypeEnum.ContentTypeGif:
                     return "image/gif";
+                case ContentTypeEnum.ContentTypeUnknown:
                 default:
                     return "";
-
             }
         }
 
@@ -136,7 +112,6 @@ namespace FB2Library.Elements
             xBinary.Value=Convert.ToBase64String(BinaryData);
 
             return xBinary;
-
         }
     }
 }
