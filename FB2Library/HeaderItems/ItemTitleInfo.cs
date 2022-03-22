@@ -37,7 +37,7 @@ namespace FB2Library.HeaderItems
         /// <summary>
         /// Translators if this is a translation
         /// </summary>
-        public IEnumerable<AuthorType> Translators
+        public List<AuthorType> Translators
         {
             get { return _translators; }
         }
@@ -55,7 +55,7 @@ namespace FB2Library.HeaderItems
         /// <summary>
         /// Genres of the item
         /// </summary>
-        public IEnumerable<TitleGenreType> Genres
+        public List<TitleGenreType> Genres
         {
             get { return _genres; }
         }
@@ -64,7 +64,7 @@ namespace FB2Library.HeaderItems
         /// <summary>
         /// Authors of this book
         /// </summary>
-        public IEnumerable<AuthorType> BookAuthors
+        public List<AuthorType> BookAuthors
         {
             get { return _bookAuthors; }
         }
