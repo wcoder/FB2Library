@@ -1,30 +1,23 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
 {
     public class SequenceType
     {
+        private const string NameAttributeName = "name";
+        private const string NumberAttributeName = "number";
+
         public const string SequenceElementName = "sequence";
 
-        private readonly List<SequenceType> content = new List<SequenceType>();
-
-        private XNamespace fileNameSpace = XNamespace.None;
-
+        private readonly List<SequenceType> _content = new List<SequenceType>();
 
         /// <summary>
         /// XML namespace used to read the document
         /// </summary>
-        public XNamespace Namespace
-        {
-            set { fileNameSpace = value; }
-            get { return fileNameSpace; }
-        }
+        public XNamespace Namespace { get; set; } = XNamespace.None;
 
         /// <summary>
         /// Get/Set name of the sequence
@@ -36,52 +29,42 @@ namespace FB2Library.Elements
         /// </summary>
         public int? Number { get; set; }
 
-
         /// <summary>
         /// Get/Set language
         /// </summary>
         public string Language { get; set; }
 
-
-        /// <summary>
-        /// Get subsection list
-        /// </summary>
-        public List<SequenceType> SubSections { get { return content; } }
-
         public void Load(XElement xElement)
         {
             if (xElement == null)
             {
-                throw new ArgumentNullException("xElement");
+                throw new ArgumentNullException(nameof(xElement));
             }
-
             if (xElement.Name.LocalName != SequenceElementName)
             {
-                throw new ArgumentException("Element of wrong type passed", "xElement");
+                throw new ArgumentException("Element of wrong type passed", nameof(xElement));
             }
 
-            // read all subsecquences
-            content.Clear();
-            IEnumerable<XElement> subElements = xElement.Elements(fileNameSpace + SequenceElementName);
-            foreach (var element in subElements)
+            // read all subsequences
+            _content.Clear();
+            foreach (var element in xElement.Elements(Namespace + SequenceElementName))
             {
                 var subElement = new SequenceType();
                 try
                 {
                     subElement.Load(element);
-                    content.Add(subElement);
+                    _content.Add(subElement);
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading sequence element: {0}",ex.Message));
-                    continue;
+                    Debug.WriteLine($"Error reading sequence element: {ex.Message}");
                 }
             }
 
             // read "name" attribute
             Name = null;
-            XAttribute xName = xElement.Attribute("name");
-            if (xName != null &&(!string.IsNullOrEmpty(xName.Value)))
+            XAttribute xName = xElement.Attribute(NameAttributeName);
+            if (xName != null && !string.IsNullOrEmpty(xName.Value))
             {
                 Name = xName.Value;
             }
@@ -92,23 +75,22 @@ namespace FB2Library.Elements
 
             // read number attribute
             Number = null;
-            XAttribute xNumber = xElement.Attribute("number");
-            if ((xNumber != null)&&(!string.IsNullOrEmpty(xNumber.Value)))
+            XAttribute xNumber = xElement.Attribute(NumberAttributeName);
+            if (xNumber != null && !string.IsNullOrEmpty(xNumber.Value))
             {
-                int value;
-                if (int.TryParse(xNumber.Value,out value))
+                if (int.TryParse(xNumber.Value, out var value))
                 {
                     Number = value;
                 }
             }
 
+            // read lang attribute
             Language = null;
             XAttribute xLang = xElement.Attribute(XNamespace.Xml + "lang");
             if (xLang != null && string.IsNullOrEmpty(xLang.Value))
             {
                 Language = xLang.Value;
             }
-
         }
 
         public XElement ToXML()
@@ -116,19 +98,19 @@ namespace FB2Library.Elements
             XElement xSequence = new XElement(Fb2Const.fb2DefaultNamespace + SequenceElementName);
             if (!string.IsNullOrEmpty(Name))
             {
-                xSequence.Add(new XAttribute("name", Name));
+                xSequence.Add(new XAttribute(NameAttributeName, Name));
             }
             if (Number != null)
             { 
-                xSequence.Add(new XAttribute("number",Number));
+                xSequence.Add(new XAttribute(NumberAttributeName, Number));
             }
             if (!string.IsNullOrEmpty(Language))
             {
                 xSequence.Add(new XAttribute(XNamespace.Xml + "lang", Language));
             }
-            foreach(SequenceType SubSeq in content)
+            foreach (SequenceType subSequence in _content)
             {
-                xSequence.Add(SubSeq.ToXML());
+                xSequence.Add(subSequence.ToXML());
             }
 
             return xSequence;

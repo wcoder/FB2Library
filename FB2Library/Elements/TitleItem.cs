@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
@@ -9,18 +8,16 @@ namespace FB2Library.Elements
 {
     public class TitleItem : IFb2TextItem
     {
-        private readonly List<IFb2TextItem> titleData = new List<IFb2TextItem>();
+        internal const string Fb2TitleElementName = "title";
 
-        public List<IFb2TextItem> TitleData 
-        {
-            get { return titleData; }
-        }
+        private readonly List<IFb2TextItem> _titleData = new List<IFb2TextItem>();
+
+        public List<IFb2TextItem> TitleData => _titleData;
 
         /// <summary>
         /// Language attribute
         /// </summary>
         public string LangAttribute { get; set; }
-
 
         public override string ToString()
         {
@@ -33,22 +30,18 @@ namespace FB2Library.Elements
             return builder.ToString();
         }
 
-
-        internal const string Fb2TitleElementName = "title";
-
         internal void Load(XElement xTitle)
         {
-            titleData.Clear();
+            _titleData.Clear();
             if (xTitle == null)
             {
-                throw new ArgumentNullException("xTitle");
+                throw new ArgumentNullException(nameof(xTitle));
             }
 
             if (xTitle.Name.LocalName != Fb2TitleElementName)
             {
-                throw new ArgumentException("Element of wrong type passed", "xTitle");
+                throw new ArgumentException("Element of wrong type passed", nameof(xTitle));
             }
-
 
             IEnumerable<XElement> subElements = xTitle.Elements();
             foreach (var element in subElements)
@@ -56,30 +49,30 @@ namespace FB2Library.Elements
                 switch (element.Name.LocalName)
                 {
                     case EmptyLineItem.Fb2EmptyLineElementName:
-                        titleData.Add(new EmptyLineItem());
+                        _titleData.Add(new EmptyLineItem());
                         break;
                     case ParagraphItem.Fb2ParagraphElementName:
                         ParagraphItem paragraph = new ParagraphItem();
                         try
                         {
                             paragraph.Load(element);
-                            titleData.Add(paragraph);
+                            _titleData.Add(paragraph);
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(string.Format("Failed to load paragraph: {0}.",ex.Message));
+                            Debug.WriteLine($"Failed to load paragraph: {ex.Message}.");
                         }
                         break;
                     default:
-                        Debug.WriteLine(string.Format("TitleItem:Load - invalid element <{0}> encountered in title ."), element.Name.LocalName);
+                        Debug.WriteLine(
+                            $"TitleItem:Load - invalid element <{element.Name.LocalName}> encountered in title .");
                         break;
                 }
-
             }
 
             LangAttribute = null;
             XAttribute xLang = xTitle.Attribute(XNamespace.Xml + "lang");
-            if ((xLang != null) && !string.IsNullOrEmpty(xLang.Value))
+            if (xLang != null && !string.IsNullOrEmpty(xLang.Value))
             {
                 LangAttribute = xLang.Value;
             }
@@ -92,9 +85,9 @@ namespace FB2Library.Elements
                 xTitle.Add(new XAttribute(XNamespace.Xml + "lang", LangAttribute));
             }
 
-            foreach (IFb2TextItem TitleItem in titleData)
+            foreach (IFb2TextItem titleItem in _titleData)
             {
-                xTitle.Add(TitleItem.ToXML());
+                xTitle.Add(titleItem.ToXML());
             }
             return xTitle;
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml.Linq;
 using FB2Library.Elements;
@@ -18,7 +17,6 @@ namespace FB2Library.HeaderItems
         private const string ISBNElementName = "isbn";
 
         public const string PublishInfoElementName = "publish-info";
-
 
         /// <summary>
         /// ISBN of original book
@@ -40,18 +38,17 @@ namespace FB2Library.HeaderItems
         /// </summary>
         public TextFieldType Publisher { get; set; }
 
-
         internal void Load(XElement xPublishInfo)
         {
             if (xPublishInfo == null)
             {
-                throw new ArgumentNullException("xPublishInfo");
+                throw new ArgumentNullException(nameof(xPublishInfo));
             }
 
             // Load book name
             BookTitle = null;
             XElement xBookName = xPublishInfo.Element(FileNameSpace + BookNameElementName);
-            if ( xBookName != null)  
+            if (xBookName != null)  
             {
                 BookTitle = new TextFieldType();
                 try
@@ -60,7 +57,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading publisher book name : {0}", ex.Message));
+                    Debug.WriteLine($"Error reading publisher book name : {ex.Message}");
                 }
             }
 
@@ -76,7 +73,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading publishers : {0}", ex.Message));
+                    Debug.WriteLine($"Error reading publishers : {ex.Message}");
                 }
             }
 
@@ -92,21 +89,19 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading publishers' City: {0}", ex.Message));
+                    Debug.WriteLine($"Error reading publishers' City: {ex.Message}");
                 }
             }
 
             // Load year 
             Year = null;
             XElement xYear = xPublishInfo.Element(FileNameSpace + YearElementName);
-            if ( (xYear != null))
+            if (xYear != null)
             {
-                int year;
-                if ( int.TryParse( xYear.Value,out year) )
+                if (int.TryParse( xYear.Value, out var year))
                 {
                     Year = year;
                 }
-
             }
 
             // Load ISBN
@@ -121,14 +116,13 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading publishers' ISBN: {0}", ex.Message));
+                    Debug.WriteLine($"Error reading publishers' ISBN: {ex.Message}");
                 }
             }
 
             // Load sequence here
             ItemSequences.Clear();
-            IEnumerable<XElement> xSequences = xPublishInfo.Elements(FileNameSpace + SequenceType.SequenceElementName);
-            foreach (var xSequence in xSequences)
+            foreach (var xSequence in xPublishInfo.Elements(FileNameSpace + SequenceType.SequenceElementName))
             {
                 var sec = new SequenceType();
                 try
@@ -138,11 +132,9 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading publisher sequence data: {0}", ex.Message));
-                    continue;
+                    Debug.WriteLine($"Error reading publisher sequence data: {ex.Message}");
                 }
             }
-
         }
 
         public XElement ToXML()
@@ -176,6 +168,5 @@ namespace FB2Library.HeaderItems
 
             return xPublishInfo;
         }
-
-    }// class
+    }
 }

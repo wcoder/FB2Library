@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
@@ -23,23 +20,23 @@ namespace FB2Library.Elements
     /// </summary>
     public class TitleGenreType : GenreType
     {
-        private int match = 100;
+        private int _match = 100;
 
         /// <summary>
         /// Get/Set matching value , can be from 1 to 100%
         /// </summary>
         public int Match
         {
-            get { return match; }
+            get => _match;
             set 
             {
                 if (value > 0 && value <= 100)
                 {
-                    match = value;
+                    _match = value;
                 }
                 else
                 {
-                    match = 100;
+                    _match = 100;
                 }
             }
         }
@@ -50,10 +47,11 @@ namespace FB2Library.Elements
             {
                  throw new ArgumentException("Genre is empty");
             }
+
             XElement xGenre = new XElement(Fb2Const.fb2DefaultNamespace + "genre", Genre);
-            if (match > 0 && match < 100)
+            if (_match > 0 && _match < 100)
             {
-                xGenre.Add(new XAttribute("match",match.ToString()));
+                xGenre.Add(new XAttribute("match",_match.ToString()));
             }
             return xGenre;
         }

@@ -11,7 +11,7 @@ namespace FB2Library.Elements
 {
     public class AnnotationType : IFb2TextItem
     {
-        private readonly List<IFb2TextItem> content = new List<IFb2TextItem>();
+        private readonly List<IFb2TextItem> _content = new List<IFb2TextItem>();
 
         protected string GetElementName()
         {
@@ -20,14 +20,14 @@ namespace FB2Library.Elements
 
         public string ElementName { get; set; }
 
-        public List<IFb2TextItem> Content { get { return content; } }
+        public List<IFb2TextItem> Content => _content;
 
-        public string ID { set; get; }
+        public string ID { get; set; }
 
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-            foreach (var textItem in content)
+            foreach (var textItem in _content)
             {
                 builder.Append(textItem.ToString());
                 builder.Append(" ");
@@ -36,21 +36,19 @@ namespace FB2Library.Elements
 
         }
 
-
-
         internal void Load(XElement xAnnotation)
         {
             if (xAnnotation == null)
             {
-                throw new ArgumentNullException("xAnnotation");
+                throw new ArgumentNullException(nameof(xAnnotation));
             }
 
             if (xAnnotation.Name.LocalName != GetElementName())
             {
-                throw new ArgumentException("Element of wrong type passed", "xAnnotation");
+                throw new ArgumentException("Element of wrong type passed", nameof(xAnnotation));
             }
 
-            content.Clear();
+            _content.Clear();
             IEnumerable<XElement> xItems = xAnnotation.Elements();
             foreach (var xItem in xItems)
             {
@@ -61,7 +59,7 @@ namespace FB2Library.Elements
                         try
                         {
                             paragraph.Load(xItem);
-                            content.Add(paragraph);
+                            _content.Add(paragraph);
                         }
                         catch (Exception)
                         {
@@ -72,7 +70,7 @@ namespace FB2Library.Elements
                         try
                         {
                             poem.Load(xItem);
-                            content.Add(poem);
+                            _content.Add(poem);
                         }
                         catch (Exception)
                         {
@@ -83,7 +81,7 @@ namespace FB2Library.Elements
                         try
                         {
                             cite.Load(xItem);
-                            content.Add(cite);
+                            _content.Add(cite);
                         }
                         catch (Exception)
                         {
@@ -94,7 +92,7 @@ namespace FB2Library.Elements
                         try
                         {
                             subtitle.Load(xItem);
-                            content.Add(subtitle);
+                            _content.Add(subtitle);
                         }
                         catch (Exception)
                         {
@@ -105,7 +103,7 @@ namespace FB2Library.Elements
                         try
                         {
                             table.Load(xItem);
-                            content.Add(table);
+                            _content.Add(table);
                         }
                         catch (Exception)
                         {
@@ -113,7 +111,7 @@ namespace FB2Library.Elements
                         break;
                     case EmptyLineItem.Fb2EmptyLineElementName:
                         EmptyLineItem eline = new EmptyLineItem();
-                        content.Add(eline);
+                        _content.Add(eline);
                         break;
                     default:
                         Debug.WriteLine(string.Format("AnnotationItem:Load - invalid element <{0}> encountered in annotation ."), xItem.Name.LocalName);
@@ -136,7 +134,7 @@ namespace FB2Library.Elements
             {
                 xAnnotation.Add(new XAttribute("id",ID));
             }
-            foreach (IFb2TextItem Item in content)
+            foreach (IFb2TextItem Item in _content)
             {
                 xAnnotation.Add(Item.ToXML());
             }

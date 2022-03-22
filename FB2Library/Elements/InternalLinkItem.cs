@@ -8,17 +8,16 @@ namespace FB2Library.Elements
 {
     public class InternalLinkItem : StyleType
     {
-        private readonly XNamespace lNamespace = @"http://www.w3.org/1999/xlink";
-
-        public string Type { get; set; }
-
-        public string HRef { get; set; }
-
-        private readonly List<StyleType> _linkData = new List<StyleType>();
-        public List<StyleType> LinkData { get { return _linkData; } }
-
         internal const string Fb2InternalLinkElementName = "a";
 
+        private readonly XNamespace lNamespace = @"http://www.w3.org/1999/xlink";
+        
+        private readonly List<StyleType> _linkData = new List<StyleType>();
+
+        public string Type { get; set; }
+        public string HRef { get; set; }
+        
+        public List<StyleType> LinkData => _linkData;
 
         public override string ToString()
         {
@@ -46,12 +45,11 @@ namespace FB2Library.Elements
         {
             if (xLink == null)
             {
-                throw new ArgumentNullException("xLink");
+                throw new ArgumentNullException(nameof(xLink));
             }
-
             if (xLink.Name.LocalName != Fb2InternalLinkElementName)
             {
-                throw new ArgumentException("Element of wrong type passed", "xLink");
+                throw new ArgumentException("Element of wrong type passed", nameof(xLink));
             }
 
             if (xLink.HasElements)
@@ -72,6 +70,7 @@ namespace FB2Library.Elements
                             }
                             catch (Exception)
                             {
+                                // ignored
                             }
                         }
                         else if (xElement.Name.LocalName == StyleItem.StyleItemName)
@@ -84,6 +83,7 @@ namespace FB2Library.Elements
                             }
                             catch (Exception)
                             {
+                                // ignored
                             }
                         }
                     }
@@ -97,7 +97,7 @@ namespace FB2Library.Elements
                         }
                         catch (Exception)
                         {
-                            continue;
+                            // ignored
                         }
                     }
                 }
@@ -110,17 +110,16 @@ namespace FB2Library.Elements
             }
 
             XAttribute xTypeAttr = xLink.Attribute("type");
-            if ((xTypeAttr != null) && (xTypeAttr.Value != null))
+            if (xTypeAttr != null && xTypeAttr.Value != null)
             {
                 Type = xTypeAttr.Value;
             }
 
             XAttribute xHRefAttr = xLink.Attribute(lNamespace + "href");
-            if ((xHRefAttr != null) && (xHRefAttr.Value != null))
+            if (xHRefAttr != null && xHRefAttr.Value != null)
             {
                 HRef = xHRefAttr.Value;
             }
-
         }
 
         private bool IsSimpleText(XNode element)
@@ -131,7 +130,7 @@ namespace FB2Library.Elements
                 return true;
             }
             XElement xElement = (XElement)element;
-            if (xElement.Name.LocalName == InternalLinkItem.Fb2InternalLinkElementName)
+            if (xElement.Name.LocalName == Fb2InternalLinkElementName)
             {
                 throw new ArgumentException("Schema doesn't support nested links");
             }
@@ -161,6 +160,5 @@ namespace FB2Library.Elements
             }
             return xLink;
         }
-
     }
 }

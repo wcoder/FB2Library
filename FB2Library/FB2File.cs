@@ -10,8 +10,6 @@ namespace FB2Library
 {
     public class FB2File
     {
-        private XNamespace _fileNameSpace = XNamespace.None;
-
         private const string TitleInfoElementName = "title-info";
         private const string SrcTitleInfoElementName = "src-title-info";
         private const string DocumentInfoElementName = "document-info";
@@ -19,67 +17,63 @@ namespace FB2Library
         private const string Fb2TextBodyElementName = "body";
         private const string Fb2BinaryElementName = "binary";
 
-
         private readonly ItemTitleInfo _titleInfo = new ItemTitleInfo();
         private readonly ItemTitleInfo _srcTitleInfo = new ItemTitleInfo();
         private readonly ItemDocumentInfo _documentInfo = new ItemDocumentInfo();
         private readonly ItemPublishInfo _publishInfo = new ItemPublishInfo();
         private readonly List<ItemCustomInfo> _customInfo = new List<ItemCustomInfo>();
-        private BodyItem _mainBody;
         private readonly List<BodyItem> _bodiesList = new List<BodyItem>();
         private readonly Dictionary<string, BinaryItem> _binaryObjects = new Dictionary<string, BinaryItem>();
         private readonly List<StyleElement> _styles = new List<StyleElement>();
         private readonly List<ShareInstructionType> _output = new List<ShareInstructionType>();
 
-
-
+        private BodyItem _mainBody;
+        private XNamespace _fileNameSpace = XNamespace.None;
+        
         /// <summary>
         /// Get list of images (the image data itself) stored as binary objects
         /// </summary>
-        public Dictionary<string, BinaryItem> Images { get { return _binaryObjects;} }
-
+        public Dictionary<string, BinaryItem> Images => _binaryObjects;
 
         /// <summary>
         /// Get list of bodies in document (including main)
         /// </summary>
-        public List<BodyItem> Bodies { get { return _bodiesList;}}
+        public List<BodyItem> Bodies => _bodiesList;
 
         /// <summary>
         /// Get Document TitleInfo structure
         /// </summary>
-        public ItemTitleInfo TitleInfo { get { return _titleInfo; } }
+        public ItemTitleInfo TitleInfo => _titleInfo;
 
         /// <summary>
         /// Get Document DocumentInfo structure
         /// </summary>
-        public ItemDocumentInfo DocumentInfo { get { return _documentInfo; } }
+        public ItemDocumentInfo DocumentInfo => _documentInfo;
 
         /// <summary>
         /// Get Document SourceTitleInfo structure
         /// </summary>
-        public ItemTitleInfo SourceTitleInfo { get { return _srcTitleInfo; } }
-
+        public ItemTitleInfo SourceTitleInfo => _srcTitleInfo;
 
         /// <summary>
         /// Get custom added information (if available)
         /// </summary>
-        public List<ItemCustomInfo> CustomInfo { get { return _customInfo; } }
+        public List<ItemCustomInfo> CustomInfo => _customInfo;
 
         /// <summary>
         /// Get Document PublishInfo structure
         /// </summary>
-        public ItemPublishInfo PublishInfo { get { return _publishInfo; } }
+        public ItemPublishInfo PublishInfo => _publishInfo;
 
         /// <summary>
         /// Get main body structure (book itself)
         /// </summary>
-        public BodyItem MainBody { get { return _mainBody; } }
+        public BodyItem MainBody => _mainBody;
 
         /// <summary>
         /// Get styles applied to the book 
         /// </summary>
-        public List<StyleElement> StyleSheets { get { return _styles; } }
-
+        public List<StyleElement> StyleSheets => _styles;
 
         /// <summary>
         /// Loads the file as data from XML data
@@ -90,17 +84,15 @@ namespace FB2Library
         {
             if (fileDocument == null)
             {
-                throw new ArgumentNullException("fileDocument");
+                throw new ArgumentNullException(nameof(fileDocument));
             }
             if (fileDocument.Root == null)
             {
                 throw new ArgumentException("Document's root is NULL (empty document passed)");
             }
 
-
             // theoretically the namespace should be "http://www.gribuser.ru/xml/fictionbook/2.0" but just to be sure with invalid files
             _fileNameSpace = fileDocument.Root.GetDefaultNamespace();
-
 
             _styles.Clear();
             IEnumerable<XElement> xStyles = fileDocument.Root.Elements(_fileNameSpace + StyleElement.StyleElementName).ToArray();
@@ -131,16 +123,16 @@ namespace FB2Library
                 // Load body elements (first is main text)
                 if (fileDocument.Root != null)
                 {
-                    IEnumerable<XElement> xBodys = fileDocument.Root.Elements(_fileNameSpace + Fb2TextBodyElementName).ToArray();
+                    IEnumerable<XElement> xBodyElements = fileDocument.Root.Elements(_fileNameSpace + Fb2TextBodyElementName).ToArray();
                     // try to read some badly formatted FB2 files
-                    if (!xBodys.Any())
+                    if (!xBodyElements.Any())
                     {
                         namespaceUsed = "";
-                        xBodys = fileDocument.Root.Elements(namespaceUsed + Fb2TextBodyElementName);
+                        xBodyElements = fileDocument.Root.Elements(namespaceUsed + Fb2TextBodyElementName);
                     }
-                    foreach (var body in xBodys)
+                    foreach (var body in xBodyElements)
                     {
-                        var bodyItem = new BodyItem() { NameSpace = namespaceUsed };
+                        var bodyItem = new BodyItem { NameSpace = namespaceUsed };
                         try
                         {
                             bodyItem.Load(body);
@@ -161,17 +153,17 @@ namespace FB2Library
                 // Load binaries sections (currently images only)
                 if (fileDocument.Root != null)
                 {
-                    IEnumerable<XElement> xBinaryes = fileDocument.Root.Elements(namespaceUsed + Fb2BinaryElementName).ToArray();
-                    if (!xBinaryes.Any())
+                    IEnumerable<XElement> xBinaryElements = fileDocument.Root.Elements(namespaceUsed + Fb2BinaryElementName).ToArray();
+                    if (!xBinaryElements.Any())
                     {
-                        xBinaryes = fileDocument.Root.Elements(Fb2BinaryElementName);
+                        xBinaryElements = fileDocument.Root.Elements(Fb2BinaryElementName);
                     }
-                    foreach (var binarye in xBinaryes)
+                    foreach (var binaryElement in xBinaryElements)
                     {
                         var item = new BinaryItem();
                         try
                         {
-                            item.Load(binarye);
+                            item.Load(binaryElement);
                         }
                         catch
                         {                       
@@ -192,7 +184,7 @@ namespace FB2Library
         {
             if (fileDocument == null)
             {
-                throw new ArgumentNullException("fileDocument");
+                throw new ArgumentNullException(nameof(fileDocument));
             }
             if (fileDocument.Root == null)
             {
@@ -312,23 +304,22 @@ namespace FB2Library
 
                 if (loadBinaryItems && _titleInfo.Cover != null)
                 {
-
                     foreach (InlineImageItem coverImag in _titleInfo.Cover.CoverpageImages)
                     {
                         if (string.IsNullOrEmpty(coverImag.HRef))
                         {
                             continue;
                         }
-                        string coverref = coverImag.HRef.Substring(0, 1) == "#" ? coverImag.HRef.Substring(1) : coverImag.HRef;
-                        IEnumerable<XElement> xBinaryes =
+                        string coverRef = coverImag.HRef.Substring(0, 1) == "#" ? coverImag.HRef.Substring(1) : coverImag.HRef;
+                        IEnumerable<XElement> xBinaryElements =
                             fileDocument.Root.Elements(_fileNameSpace + Fb2BinaryElementName).Where(
-                                cov => ((cov.Attribute("id") != null) && (cov.Attribute("id").Value == coverref)));
-                        foreach (var binarye in xBinaryes)
+                                cov => ((cov.Attribute("id") != null) && (cov.Attribute("id").Value == coverRef)));
+                        foreach (var binaryElement in xBinaryElements)
                         {
                             var item = new BinaryItem();
                             try
                             {
-                                item.Load(binarye);
+                                item.Load(binaryElement);
                             }
                             catch (Exception)
                             {
@@ -432,8 +423,8 @@ namespace FB2Library
                     {
                         continue;
                     }
-                    string coverref = coverImag.HRef.Substring(0, 1) == "#" ? coverImag.HRef.Substring(1) : coverImag.HRef;
-                    xFictionBook.Add(_binaryObjects[coverref].ToXML());
+                    string coverRef = coverImag.HRef.Substring(0, 1) == "#" ? coverImag.HRef.Substring(1) : coverImag.HRef;
+                    xFictionBook.Add(_binaryObjects[coverRef].ToXML());
                 }
             }
 

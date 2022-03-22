@@ -10,11 +10,10 @@ namespace FB2Library.HeaderItems
 
         protected XNamespace FileNameSpace = XNamespace.None;
 
-
         /// <summary>
         /// Get list of sequences
         /// </summary>
-        public List<SequenceType> Sequences { get { return ItemSequences; } }
+        public List<SequenceType> Sequences => ItemSequences;
 
         /// <summary>
         /// XML namespace used to read the document
@@ -28,7 +27,6 @@ namespace FB2Library.HeaderItems
         /// <summary>
         /// Book Title
         /// </summary>
-        public TextFieldType BookTitle { set; get; }
-
+        public TextFieldType BookTitle { get; set; }
     }
 }

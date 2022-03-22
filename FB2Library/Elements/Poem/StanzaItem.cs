@@ -1,33 +1,30 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements.Poem
 {
     public class StanzaItem : IFb2TextItem
     {
-        private readonly List<VPoemParagraph> lines = new List<VPoemParagraph>();
+        internal const string Fb2StanzaElementName = "stanza";
+
+        private readonly List<VPoemParagraph> _lines = new List<VPoemParagraph>();
 
         public TitleItem Title { get; set; }
         public SubTitleItem SubTitle { get; set; }
-        public List<VPoemParagraph> Lines { get { return lines; } }
+        public List<VPoemParagraph> Lines => _lines;
         public string Lang { get; set; }
-
-        internal const string Fb2StanzaElementName = "stanza";
 
         internal void Load(XElement xStanza)
         {
             if (xStanza == null)
             {
-                throw new ArgumentNullException("xStanza");
+                throw new ArgumentNullException(nameof(xStanza));
             }
 
             if (xStanza.Name.LocalName != Fb2StanzaElementName)
             {
-                throw new ArgumentException("Element of wrong type passed", "xStanza");
+                throw new ArgumentException("Element of wrong type passed", nameof(xStanza));
             }
 
             Title = null;
@@ -41,6 +38,7 @@ namespace FB2Library.Elements.Poem
                 }
                 catch (Exception)
                 {
+                    // ignored
                 }
             }
 
@@ -55,10 +53,11 @@ namespace FB2Library.Elements.Poem
                 }
                 catch (Exception)
                 {
+                    // ignored
                 }
             }
 
-            lines.Clear();
+            _lines.Clear();
             IEnumerable<XElement> xLines = xStanza.Elements(xStanza.Name.Namespace + VPoemParagraph.Fb2VParagraphItemName);
             foreach (var xLine in xLines)
             {
@@ -66,17 +65,17 @@ namespace FB2Library.Elements.Poem
                 try
                 {
                     vline.Load(xLine);
-                    lines.Add(vline);
+                    _lines.Add(vline);
                 }
                 catch (Exception)
                 {
-                    continue;
+                    // ignored
                 }
             }
 
             Lang = null;
             XAttribute xLang = xStanza.Attribute(XNamespace.Xml + "lang");
-            if ((xLang != null) && (xLang.Value != null))
+            if (xLang != null && xLang.Value != null)
             {
                 Lang = xLang.Value;
             }
@@ -98,12 +97,12 @@ namespace FB2Library.Elements.Poem
             {
                 xStanza.Add(SubTitle.ToXML());
             }
-            foreach (VPoemParagraph PoemLine in lines)
+            foreach (VPoemParagraph poemLine in _lines)
             {
-                xStanza.Add(PoemLine.ToXML());
+                xStanza.Add(poemLine.ToXML());
             }
+
             return xStanza;
-        
         }
     }
 }

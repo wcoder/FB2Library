@@ -5,6 +5,8 @@ namespace FB2Library.Elements
 {
     public class InlineImageItem : StyleType
     {
+        internal const string Fb2InlineImageElementName = "image";
+
         private readonly XNamespace xLinkNamespace = @"http://www.w3.org/1999/xlink";
 
         protected virtual string GetElementName()
@@ -12,29 +14,25 @@ namespace FB2Library.Elements
             return Fb2InlineImageElementName;
         }
 
-
         public string ImageType { get; set;}
         public string HRef { get; set;}
         public string AltText { get; set;}
-
-        internal const string Fb2InlineImageElementName = "image";
 
         public override string ToString()
         {
             return HRef;
         }
 
-
         internal void Load(XElement xImage)
         {
             if (xImage == null)
             {
-                throw new ArgumentNullException("xImage");
+                throw new ArgumentNullException(nameof(xImage));
             }
 
             if (xImage.Name.LocalName != GetElementName())
             {
-                throw new ArgumentException("Element of wrong type passed", "xImage");
+                throw new ArgumentException("Element of wrong type passed", nameof(xImage));
             }
 
             XAttribute xType = xImage.Attribute(xLinkNamespace + "type");
@@ -98,6 +96,5 @@ namespace FB2Library.Elements
             }
             return xImage;
         }
-
     }
 }

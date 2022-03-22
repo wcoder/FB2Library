@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using FB2Library.Elements.Poem;
 
@@ -11,32 +8,29 @@ namespace FB2Library.Elements
 {
     public class EpigraphItem : IFb2TextItem
     {
-        private readonly List<IFb2TextItem> epigraphData = new List<IFb2TextItem>();
-        private readonly List<IFb2TextItem> textAuthors = new List<IFb2TextItem>();
-
-        public List<IFb2TextItem> TextAuthors { get { return textAuthors; } }
-        public List<IFb2TextItem> EpigraphData { get { return epigraphData; } }
-        public string ID { get; set; }
-
-
         internal const string Fb2EpigraphElementName = "epigraph";
+
+        private readonly List<IFb2TextItem> _epigraphData = new List<IFb2TextItem>();
+        private readonly List<IFb2TextItem> _textAuthors = new List<IFb2TextItem>();
+
+        public string ID { get; set; }
+        public List<IFb2TextItem> EpigraphData => _epigraphData;
+        public List<IFb2TextItem> TextAuthors => _textAuthors;
 
         internal void Load(XElement xEpigraph)
         {
-            epigraphData.Clear();
+            _epigraphData.Clear();
             if (xEpigraph == null)
             {
-                throw new ArgumentNullException("xEpigraph");
+                throw new ArgumentNullException(nameof(xEpigraph));
             }
-
-
             if (xEpigraph.Name.LocalName != Fb2EpigraphElementName)
             {
-                throw new ArgumentException("Element of wrong type passed", "xEpigraph");
+                throw new ArgumentException("Element of wrong type passed", nameof(xEpigraph));
             }
 
             IEnumerable<XElement> xItems = xEpigraph.Elements();
-            textAuthors.Clear();
+            _textAuthors.Clear();
             foreach (var element in xItems)
             {
                 switch (element.Name.LocalName)
@@ -46,11 +40,11 @@ namespace FB2Library.Elements
                         try
                         {
                             paragraph.Load(element);
-                            epigraphData.Add(paragraph);
+                            _epigraphData.Add(paragraph);
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(string.Format("Failed to load paragraph: {0}.", ex.Message));
+                            Debug.WriteLine($"Failed to load paragraph: {ex.Message}.");
                         }
                         break;
                     case PoemItem.Fb2PoemElementName:
@@ -58,11 +52,11 @@ namespace FB2Library.Elements
                         try
                         {
                             poem.Load(element);
-                            epigraphData.Add(poem);
+                            _epigraphData.Add(poem);
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(string.Format("Failed to load poem: {0}.", ex.Message));
+                            Debug.WriteLine($"Failed to load poem: {ex.Message}.");
                         }
                         break;
                     case CiteItem.Fb2CiteElementName:
@@ -70,22 +64,22 @@ namespace FB2Library.Elements
                         try
                         {
                             cite.Load(element);
-                            epigraphData.Add(cite);
+                            _epigraphData.Add(cite);
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(string.Format("Failed to load citation: {0}.", ex.Message));
+                            Debug.WriteLine($"Failed to load citation: {ex.Message}.");
                         }
                         break;
                     case EmptyLineItem.Fb2EmptyLineElementName:
                         EmptyLineItem emptyLine = new EmptyLineItem();
                         try
                         {
-                            epigraphData.Add(emptyLine);
+                            _epigraphData.Add(emptyLine);
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(string.Format("Failed to load empty line: {0}.", ex.Message));
+                            Debug.WriteLine($"Failed to load empty line: {ex.Message}.");
                         }
                         break;
                     case TextAuthorItem.Fb2TextAuthorElementName:
@@ -94,21 +88,22 @@ namespace FB2Library.Elements
                         try
                         {
                             author.Load(element);
-                            textAuthors.Add(author);
+                            _textAuthors.Add(author);
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(string.Format("Failed to load text author: {0}.", ex.Message));
+                            Debug.WriteLine($"Failed to load text author: {ex.Message}.");
                         }
                         break;
                     default:
-                        Debug.WriteLine(string.Format("EpigraphItem:Load - invalid element <{0}> encountered in title ."), element.Name.LocalName);
+                        Debug.WriteLine(
+                            $"EpigraphItem:Load - invalid element <{element.Name.LocalName}> encountered in title.");
                         break;
                 }
             }
 
             XAttribute xID = xEpigraph.Attribute("id");
-            if ((xID != null) &&(xID.Value != null))
+            if (xID != null && xID.Value != null)
             {
                 ID = xID.Value;
             }
@@ -122,17 +117,16 @@ namespace FB2Library.Elements
                 xEpigraph.Add(new XAttribute("id", ID));
             }
 
-            foreach (IFb2TextItem EpigrafItem in epigraphData)
+            foreach (IFb2TextItem epigrafItem in _epigraphData)
             {
-                xEpigraph.Add(EpigrafItem.ToXML());
+                xEpigraph.Add(epigrafItem.ToXML());
             }
-            foreach (IFb2TextItem EpigrafAuthor in textAuthors)
+            foreach (IFb2TextItem epigrafAuthor in _textAuthors)
             {
-                xEpigraph.Add(EpigrafAuthor.ToXML());
+                xEpigraph.Add(epigrafAuthor.ToXML());
             }
 
             return xEpigraph;
-        
         }
     }
 }

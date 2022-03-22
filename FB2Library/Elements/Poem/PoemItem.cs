@@ -9,19 +9,17 @@ namespace FB2Library.Elements.Poem
 {
     public class PoemItem : IFb2TextItem
     {
-        private readonly List<EpigraphItem> epigraphs = new List<EpigraphItem>();
-        private readonly List<IFb2TextItem> content = new List<IFb2TextItem>();
-        private readonly List<TextAuthorItem> authors = new List<TextAuthorItem>();
+        private readonly List<EpigraphItem> _epigraphs = new List<EpigraphItem>();
+        private readonly List<IFb2TextItem> _content = new List<IFb2TextItem>();
+        private readonly List<TextAuthorItem> _authors = new List<TextAuthorItem>();
 
         public TitleItem Title { get; set; }
-        public List<IFb2TextItem> Content { get { return content; } }
-        public List<TextAuthorItem> Authors { get { return authors; } }
-        public List<EpigraphItem> Epigraphs { get { return epigraphs; } }
+        public List<IFb2TextItem> Content => _content;
+        public List<TextAuthorItem> Authors => _authors;
+        public List<EpigraphItem> Epigraphs => _epigraphs;
         public string Lang { get; set; }
-        public string ID { set; get; }
-        public DateItem Date { set; get; }
-
-
+        public string ID { get; set; }
+        public DateItem Date { get; set; }
 
         internal const string Fb2PoemElementName = "poem";
 
@@ -39,9 +37,9 @@ namespace FB2Library.Elements.Poem
 
             Title = null;
             Date = null;
-            epigraphs.Clear();
-            content.Clear();
-            authors.Clear();
+            _epigraphs.Clear();
+            _content.Clear();
+            _authors.Clear();
 
             IEnumerable<XElement> xElements = xPoem.Elements();
             foreach (var xElement in xElements)
@@ -52,7 +50,7 @@ namespace FB2Library.Elements.Poem
                     try
                     {
                         stanza.Load(xElement);
-                        content.Add(stanza);
+                        _content.Add(stanza);
                     }
                     catch (Exception)
                     {
@@ -65,7 +63,7 @@ namespace FB2Library.Elements.Poem
                     try
                     {
                         subtitle.Load(xElement);
-                        content.Add(subtitle);
+                        _content.Add(subtitle);
                     }
                     catch (Exception)
                     {
@@ -83,7 +81,7 @@ namespace FB2Library.Elements.Poem
                     try
                     {
                         epigraphItem.Load(xElement);
-                        epigraphs.Add(epigraphItem);
+                        _epigraphs.Add(epigraphItem);
                     }
                     catch (Exception)
                     {
@@ -96,7 +94,7 @@ namespace FB2Library.Elements.Poem
                     try
                     {
                         author.Load(xElement);
-                        authors.Add(author);
+                        _authors.Add(author);
                     }
                     catch (Exception)
                     {
@@ -150,11 +148,11 @@ namespace FB2Library.Elements.Poem
             {
                 xPoem.Add(PoemEpigraph.ToXML());
             }
-            foreach (IFb2TextItem PoemStanza in content)
+            foreach (IFb2TextItem PoemStanza in _content)
             {
                 xPoem.Add(PoemStanza.ToXML());
             }
-            foreach (TextAuthorItem TextAuthor in authors)
+            foreach (TextAuthorItem TextAuthor in _authors)
             { 
                 xPoem.Add(TextAuthor.ToXML());
             }

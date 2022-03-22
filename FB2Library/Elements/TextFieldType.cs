@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
@@ -32,7 +29,7 @@ namespace FB2Library.Elements
         {
             if (xElement == null)
             {
-                throw new ArgumentNullException("xElement");
+                throw new ArgumentNullException(nameof(xElement));
             }
             Text = string.Empty;
             if (!string.IsNullOrEmpty(xElement.Value))
@@ -41,7 +38,7 @@ namespace FB2Library.Elements
             }
 
             Language = null;
-            //глянуть 
+            // TODO: глянуть 
             XAttribute xLang = xElement.Attribute(XNamespace.Xml + "lang");
             if (xLang != null && string.IsNullOrEmpty(xLang.Value))
             {
@@ -49,9 +46,9 @@ namespace FB2Library.Elements
             }
         }
 
-        public virtual XElement ToXML(string NameElement)
+        public virtual XElement ToXML(string nameElement)
         {
-            XElement xText = new XElement(Fb2Const.fb2DefaultNamespace + NameElement, Text);
+            XElement xText = new XElement(Fb2Const.fb2DefaultNamespace + nameElement, Text);
             if (Language != null)
             { 
                xText.Add(new XAttribute(XNamespace.Xml + "lang",Language));

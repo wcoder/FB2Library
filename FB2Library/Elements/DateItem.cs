@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
@@ -11,6 +8,8 @@ namespace FB2Library.Elements
     /// </summary>
     public class DateItem : IFb2TextItem
     {
+        internal const string Fb2DateElementName = "date";
+
         /// <summary>
         /// Get/Set Date as Text
         /// </summary>
@@ -26,19 +25,16 @@ namespace FB2Library.Elements
         /// </summary>
         public string Language { get; set; }
 
-
-        internal const string Fb2DateElementName = "date";
-
         internal void Load(XElement xDate)
         {
             if (xDate == null)
             {
-                throw new ArgumentNullException("xDate");
+                throw new ArgumentNullException(nameof(xDate));
             }
 
             if (xDate.Name.LocalName != Fb2DateElementName)
             {
-                throw new ArgumentException("Element of wrong type passed", "xDate");
+                throw new ArgumentException("Element of wrong type passed", nameof(xDate));
             }
 
             if (xDate.Value != null)
@@ -47,7 +43,7 @@ namespace FB2Library.Elements
             }
 
             XAttribute xDateValue = xDate.Attribute("value");
-            if ((xDateValue != null)&&(xDateValue.Value != null))
+            if (xDateValue != null && xDateValue.Value != null)
             {
                 try
                 {
@@ -55,7 +51,7 @@ namespace FB2Library.Elements
                 }
                 catch (Exception)
                 {
-                                     
+                    // ignore    
                 }
             }
 

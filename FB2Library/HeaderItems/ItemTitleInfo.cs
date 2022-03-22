@@ -25,88 +25,70 @@ namespace FB2Library.HeaderItems
         private const string SourceLanguageElementName = "src-lang";
 
         private readonly List<TitleGenreType> _genres = new List<TitleGenreType>();
-
         private readonly List<AuthorType> _translators = new List<AuthorType>();
-
         private readonly List<AuthorType> _bookAuthors = new List<AuthorType>();
-
-
-
-
 
         /// <summary>
         /// Translators if this is a translation
         /// </summary>
-        public IEnumerable<AuthorType> Translators
-        {
-            get { return _translators; }
-        }
+        public IEnumerable<AuthorType> Translators => _translators;
 
         /// <summary>
         /// Book's source language if this is a translation
         /// </summary>
-        public string SrcLanguage { get; set; }
+        public string SrcLanguage { get; private set; }
 
         /// <summary>
         /// Keywords used by search engine
         /// </summary>
-        public TextFieldType Keywords { get; set; }
+        public TextFieldType Keywords { get; private set; }
 
         /// <summary>
         /// Genres of the item
         /// </summary>
-        public IEnumerable<TitleGenreType> Genres
-        {
-            get { return _genres; }
-        }
-
+        public IEnumerable<TitleGenreType> Genres => _genres;
 
         /// <summary>
         /// Authors of this book
         /// </summary>
-        public IEnumerable<AuthorType> BookAuthors
-        {
-            get { return _bookAuthors; }
-        }
-
+        public IEnumerable<AuthorType> BookAuthors => _bookAuthors;
 
         /// <summary>
         /// Book's annotation
         /// </summary>
-        public AnnotationItem Annotation { set; get; }
+        public AnnotationItem Annotation { set; private get; }
 
         /// <summary>
         /// Book date , can be a range like 1990-1991
         /// </summary>
-        public DateItem BookDate { get; set; }
+        public DateItem BookDate { get; private set; }
 
         /// <summary>
         /// Book's language
         /// </summary>
-        public string Language { set; get; }
+        public string Language { set; private get; }
 
-        public CoverPage Cover { get; set; }
+        public CoverPage Cover { get; private set; }
 
         public void Load(XElement xTitleInfo)
         {
-            if ( xTitleInfo == null )
+            if (xTitleInfo == null)
             {
-                throw new ArgumentNullException("xTitleInfo");
+                throw new ArgumentNullException(nameof(xTitleInfo));
             }
 
             // Load genres
             _genres.Clear();
             IEnumerable<XElement> xGenres = xTitleInfo.Elements(FileNameSpace + GenreElementName);
-            foreach ( XElement xGenre in xGenres )
+            foreach (XElement xGenre in xGenres)
             {
-                if ( (xGenre != null) )
+                if (xGenre != null)
                 {
-                    var genre = new TitleGenreType {Genre = xGenre.Value};
+                    var genre = new TitleGenreType { Genre = xGenre.Value };
                     XAttribute xMatch = xGenre.Attribute("match");
                     if (xMatch != null && !string.IsNullOrEmpty(xMatch.Value))
                     {
-                        int percentage;
-                        if (int.TryParse(xMatch.Value,out percentage))
+                        if (int.TryParse(xMatch.Value, out var percentage))
                         {
                             genre.Match = percentage;
                         }
@@ -128,8 +110,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading author: {0}",ex.Message));
-                    continue;
+                    Debug.WriteLine($"Error reading author: {ex.Message}");
                 }
             }
 
@@ -146,7 +127,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading book title: {0}", ex.Message));
+                    Debug.WriteLine($"Error reading book title: {ex.Message}");
                 }
             }
 
@@ -162,10 +143,9 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading annotation: {0}", ex.Message));
+                    Debug.WriteLine($"Error reading annotation: {ex.Message}");
                 }
             }
-
 
             // Load keywords
             Keywords = null;
@@ -179,7 +159,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading keywords: {0}", ex.Message));
+                    Debug.WriteLine($"Error reading keywords: {ex.Message}");
                 }
             }
 
@@ -195,7 +175,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading book date: {0}", ex.Message));
+                    Debug.WriteLine($"Error reading book date: {ex.Message}");
                 }
             }
 
@@ -211,14 +191,14 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading cover: {0}", ex.Message));
+                    Debug.WriteLine($"Error reading cover: {ex.Message}");
                 }
             }
 
             // Load Language
             Language = null;
             XElement xLanguage = xTitleInfo.Element(FileNameSpace + LanguageElementName);
-            if ( (xLanguage != null))
+            if (xLanguage != null)
             {
                 Language = xLanguage.Value;
             }
@@ -230,7 +210,7 @@ namespace FB2Library.HeaderItems
             // Load source language
             SrcLanguage = null;
             XElement xSrcLanguage = xTitleInfo.Element(FileNameSpace + SourceLanguageElementName);
-            if ( (xSrcLanguage != null) )
+            if (xSrcLanguage != null)
             {
                 SrcLanguage = xSrcLanguage.Value;
             }
@@ -248,8 +228,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading translator: {0}", ex.Message));
-                    continue;
+                    Debug.WriteLine($"Error reading translator: {ex.Message}");
                 }
             }
 
@@ -258,7 +237,7 @@ namespace FB2Library.HeaderItems
             IEnumerable<XElement> xSequences = xTitleInfo.Elements(FileNameSpace + SequenceType.SequenceElementName);
             foreach (var xSequence in xSequences)
             {
-               var sec = new SequenceType{ Namespace = FileNameSpace };
+               var sec = new SequenceType { Namespace = FileNameSpace };
                 try
                 {
                     sec.Load(xSequence);
@@ -266,8 +245,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading sequence data: {0}",ex.Message));
-                    continue;
+                    Debug.WriteLine($"Error reading sequence data: {ex.Message}");
                 }
             }
         }
@@ -283,8 +261,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error converting genre data to XML: {0}", ex.Message));
-                    continue;                    
+                    Debug.WriteLine($"Error converting genre data to XML: {ex.Message}");
                 }
             }
             foreach (AuthorType author in _bookAuthors)
@@ -295,8 +272,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error converting genre data to XML: {0}", ex.Message));
-                    continue;
+                    Debug.WriteLine($"Error converting genre data to XML: {ex.Message}");
                 }
             }
 
@@ -340,6 +316,5 @@ namespace FB2Library.HeaderItems
 
             return xTitleInfo;
         }
-
-    } // class
+    }
 }

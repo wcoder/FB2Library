@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using FB2Library.Elements.Poem;
 using FB2Library.Elements.Table;
@@ -11,31 +9,30 @@ namespace FB2Library.Elements
 {
     public class CiteItem : IFb2TextItem
     {
-        private readonly List<IFb2TextItem> citeData = new List<IFb2TextItem>();
-        private readonly List<ParagraphItem> textAuthors = new List<ParagraphItem>();
-
-        public List<ParagraphItem> TextAuthors { get { return textAuthors; } }
-        public string ID { get; set; }
-        public List<IFb2TextItem> CiteData { get { return citeData; } }
-        public string Lang { get; set; }
-
         internal const string Fb2CiteElementName = "cite";
 
+        private readonly List<IFb2TextItem> _citeData = new List<IFb2TextItem>();
+        private readonly List<ParagraphItem> _textAuthors = new List<ParagraphItem>();
+        
+        public string ID { get; set; }
+        public List<IFb2TextItem> CiteData => _citeData;
+        public List<ParagraphItem> TextAuthors => _textAuthors;
+        public string Lang { get; set; }
 
         internal void Load(XElement xCite)
         {
-            citeData.Clear();
+            _citeData.Clear();
             if (xCite == null)
             {
-                throw new ArgumentNullException("xCite");
+                throw new ArgumentNullException(nameof(xCite));
             }
 
             if (xCite.Name.LocalName != Fb2CiteElementName)
             {
-                throw new ArgumentException("Element of wrong type passed", "xCite");
+                throw new ArgumentException("Element of wrong type passed", nameof(xCite));
             }
 
-            textAuthors.Clear();
+            _textAuthors.Clear();
             IEnumerable<XElement> xItems = xCite.Elements();
             foreach (var element in xItems)
             {
@@ -46,7 +43,7 @@ namespace FB2Library.Elements
                         try
                         {
                             paragraph.Load(element);
-                            citeData.Add(paragraph);
+                            _citeData.Add(paragraph);
                         }
                         catch (Exception)
                         {
@@ -57,7 +54,7 @@ namespace FB2Library.Elements
                         try
                         {
                             poem.Load(element);
-                            citeData.Add(poem);
+                            _citeData.Add(poem);
                         }
                         catch (Exception)
                         {
@@ -67,7 +64,7 @@ namespace FB2Library.Elements
                         EmptyLineItem emptyLine = new EmptyLineItem();
                         try
                         {
-                            citeData.Add(emptyLine);
+                            _citeData.Add(emptyLine);
                         }
                         catch (Exception)
                         {
@@ -78,7 +75,7 @@ namespace FB2Library.Elements
                         try
                         {
                             subtitle.Load(element);
-                            citeData.Add(subtitle);
+                            _citeData.Add(subtitle);
                         }
                         catch (Exception)
                         {
@@ -89,7 +86,7 @@ namespace FB2Library.Elements
                         try
                         {
                             table.Load(element);
-                            citeData.Add(table);
+                            _citeData.Add(table);
 
                         }
                         catch (Exception)
@@ -102,28 +99,29 @@ namespace FB2Library.Elements
                         try
                         {
                             author.Load(element);
-                            textAuthors.Add(author);
+                            _textAuthors.Add(author);
                         }
                         catch (Exception)
                         {
                         }
                         break;
                     default:
-                        Debug.WriteLine(string.Format("CiteItem:Load - invalid element <{0}> encountered in title ."), element.Name.LocalName);
+                        Debug.WriteLine(
+                            $"CiteItem:Load - invalid element <{element.Name.LocalName}> encountered in title .");
                         break;
                 }
             }
 
             Lang = null;
             XAttribute xLang = xCite.Attribute(XNamespace.Xml + "lang");
-            if ((xLang != null)&&(xLang.Value != null))
+            if (xLang != null && xLang.Value != null)
             {
                 Lang = xLang.Value;
             }
 
             ID = null;
             XAttribute xID = xCite.Attribute("id");
-            if ((xID != null) && (xID.Value != null))
+            if (xID != null && xID.Value != null)
             {
                 ID = xID.Value;
             }
@@ -142,13 +140,13 @@ namespace FB2Library.Elements
                 xCite.Add(new XAttribute(XNamespace.Xml + "lang", Lang));
             }
 
-            foreach (IFb2TextItem CiteItem in citeData)
+            foreach (IFb2TextItem citeItem in _citeData)
             {
-                xCite.Add(CiteItem.ToXML());
+                xCite.Add(citeItem.ToXML());
             }
-            foreach (ParagraphItem AuthorItem in textAuthors)
+            foreach (ParagraphItem authorItem in _textAuthors)
             {
-                xCite.Add(AuthorItem.ToXML());
+                xCite.Add(authorItem.ToXML());
             }
 
             return xCite;

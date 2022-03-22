@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
@@ -11,8 +8,7 @@ namespace FB2Library.Elements
         /// <summary>
         /// Get/Set info-type attribute
         /// </summary>
-        public string InfoType { get; set; }
-
+        public string InfoType { get; private set; }
 
         public override void Load(XElement xElement)
         {
@@ -24,13 +20,8 @@ namespace FB2Library.Elements
             {
                 throw new Exception("info-type attribute required for custom info element");
             }
-            else
-            {
-                InfoType = xInfoType.Value;
-            }
-            
-        }
 
-        
+            InfoType = xInfoType.Value;
+        }
     }
 }

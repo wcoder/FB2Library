@@ -1,33 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
 {
     public class OutPutDocumentType : IShareInstructionElement
     {
-        private readonly List<ShareInstructionType> parts = new List<ShareInstructionType>();
-
         public const string OutputDocumentElementName = "output-document-class";
 
-        private XNamespace fileNameSpace = XNamespace.None;
+        private readonly List<ShareInstructionType> _parts = new List<ShareInstructionType>();
+
+        private XNamespace _fileNameSpace = XNamespace.None;
 
         /// <summary>
         /// XML namespace used to read the document
         /// </summary>
         public XNamespace Namespace
         {
-            set { fileNameSpace = value; }
-            get { return fileNameSpace; }
+            set { _fileNameSpace = value; }
+            get { return _fileNameSpace; }
         }
 
         /// <summary>
         /// Get list of the instruction parts
         /// </summary>
-        public List<ShareInstructionType> Parts { get { return parts; } }
+        public List<ShareInstructionType> Parts => _parts;
 
         /// <summary>
         /// Get/Set Name attribute
@@ -39,7 +37,6 @@ namespace FB2Library.Elements
         /// </summary>
         public GenerationInstructionEnum Create { get; set; }
 
-
         /// <summary>
         /// Get/Set price
         /// </summary>
@@ -49,22 +46,22 @@ namespace FB2Library.Elements
         {
             if (xElement == null)
             {
-                throw new ArgumentNullException("xElement");
+                throw new ArgumentNullException(nameof(xElement));
             }
 
-            parts.Clear();
-            IEnumerable<XElement> xParts = xElement.Elements(fileNameSpace + "part");
+            _parts.Clear();
+            IEnumerable<XElement> xParts = xElement.Elements(_fileNameSpace + "part");
             foreach (var xPart in xParts)
             {
-                ShareInstructionType part = new ShareInstructionType {Namespace = fileNameSpace};
+                ShareInstructionType part = new ShareInstructionType {Namespace = _fileNameSpace};
                 try
                 {
                     part.Load(xPart);
-                    parts.Add(part);
+                    _parts.Add(part);
                 }
                 catch (Exception)
                 {
-                    continue;
+                    // ignored
                 }
             }
 
@@ -93,17 +90,16 @@ namespace FB2Library.Elements
                         Create = GenerationInstructionEnum.Deny;
                         break;
                     default:
-                        Debug.WriteLine(string.Format("Invalid instruction type : {0}", xCreate.Value));
+                        Debug.WriteLine($"Invalid instruction type : {xCreate.Value}");
                         break;
                 }                
             }
 
             Price = null;
             XAttribute xPrice = xElement.Attribute("price");
-            if ((xPrice != null) && !string.IsNullOrEmpty(xPrice.Value))
+            if (xPrice != null && !string.IsNullOrEmpty(xPrice.Value))
             {
-                float val;
-                if (float.TryParse(xPrice.Value, out val))
+                if (float.TryParse(xPrice.Value, out var val))
                 {
                     Price = val;
                 }
@@ -139,9 +135,9 @@ namespace FB2Library.Elements
             {
                 xOutputDocumentClass.Add(new XAttribute("price", Price.ToString()));
             }
-            foreach (ShareInstructionType PartElement in parts)
+            foreach (ShareInstructionType partElement in _parts)
             {
-                xOutputDocumentClass.Add(PartElement.ToXML());
+                xOutputDocumentClass.Add(partElement.ToXML());
             }
             return xOutputDocumentClass;
         }

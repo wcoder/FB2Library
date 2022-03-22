@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace FB2Library.Elements
@@ -13,7 +10,6 @@ namespace FB2Library.Elements
         void Load(XElement xElement);
         XElement ToXML();
     }
-
 
     public enum GenerationInstructionEnum
     {
@@ -28,21 +24,23 @@ namespace FB2Library.Elements
     /// </summary>
     public class ShareInstructionType
     {
+        public const string ShareInstructionElementName = "output";
+
         public enum ShareModeEnum
         {
             Unknown,
             Free,
             Paid,
         }
-
         
-        private List<IShareInstructionElement> content = new List<IShareInstructionElement>();
+        private readonly List<IShareInstructionElement> _content = new List<IShareInstructionElement>();
+        
+        private XNamespace _fileNameSpace = XNamespace.None;
 
         /// <summary>
         /// Get/Set Modes for document sharing
         /// </summary>
         public ShareModeEnum SharedMode { get; set; }
-
 
         /// <summary>
         /// Get/Set instructions to process sections
@@ -59,73 +57,70 @@ namespace FB2Library.Elements
         /// </summary>
         public string Currency { get; set; }
 
-        public const string ShareInstructionElementName = "output";
-
-        private XNamespace fileNameSpace = XNamespace.None;
-
         /// <summary>
         /// XML namespace used to read the document
         /// </summary>
         public XNamespace Namespace
         {
-            set { fileNameSpace = value; }
-            get { return fileNameSpace; }
+            set { _fileNameSpace = value; }
+            get { return _fileNameSpace; }
         }
 
         /// <summary>
         /// Get list of content elements
         /// </summary>
-        public List<IShareInstructionElement> Content { get { return content; } }
+        public List<IShareInstructionElement> Content => _content;
 
         public void Load(XElement xElement)
         {
             if (xElement == null)
             {
-                throw new ArgumentNullException("xElement");
+                throw new ArgumentNullException(nameof(xElement));
             }
             if (xElement.Name.LocalName != ShareInstructionElementName)
             {
-                throw new ArgumentException(string.Format("Wrong element name: {0} instead of {1}",xElement.Name.LocalName,ShareInstructionElementName));
+                throw new ArgumentException(
+                    $"Wrong element name: {xElement.Name.LocalName} instead of {ShareInstructionElementName}");
             }
 
-            content.Clear();
+            _content.Clear();
             IEnumerable<XElement> xElements = xElement.Elements();
             foreach (var element in xElements)
             {   
                 if (element.Name.LocalName == PartShareInstructionType.PartElementName)
                 {
-                    PartShareInstructionType part = new PartShareInstructionType{Namespace = fileNameSpace};
+                    PartShareInstructionType part = new PartShareInstructionType{Namespace = _fileNameSpace};
                     try
                     {
                         part.Load(element);
-                        content.Add(part);
+                        _content.Add(part);
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(string.Format("Error loading part type: {0}",ex.Message));
+                        Debug.WriteLine($"Error loading part type: {ex.Message}");
                     }
                 }
                 else if (element.Name.LocalName == OutPutDocumentType.OutputDocumentElementName)
                 {
-                    OutPutDocumentType doc = new OutPutDocumentType{Namespace = fileNameSpace};
+                    OutPutDocumentType doc = new OutPutDocumentType{Namespace = _fileNameSpace};
                     try
                     {
                         doc.Load(element);
-                        content.Add(doc);
+                        _content.Add(doc);
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(string.Format("Error loading output document type: {0}", ex.Message));
+                        Debug.WriteLine($"Error loading output document type: {ex.Message}");
                     }
                 }
                 else
                 {
-                    Debug.WriteLine(string.Format("Invalid element type encoutered {0}", element.Name.LocalName));
+                    Debug.WriteLine($"Invalid element type encoutered {element.Name.LocalName}");
                 }
             }
 
             XAttribute xSharedMode = xElement.Attribute("mode");
-            if ((xSharedMode == null) || string.IsNullOrEmpty(xSharedMode.Value) )
+            if (xSharedMode == null || string.IsNullOrEmpty(xSharedMode.Value))
             {
                 Debug.WriteLine("mode attribute is required attribute");
             }
@@ -140,14 +135,14 @@ namespace FB2Library.Elements
                         SharedMode = ShareModeEnum.Paid;
                         break;
                     default:
-                        Debug.WriteLine(string.Format("Invalid shared mode type : {0}", xSharedMode.Value));
+                        Debug.WriteLine($"Invalid shared mode type : {xSharedMode.Value}");
                         break;
                 }
             }
 
 
             XAttribute xIncludeAll = xElement.Attribute("include-all");
-            if ((xIncludeAll == null) || string.IsNullOrEmpty(xIncludeAll.Value))
+            if (xIncludeAll == null || string.IsNullOrEmpty(xIncludeAll.Value))
             {
                 Debug.WriteLine("mode attribute is required attribute");
             }
@@ -165,7 +160,7 @@ namespace FB2Library.Elements
                         Instruction = GenerationInstructionEnum.Deny;
                         break;
                     default:
-                        Debug.WriteLine(string.Format("Invalid instruction type : {0}", xIncludeAll.Value));
+                        Debug.WriteLine($"Invalid instruction type : {xIncludeAll.Value}");
                         break;
                 }
             }
@@ -235,11 +230,10 @@ namespace FB2Library.Elements
             {
                 xShareInstruction.Add(new XAttribute("currency", Currency));
             }
-            foreach (IShareInstructionElement ShareElement in content)
+            foreach (IShareInstructionElement shareElement in _content)
             {
-                xShareInstruction.Add(ShareElement.ToXML());
+                xShareInstruction.Add(shareElement.ToXML());
             }
-
 
             return xShareInstruction;
         }

@@ -5,7 +5,6 @@ using System.Xml.Linq;
 using FB2Library.Elements;
 using System.Globalization;
 
-
 namespace FB2Library.HeaderItems
 {
     /// <summary>
@@ -55,28 +54,22 @@ namespace FB2Library.HeaderItems
         ///  List of document authors,  
         /// note this is NOT book authors but document creators 
         /// </summary>
-        public List<AuthorType> DocumentAuthors
-        {
-            get { return this._documentAuthors; }
-        }
+        public List<AuthorType> DocumentAuthors => _documentAuthors;
 
         /// <summary>
         /// Owners of the fb2 document copyrights
         /// </summary>
-        public List<AuthorType> DocumentPublishers
-        {
-            get { return this._documentPublishers; }
-        }
+        public List<AuthorType> DocumentPublishers => _documentPublishers;
 
         /// <summary>
         /// Text specifiying program used to create the document
         /// </summary>
-        public TextFieldType ProgramUsed2Create { set; get; }
+        public TextFieldType ProgramUsed2Create { get; set; }
 
         /// <summary>
         /// Date of the document creation
         /// </summary>
-        public DateItem DocumentDate { set; get; }
+        public DateItem DocumentDate { get; set; }
 
         /// <summary>
         /// Document's UID
@@ -119,7 +112,7 @@ namespace FB2Library.HeaderItems
         {
             if (xDocumentInfo == null)
             {
-                throw new ArgumentNullException("xDocumentInfo");
+                throw new ArgumentNullException(nameof(xDocumentInfo));
             }
 
 
@@ -138,7 +131,7 @@ namespace FB2Library.HeaderItems
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine(string.Format("Error reading document authors : {0}",ex.Message));
+                        Debug.WriteLine($"Error reading document authors : {ex.Message}");
                         continue;
                     }
                 }
@@ -156,7 +149,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading program used to create : {0}", ex.Message));
+                    Debug.WriteLine($"Error reading program used to create : {ex.Message}");
                 }
             }
 
@@ -172,7 +165,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading document date : {0}", ex.Message));
+                    Debug.WriteLine($"Error reading document date : {ex.Message}");
                 }
             }
 
@@ -203,7 +196,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(string.Format("Error reading source OCR : {0}", ex.Message));
+                    Debug.WriteLine($"Error reading source OCR : {ex.Message}");
                 }
             }
 

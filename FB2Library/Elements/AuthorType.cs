@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using FB2Library.Elements;
 
 namespace FB2Library.HeaderItems
 {
-
     public class AuthorType 
     {
         public const string AuthorElementName = "author";
@@ -64,10 +60,7 @@ namespace FB2Library.HeaderItems
         /// </summary>
         public TextFieldType UID
         {
-            get
-            {
-                return uid;
-            }
+            get => uid;
             set
             {
                 if (!string.IsNullOrEmpty(value.Text))
@@ -121,6 +114,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
 
@@ -136,7 +130,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch(Exception)
                 {
-                    
+                    // ignore
                 }
             }
 
@@ -152,6 +146,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
 
@@ -168,6 +163,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
 
@@ -183,6 +179,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
 
@@ -199,6 +196,7 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
 
@@ -215,9 +213,9 @@ namespace FB2Library.HeaderItems
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
             }
-
         }
 
         public override string ToString()
@@ -252,7 +250,7 @@ namespace FB2Library.HeaderItems
                 uid = UID.Text;
             }
 
-            return string.Format("{0} {1} {2} ({3}): {4}",lastName,firstName,midName,nickName,uid);
+            return $"{lastName} {firstName} {midName} ({nickName}): {uid}";
         }
 
         public override int GetHashCode()
@@ -265,7 +263,7 @@ namespace FB2Library.HeaderItems
             return ToString().Equals(obj.ToString());
         }
 
-        public XElement ToXML( )
+        public XElement ToXML()
         {
             XElement xPerson = new XElement(Fb2Const.fb2DefaultNamespace + ElementName);
             if (FirstName != null)
@@ -296,7 +294,8 @@ namespace FB2Library.HeaderItems
             {
                 xPerson.Add(UID.ToXML(IdElementName));
             }
+
             return xPerson;
         }
-    }//class
+    }
 }

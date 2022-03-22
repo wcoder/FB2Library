@@ -7,67 +7,66 @@ namespace FB2Library.HeaderItems
 {
     public class CoverPage
     {
-        private readonly List<InlineImageItem> coverimages = new List<InlineImageItem>();
+        internal const string Fb2CoverPageImageElementName = "coverpage";
 
-        private XNamespace fileNameSpace = XNamespace.None;
+        private readonly List<InlineImageItem> _coverImages = new List<InlineImageItem>();
 
-        internal const string Fb2CoverpageImageElementName = "coverpage";
+        private XNamespace _fileNameSpace = XNamespace.None;
 
         protected string GetElementName()
         {
-            return Fb2CoverpageImageElementName;
+            return Fb2CoverPageImageElementName;
         }
 
+        public List<InlineImageItem> CoverpageImages => _coverImages;
 
-        public List<InlineImageItem> CoverpageImages { get { return coverimages; } }
-
-        public bool HasImages() {  return (coverimages.Count > 0); } 
+        public bool HasImages() => _coverImages.Count > 0;
 
         /// <summary>
         /// XML namespace used to read the document
         /// </summary>
         public XNamespace Namespace
         {
-            set { fileNameSpace = value; }
-            get { return fileNameSpace; }
+            set { _fileNameSpace = value; }
+            get { return _fileNameSpace; }
         }
 
 
-        internal void Load(XElement xCoverpage)
+        internal void Load(XElement xCoverPage)
         {
-            if (xCoverpage == null)
+            if (xCoverPage == null)
             {
-                throw new ArgumentNullException("xCoverpage");
+                throw new ArgumentNullException(nameof(xCoverPage));
             }
 
-            if (xCoverpage.Name.LocalName != GetElementName())
+            if (xCoverPage.Name.LocalName != GetElementName())
             {
-                throw new ArgumentException("Element of wrong type passed", "xCoverpage");
+                throw new ArgumentException("Element of wrong type passed", nameof(xCoverPage));
             }
 
-            coverimages.Clear();
-            IEnumerable<XElement> xImages = xCoverpage.Elements(fileNameSpace +InlineImageItem.Fb2InlineImageElementName);
+            _coverImages.Clear();
+            IEnumerable<XElement> xImages = xCoverPage.Elements(_fileNameSpace +InlineImageItem.Fb2InlineImageElementName);
             foreach (var xImage in xImages)
             {
                 InlineImageItem image = new InlineImageItem();
                 try
                 {
                     image.Load(xImage);
-                    coverimages.Add(image);
+                    _coverImages.Add(image);
                 }
                 catch (Exception)
                 {
+                    // ignore
                 }
-                
             }
         }
         
         public XElement ToXML()
         {
-            XElement xCover = new XElement(Fb2Const.fb2DefaultNamespace + Fb2CoverpageImageElementName);
-            foreach (InlineImageItem ImageItem in coverimages)
+            XElement xCover = new XElement(Fb2Const.fb2DefaultNamespace + Fb2CoverPageImageElementName);
+            foreach (InlineImageItem imageItem in _coverImages)
             {
-                xCover.Add(ImageItem.ToXML());
+                xCover.Add(imageItem.ToXML());
             }
 
             return xCover;
