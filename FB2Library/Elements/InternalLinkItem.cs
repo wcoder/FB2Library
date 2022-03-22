@@ -74,6 +74,18 @@ namespace FB2Library.Elements
                             {
                             }
                         }
+                        else if (xElement.Name.LocalName == StyleItem.StyleItemName)
+                        {
+                            StyleItem styleItem = new StyleItem();
+                            try
+                            {
+                                styleItem.Load(xElement);
+                                _linkData.Add(styleItem);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
                     }
                     else
                     {
@@ -123,7 +135,13 @@ namespace FB2Library.Elements
             {
                 throw new ArgumentException("Schema doesn't support nested links");
             }
-            return xElement.Name.LocalName != InlineImageItem.Fb2InlineImageElementName;
+            switch (xElement.Name.LocalName)
+            {
+                case InlineImageItem.Fb2InlineImageElementName:
+                case StyleItem.StyleItemName:
+                    return false;
+            }
+            return true;
         }
 
         public XNode ToXML()

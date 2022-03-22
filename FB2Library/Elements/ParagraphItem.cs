@@ -22,9 +22,9 @@ namespace FB2Library.Elements
         {
             return Fb2ParagraphElementName;
         }
-        
+
         internal const string Fb2ParagraphElementName = "p";
-        
+
 
         public override string ToString()
         {
@@ -78,24 +78,36 @@ namespace FB2Library.Elements
                             }
                             catch (Exception)
                             {
-                            }                            
+                            }
+                        }
+                        else if (xElement.Name.LocalName == StyleItem.StyleItemName)
+                        {
+                            StyleItem styleItem = new StyleItem();
+                            try
+                            {
+                                styleItem.Load(xElement);
+                                paragraphData.Add(styleItem);
+                            }
+                            catch (Exception)
+                            {
+                            }
                         }
                     }
                     else //if ( element.NodeType != XmlNodeType.Whitespace)
                     {
-                            SimpleText text = new SimpleText();
-                            try
-                            {
-                                text.Load(element);
-                                paragraphData.Add(text);
-                            }
-                            catch (Exception)
-                            {
-                                continue;
-                            }
+                        SimpleText text = new SimpleText();
+                        try
+                        {
+                            text.Load(element);
+                            paragraphData.Add(text);
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
                     }
                 }
-               
+
             }
             else if (!string.IsNullOrEmpty(xParagraph.Value))
             {
@@ -122,7 +134,7 @@ namespace FB2Library.Elements
             {
                 Lang = xLang.Value;
             }
-            
+
         }
 
         internal virtual void Load(XElement xParagraph)
@@ -153,8 +165,9 @@ namespace FB2Library.Elements
             {
                 case InternalLinkItem.Fb2InternalLinkElementName:
                 case InlineImageItem.Fb2InlineImageElementName:
+                case StyleItem.StyleItemName:
                     return false;
-                    
+
             }
             return true;
         }
