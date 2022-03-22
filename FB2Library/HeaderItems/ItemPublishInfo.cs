@@ -134,6 +134,7 @@ namespace FB2Library.HeaderItems
                 try
                 {
                     sec.Load(xSequence);
+                    ItemSequences.Add(sec);
                 }
                 catch (Exception ex)
                 {

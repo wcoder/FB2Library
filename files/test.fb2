@@ -120,6 +120,7 @@
       <city>Москва</city>
       <year>1957</year>
       <isbn>Тут пишем ISBN код книги, если есть</isbn>
+      <sequence name="Детство, Отрочество, Юность" number="2"/>
     </publish-info>
     <custom-info info-type="general">
       Здесь можно расположить дополнительную информацию, не
