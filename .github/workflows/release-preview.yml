@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-    - "v[0-9]+.[0-9]+.[0-9]+(-(alpha|beta|preview)([0-9]+)?)?"
+    - "v[0-9]+.[0-9]+.[0-9]+-preview[0-9][0-9][0-9]"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,9 +12,17 @@ jobs:
     - name: Set VERSION variable from tag
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
     - name: Pack
-      run: dotnet pack FB2Library/FB2Library.csproj -c Release -p:NuspecFile=../nuget/FB2Library.nuspec -p:NuspecProperties="version=${VERSION}" --output .
+      run: |
+        dotnet pack FB2Library/FB2Library.csproj \
+          --configuration Release \
+          -p:NuspecFile=../nuget/FB2Library.nuspec \
+          -p:NuspecProperties="version=${VERSION}" \
+          --output .
     - name: Push
-      run: dotnet nuget push FB2Library.${VERSION}.nupkg --source https://nuget.pkg.github.com/${GITHUB_OWNER}/index.json --api-key ${GITHUB_TOKEN}
+      run: |
+        dotnet nuget push FB2Library.${VERSION}.nupkg \
+          --source https://nuget.pkg.github.com/${GITHUB_OWNER}/index.json \
+          --api-key ${GITHUB_TOKEN}
       env:
         GITHUB_OWNER: wcoder
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
