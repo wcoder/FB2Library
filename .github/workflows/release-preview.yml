@@ -3,12 +3,13 @@ on:
     tags:
     - "v[0-9]+.[0-9]+.[0-9]+-preview[0-9]+"
 env:
+  DOTNET_NOLOGO: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -42,7 +43,8 @@ jobs:
         run: |
           dotnet nuget push ./nupkg/FB2Library.*.nupkg \
             --source ${FEED_URL} \
-            --api-key ${FEED_KEY}
+            --api-key ${FEED_KEY} \
+            --skip-duplicate
         env:
           FEED_URL: https://nuget.pkg.github.com/wcoder/index.json \
           FEED_KEY: ${{ secrets.GITHUB_TOKEN }}

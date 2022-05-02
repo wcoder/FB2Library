@@ -6,6 +6,7 @@ on:
     branches:
     - master
 env:
+  DOTNET_NOLOGO: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 jobs:
