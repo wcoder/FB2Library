@@ -26,8 +26,6 @@ jobs:
           -p:NuspecProperties="version=${VERSION}" \
           --configuration Release \
           --verbosity normal \
-          --include-symbols \
-          --include-source \
           --output .
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
