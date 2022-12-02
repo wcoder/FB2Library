@@ -39,7 +39,9 @@ jobs:
           name: nupkg
       - name: Push to GitHub
         run: |
-          dotnet nuget push ./nupkg/*.nupkg \
+          ls -al
+          ls nupkg/
+          dotnet nuget push nupkg/*.nupkg \
             --source ${FEED_URL} \
             --api-key ${FEED_KEY} \
             --no-symbols true \
