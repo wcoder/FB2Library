@@ -47,7 +47,7 @@ jobs:
         run: |
           dotnet nuget push ./nupkg/* \
             --source ${FEED_URL} \
-            --api-key ${FEED_KEY}
+            --api-key ${FEED_KEY} \
             --skip-duplicate
         env:
           FEED_URL: https://api.nuget.org/v3/index.json
