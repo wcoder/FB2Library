@@ -5,7 +5,8 @@ This project provides .Net library to help developers load .FB2 (Fiction Book: h
 > The original library automatically exported from http://code.google.com/p/fb2librarynet and placed [here](https://github.com/wcoder/FB2Library).
 
 ## Installation
-* Available on NuGet: https://www.nuget.org/packages/FB2Library 
+
+* Available on NuGet: https://www.nuget.org/packages/FB2Library
 * Install into your PCL project or Client projects.
 
 ```
@@ -16,16 +17,19 @@ or
 dotnet add package FB2Library
 ```
 
-
 ## Usage
+
 * [Gettings started](https://github.com/wcoder/FB2Library/wiki/Usage)
 * [How to make book for reading](https://github.com/wcoder/FB2Library/wiki/How-to-make-book)
 
 ## Platform Support
 
 Everything that supports [.NET Standard 1.0](https://github.com/dotnet/standard/blob/master/docs/versions/netstandard1.0.md):
-* .NET Core 1.0
-* .NET Framework 4.5
+
+* .NET Core 1.0+
+* .NET Framework 4.5+
+* .NET 6
+* .NET 7
 * Mono
 * Xamarin.iOS
 * Xamarin.Android
@@ -35,6 +39,7 @@ Everything that supports [.NET Standard 1.0](https://github.com/dotnet/standard/
 * Windows Phone Silverlight 8.0
 
 ## Authors
+
 * [lordkiron](https://github.com/lordkiron) - developed original library
 * [Yauheni Pakala](https://github.com/wcoder) - porting to PCL/NetStandard
 
