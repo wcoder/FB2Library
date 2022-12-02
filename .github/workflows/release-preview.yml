@@ -43,7 +43,8 @@ jobs:
             --source ${FEED_URL} \
             --api-key ${FEED_KEY} \
             --no-symbols true \
-            --skip-duplicate
+            --skip-duplicate \
+            --diagnostics
         env:
           FEED_URL: https://nuget.pkg.github.com/wcoder/index.json \
           FEED_KEY: ${{ secrets.GITHUB_TOKEN }}
