@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;netstandard2.1;net6.0</TargetFrameworks>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 
     <PackageId>FB2Library</PackageId>
@@ -13,16 +13,20 @@
     <PackageTags>netstandard;dotnet6;fb2;ebook;windows;uwp;android;ios;linux;macos;xamarin;xamarin.forms;maui</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/wcoder/FB2Library</PackageProjectUrl>
+    <RepositoryBranch>master</RepositoryBranch>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageReleaseNotes>Add support .NET6</PackageReleaseNotes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>Add more target frameworks</PackageReleaseNotes>
     <Copyright>Copyright (c) 2009-2015 lordkiron / 2022 Yauheni Pakala</Copyright>
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="" />
     <None Include="..\LICENSE.md" Pack="true" PackagePath="" />
     <None Include="..\images\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
