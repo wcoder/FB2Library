@@ -45,7 +45,7 @@ jobs:
           name: nupkg
       - name: Push to NuGet
         run: |
-          dotnet nuget push ./nupkg/* \
+          dotnet nuget push ./nupkg/*.nupkg ./nupkg/*.snupkg \
             --source ${FEED_URL} \
             --api-key ${FEED_KEY}
         env:
