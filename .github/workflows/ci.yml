@@ -23,4 +23,4 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: dotnet build --configuration Release
     - name: Build Library
-      run: dotnet build FB2Library --configuration Release
+      run: dotnet build src --configuration Release
