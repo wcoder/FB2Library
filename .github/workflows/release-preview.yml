@@ -31,7 +31,7 @@ jobs:
 
   deploy-github:
     needs: build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Download Artifact
         uses: actions/download-artifact@v1
