@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Library", "FB2Library\FB2Library.csproj", "{718CE136-BCDC-4BF8-9863-ADC7633EB2CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Library", "src\FB2Library.csproj", "{718CE136-BCDC-4BF8-9863-ADC7633EB2CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Library.Sample.UWP", "FB2Library.Sample.UWP\FB2Library.Sample.UWP.csproj", "{9E25F85E-486A-4B68-AF44-3E47CA962433}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB2Library.Sample.UWP", "samples\FB2Library.Sample.UWP\FB2Library.Sample.UWP.csproj", "{9E25F85E-486A-4B68-AF44-3E47CA962433}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBLibrary.Sample.ConsoleApp", "FBLibrary.Sample.ConsoleApp\FBLibrary.Sample.ConsoleApp.csproj", "{6D8B892A-DDE9-4860-94DD-B567D431CA7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBLibrary.Sample.ConsoleApp", "samples\FBLibrary.Sample.ConsoleApp\FBLibrary.Sample.ConsoleApp.csproj", "{6D8B892A-DDE9-4860-94DD-B567D431CA7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

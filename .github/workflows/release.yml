@@ -2,6 +2,7 @@ on:
   push:
     tags:
     - "v[0-9]+.[0-9]+.[0-9]+"
+    - "v[0-9]+.[0-9]+.[0-9]+-preview[0-9]+"
 env:
   DOTNET_NOLOGO: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -21,17 +22,18 @@ jobs:
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
     - name: Pack
       run: |
-        dotnet pack FB2Library/FB2Library.csproj \
-          -p:NuspecFile=../nuget/FB2Library.nuspec \
-          -p:NuspecProperties="version=${VERSION}" \
+        dotnet pack src \
+          -p:PackageVersion="${VERSION}" \
           --configuration Release \
           --verbosity normal \
           --output .
     - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: nupkg
-        path: '*.nupkg'
+        paths: |
+          *.nupkg
+          *.snupkg
 
   deploy-nuget:
     needs: build
@@ -43,7 +45,7 @@ jobs:
           name: nupkg
       - name: Push to NuGet
         run: |
-          dotnet nuget push ./nupkg/FB2Library.*.nupkg \
+          dotnet nuget push ./nupkg/* \
             --source ${FEED_URL} \
             --api-key ${FEED_KEY}
         env:

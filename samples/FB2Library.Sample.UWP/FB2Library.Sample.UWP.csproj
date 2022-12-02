@@ -132,7 +132,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FB2Library\FB2Library.csproj">
+    <ProjectReference Include="..\..\src\FB2Library.csproj">
       <Project>{718ce136-bcdc-4bf8-9863-adc7633eb2ca}</Project>
       <Name>FB2Library</Name>
     </ProjectReference>
@@ -141,7 +141,7 @@
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
