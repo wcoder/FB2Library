@@ -39,14 +39,13 @@ jobs:
           name: nupkg
       - name: Push to GitHub
         run: |
-          ls -al
-          ls nupkg/
-          dotnet nuget push nupkg/*.nupkg \
+          dotnet nuget push "**/*.nupkg" \
             --source ${FEED_URL} \
             --api-key ${FEED_KEY} \
             --no-symbols true \
             --skip-duplicate \
-            --diagnostics
+            --diagnostics \
+            --verbosity diagnostic
         env:
           FEED_URL: https://nuget.pkg.github.com/wcoder/index.json \
           FEED_KEY: ${{ secrets.GITHUB_TOKEN }}
