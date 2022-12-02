@@ -28,7 +28,6 @@ jobs:
         name: nupkg
         path: |
           *.nupkg
-          *.snupkg
 
   deploy-github:
     needs: build
