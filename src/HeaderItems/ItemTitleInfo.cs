@@ -56,7 +56,7 @@ namespace FB2Library.HeaderItems
         /// <summary>
         /// Book's annotation
         /// </summary>
-        public AnnotationItem Annotation { set; private get; }
+        public AnnotationItem Annotation { get; private set; }
 
         /// <summary>
         /// Book date , can be a range like 1990-1991
@@ -66,7 +66,7 @@ namespace FB2Library.HeaderItems
         /// <summary>
         /// Book's language
         /// </summary>
-        public string Language { set; private get; }
+        public string Language { get; private set; }
 
         public CoverPage Cover { get; private set; }
 
@@ -204,7 +204,7 @@ namespace FB2Library.HeaderItems
             }
             else
             {
-				Debug.WriteLine("Language not specified in title section");                
+               Debug.WriteLine("Language not specified in title section");
             }
 
             // Load source language
