@@ -1,10 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Xml;
 using FB2Library;
 using FB2Library.Elements;
 
-var filePath = Path.Combine("..", "..", "..", "..", "files", "test.fb2");
+var filePath = Path.Combine("..", "..", "..", "..", "..", "files", "test.fb2");
 await using var fileStream = new FileStream(filePath, FileMode.Open);
 
 var readerSettings = new XmlReaderSettings
