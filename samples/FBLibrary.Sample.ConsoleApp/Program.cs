@@ -2,11 +2,16 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Text;
 using System.Xml;
 using FB2Library;
 using FB2Library.Elements;
 
+
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
 var filePath = Path.Combine("..", "..", "..", "..", "..", "files", "test.fb2");
+
 await using var fileStream = new FileStream(filePath, FileMode.Open);
 
 var readerSettings = new XmlReaderSettings
